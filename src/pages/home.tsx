@@ -308,7 +308,7 @@ export default function HomePage() {
             </p>
 
             <Link href="/screener" className="no-underline">
-              <button className="btn-cream">
+              <button className="btn-primary">
                 {hero.ctaButton}
               </button>
             </Link>
