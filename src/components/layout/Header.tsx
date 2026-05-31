@@ -11,6 +11,8 @@ const NAV_ITEMS = [
   { title: "About Dr. Murphy", href: "/about" },
 ];
 
+const clerkEnabled = !!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
 export function Header() {
   const [location] = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -93,7 +95,30 @@ export function Header() {
                 Admin
               </Link>
             )}
-            <SignedOut>
+            {clerkEnabled ? (
+              <>
+                <SignedOut>
+                  <Link href="/sign-in" className="no-underline">
+                    <button
+                      className="border-0 bg-transparent cursor-pointer"
+                      style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
+                    >
+                      Sign in
+                    </button>
+                  </Link>
+                </SignedOut>
+                <SignedIn>
+                  <Link
+                    href="/portal"
+                    className="no-underline"
+                    style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
+                  >
+                    My Portal
+                  </Link>
+                  <UserButton afterSignOutUrl="/" />
+                </SignedIn>
+              </>
+            ) : (
               <Link href="/sign-in" className="no-underline">
                 <button
                   className="border-0 bg-transparent cursor-pointer"
@@ -102,17 +127,7 @@ export function Header() {
                   Sign in
                 </button>
               </Link>
-            </SignedOut>
-            <SignedIn>
-              <Link
-                href="/portal"
-                className="no-underline"
-                style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
-              >
-                My Portal
-              </Link>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
+            )}
             <Link href="/screener" className="no-underline">
               <button
                 className="btn-primary"
