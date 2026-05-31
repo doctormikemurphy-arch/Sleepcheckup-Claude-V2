@@ -104,6 +104,13 @@ export function Header() {
               </Link>
             </SignedOut>
             <SignedIn>
+              <Link
+                href="/portal"
+                className="no-underline"
+                style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
+              >
+                My Portal
+              </Link>
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
             <Link href="/screener" className="no-underline">
