@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { X } from "lucide-react";
 import { useEffect } from "react";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import logoImg from "@/assets/images/logo.png";
 
 interface MobileDrawerProps {
@@ -87,14 +87,9 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
 
           <div className="pt-6 flex items-center gap-4">
             <SignedOut>
-              <SignInButton mode="modal">
-                <button
-                  className="border-0 bg-transparent cursor-pointer"
-                  style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
-                >
-                  Sign in
-                </button>
-              </SignInButton>
+              <Link href="/sign-in" className="no-underline" style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>
+                Sign in
+              </Link>
             </SignedOut>
             <SignedIn>
               <Link href="/portal" className="no-underline" style={{ fontSize: "15px", fontWeight: 500, color: "var(--blue)", fontFamily: "var(--font-sans)" }}>

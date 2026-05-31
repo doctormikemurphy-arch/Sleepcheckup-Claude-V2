@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { SignedIn, SignedOut, SignInButton, useUser, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, useUser, UserButton } from "@clerk/clerk-react";
 import { FileText, RefreshCw, BookOpen } from "lucide-react";
 
 const FEATURES = [
@@ -82,19 +82,17 @@ function SignInPrompt() {
           Save your reports, track progress over time, and access resources matched to your pathway.
         </p>
 
-        <SignInButton mode="modal">
+        <Link href="/sign-in" className="no-underline w-full">
           <button className="btn-primary w-full" style={{ marginBottom: "16px" }}>
-            Sign in with Google
+            Sign in
           </button>
-        </SignInButton>
+        </Link>
 
         <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)" }}>
           Don't have an account?{" "}
-          <SignInButton mode="modal">
-            <button className="border-0 bg-transparent cursor-pointer" style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--blue)", fontWeight: 600 }}>
-              Create one free →
-            </button>
-          </SignInButton>
+          <Link href="/sign-up" className="no-underline" style={{ color: "var(--blue)", fontWeight: 600 }}>
+            Create one free →
+          </Link>
         </p>
       </div>
     </section>

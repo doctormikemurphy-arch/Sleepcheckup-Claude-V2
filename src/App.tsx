@@ -16,6 +16,8 @@ import PathwaysPage from "@/pages/pathways/index";
 import PathwayDetailPage from "@/pages/pathways/detail";
 import ContactPage from "@/pages/contact";
 import PortalPage from "@/pages/portal";
+import SignInPage from "@/pages/sign-in";
+import SignUpPage from "@/pages/sign-up";
 import PrivacyPage from "@/pages/privacy";
 import TermsPage from "@/pages/terms";
 import DisclaimerPage from "@/pages/disclaimer";
@@ -124,6 +126,26 @@ export default function App() {
         <Route path="/portal">
           <Layout>
             <PortalPage />
+          </Layout>
+        </Route>
+        <Route path="/sign-in">
+          <Layout hideHeader hideFooter>
+            <SignInPage />
+          </Layout>
+        </Route>
+        <Route path="/sign-in/sso-callback">
+          <Layout hideHeader hideFooter>
+            <SignInPage />
+          </Layout>
+        </Route>
+        <Route path="/sign-up">
+          <Layout hideHeader hideFooter>
+            <SignUpPage />
+          </Layout>
+        </Route>
+        <Route path="/sign-up/sso-callback">
+          <Layout hideHeader hideFooter>
+            <SignUpPage />
           </Layout>
         </Route>
         <Route path="/privacy">
