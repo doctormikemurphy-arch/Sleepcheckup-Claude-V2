@@ -69,7 +69,7 @@ export default function AssessmentCheckoutPage() {
               Murphy Method™ Full Assessment Report
             </p>
             <p style={{ fontFamily: "var(--font-serif)", fontWeight: 400, fontSize: "24px", color: "var(--text-ink)", flexShrink: 0, marginLeft: "16px" }}>
-              $79
+              $1
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
@@ -88,7 +88,7 @@ export default function AssessmentCheckoutPage() {
           <hr style={{ borderTop: "1px solid var(--border-soft)", margin: "16px 0" }} />
           <div className="flex items-center justify-between">
             <span style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "17px", color: "var(--text-ink)" }}>Total</span>
-            <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "20px", color: "var(--text-ink)" }}>$79</span>
+            <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "20px", color: "var(--text-ink)" }}>$1</span>
           </div>
         </div>
 
