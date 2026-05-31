@@ -1,0 +1,75 @@
+🎥 Video Course (Public-Friendly)
+
+These aren’t full paid courses but are free public video resources that help patients understand insomnia, CBT-I principles, and sleep apnea basics:
+
+CBT-I Explainer Video (YouTube) — introduces cognitive behavioral therapy for insomnia:
+https://www.youtube.com/watch?v=oYnudJrod8Y
+
+Sleep Restriction & CBT-I Concepts (YouTube) — overview of insomnia treatment techniques:
+https://www.youtube.com/watch?v=nsOCpXNFDRQ
+
+“Why We Sleep” Sleep Science Intro (YouTube) — high-level sleep science that supports understanding sleep disorders:
+https://www.youtube.com/watch?v=k_ztODszMiU
+
+Note: You can embed these where video playlists are supported or link to them with context like “General insomnia education videos” if you don’t host full paid courses.
+
+📚 Written Content (Public-Facing)
+
+These are direct public information pages about insomnia, sleep apnea, and their overlap that non-medical readers can use:
+
+Co-Morbid Insomnia and Sleep Apnoea (COMISA) – Sleep Health Foundation
+https://www.sleephealthfoundation.org.au/sleep-disorders/co-morbid-insomnia-and-sleep-apnoea
+
+Sleep Apnea vs. Insomnia – Sleep Foundation
+https://www.sleepfoundation.org/insomnia/sleep-apnea-vs-insomnia/
+
+Insomnia Overview (Sleep Foundation)
+https://www.sleepfoundation.org/insomnia
+
+These pages explain the disorders individually and in relation to each other in lay language.
+
+🛒 Recommended Product (General Public)
+
+Here are retail product links you can recommend that support behavior and sleep environment (these are examples; you would need actual product URLs):
+
+Sunrise Alarm Clock (light therapy to support sleep–wake rhythm)
+Example: Philips Wake-Up Light on Amazon:
+https://www.amazon.com/Philips-Wake-Up-Light-Alarm-Clock/
+
+Blue-Light Blocking Glasses (for evening wind-down)
+Example: Uvex Blue Light Blocking Glasses on Amazon:
+https://www.amazon.com/Uvex-Blue-Light-Blocking-Glasses/
+
+Low-Profile CPAP Mask (nasal pillow style)
+Example: ResMed AirFit P10 Nasal Pillow CPAP Mask:
+https://www.amazon.com/ResMed-AirFit-P10-Nasal-Pillow/
+
+Note: If you want exact SKU links for your Replit resources, I can generate a curated product list with precise URLs and images for each.
+
+📖 Recommended Reading (Public-Friendly)
+
+Here are public purchase or information links for books that support sleep education for patients:
+
+Quiet Your Mind and Get to Sleep — Colleen Carney
+https://www.amazon.com/Quiet-Your-Mind-Get-Sleep/
+
+Say Good Night to Insomnia — Gregg Jacobs
+https://www.amazon.com/Say-Good-Night-Insomnia/
+
+Why We Sleep — Matthew Walker
+https://www.amazon.com/Why-We-Sleep-Unlocking-Power/
+
+These are patient-accessible books that reinforce CBT-I and sleep science.
+
+🩺 Find a Specialist (Public Directories)
+
+These directories let the public find appropriate care:
+
+American Academy of Sleep Medicine – Find a Sleep Center / Physician
+https://aasm.org/patients/find-a-sleep-center/
+
+Awake In America – Sleep Support Organization
+http://awakeinamerica.info/Topics/sleep-apnea/
+
+American Sleep Apnea Association – Patient Resources & Support
+https://www.sleepapnea.org/

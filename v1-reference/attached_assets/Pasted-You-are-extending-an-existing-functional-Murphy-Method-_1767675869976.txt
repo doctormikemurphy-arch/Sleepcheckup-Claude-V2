@@ -1,0 +1,176 @@
+You are extending an existing, functional “Murphy Method™ Sleep Pathways Assessment” app into a full website MVP. Do NOT modify the assessment app’s UI, logic, routes, components, styling, or copy. Treat it as a black box that must run exactly as it currently does.
+
+Primary Goal
+
+Build a new website shell that drives users into the existing assessment as the main CTA and then provides a post-assessment experience (pathway-specific next steps + retention), while preserving the current assessment app unchanged.
+
+Non-Negotiables
+
+Assessment app must be integrated with zero changes (no refactors, no UI edits, no logic edits, no style edits).
+
+The website’s brand color is deep medical blue.
+
+The website must feel modern clinical (credible, calm, legible, not “wellness” or playful).
+
+The assessment is the “gateway.” The entire site should optimize for assessment start + completion.
+
+Do not add any medical claims. Keep/extend educational framing and disclaimers appropriately.
+
+UX / Site Concept
+
+This website is “assessment-first.” Users should encounter a clean homepage with one dominant CTA: Start the Assessment. The assessment experience itself stays identical. After completion, users should be guided to pathway-aware next steps (education and options), while being encouraged to save results and return.
+
+MVP Pages & Routing
+
+Create a lightweight multi-page website around the assessment with the following routes:
+
+/ (Homepage)
+
+Minimal navigation (keep it sparse).
+
+Clear headline + short subhead.
+
+Primary CTA button: “Start the Assessment”
+
+Secondary link: “How it works”
+
+Trust cues: built by a board-certified ENT + Sleep physician, evidence-based questionnaires (STOP-BANG, ISI, PLATO-11), anatomy self-check, PALM screening (high-level mention only).
+
+Footer with standard links (Privacy, Terms, Disclaimer, Contact).
+
+/how-it-works
+
+3-step explanation: Answer questions → Get sorted into a pathway → See next steps.
+
+Reinforce educational purpose and encourage consultation with clinicians.
+
+CTA repeated: “Start the Assessment”.
+
+/assessment
+
+This page should load/embed/route into the existing assessment app with no changes.
+
+The user should feel like they are still on the Murphy Method™ site (same header/footer if possible without changing the assessment app; if not possible, allow the assessment to occupy full screen but maintain consistent domain/route experience).
+
+/results (Website-level post-assessment hub — separate from the assessment app)
+
+After assessment completion, direct users here (via a link/button outside the assessment if needed, but do not change the assessment app).
+
+This page is a pathway hub that:
+
+Prompts user to “Save your results” (email capture optional for MVP; if included, store minimally and safely).
+
+Offers “Recommended Next Steps” based on pathway (A, B, C, C2, C3).
+
+Provides buttons to pathway-specific pages below.
+
+Must include clear educational disclaimer.
+
+Pathway pages:
+
+/pathways/a
+
+/pathways/b
+
+/pathways/c
+
+/pathways/c2
+
+/pathways/c3
+Each pathway page should have:
+
+A short, patient-friendly description
+
+“Why this pathway fits” (general, not personalized unless data is available without modifying the assessment)
+
+“Next step options” sections:
+
+Learn (free content placeholders)
+
+Consider (treatment category overview placeholders)
+
+Talk to a clinician (CTA to contact/consult placeholder)
+
+A consistent CTA: “Retake the Assessment” and “Download/Export results” (link to existing assessment export features if accessible; otherwise placeholders).
+
+/about
+
+Simple physician-led credibility story, mission, and “why pathways.”
+
+/contact
+
+Basic contact form or mailto, plus disclaimers.
+
+/privacy, /terms, /disclaimer
+
+Basic MVP legal pages with educational/medical disclaimer language.
+
+Integration Requirements (Assessment App Preservation)
+
+The assessment currently runs and renders its own multi-step flow and results view.
+
+Integrate it into the website MVP without editing the assessment code:
+
+Prefer routing to it as-is under /assessment.
+
+If embedding is needed, do so without changing the assessment itself.
+
+Ensure users can return to the homepage and pathway pages from the website shell (even if the assessment remains isolated).
+
+Data Handling (MVP Level)
+
+Do not collect PHI beyond what is already in the assessment app.
+
+If adding “save results,” make it optional and minimal:
+
+For MVP, store only: timestamp, pathway label, and a random anonymous ID (or email if implemented explicitly and safely).
+
+If no safe/clean way exists without touching the assessment, implement “save results” as a placeholder that does not store assessment answers.
+
+UI / Brand System
+
+Primary color: deep medical blue (use consistently for CTAs, headings accents, icons).
+
+Style: clean, clinical, calm. Large readable type, generous spacing, simple icons, minimal animations.
+
+Avoid bright gradients, playful illustrations, and gimmicky UI.
+
+Consistent header/footer on website pages.
+
+Copy Tone
+
+Direct, reassuring, non-salesy.
+
+Avoid hype language.
+
+Emphasize: “not one-size-fits-all,” “pathways,” “education only,” “talk to a clinician.”
+
+Definition of Done (MVP)
+
+The website routes work.
+
+The assessment runs exactly as it currently does (no changes).
+
+Homepage strongly funnels into the assessment.
+
+Post-assessment “pathway hub” and pathway pages exist and feel cohesive.
+
+Legal pages exist.
+
+UI uses deep medical blue and looks modern clinical.
+
+Deliverables in Plan Output
+
+A clear implementation plan listing:
+
+Routes/pages to create
+
+How the assessment will be integrated unchanged
+
+UI/brand tokens (colors/typography/spacing) at a high level
+
+Minimal data model (if any) for optional “save results”
+
+Testing checklist for navigation and flow
+
+Do not generate code in the plan; produce an actionable build plan and the file/page structure.

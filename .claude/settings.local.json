@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create *)",
+      "Bash(cp *)",
+      "Bash(npm install *)",
+      "Bash(npx tailwindcss *)",
+      "Bash(./node_modules/.bin/tailwindcss init *)",
+      "Bash(node_modules/.bin/tailwindcss init *)",
+      "Bash(cp /Users/heymikemurphy1/Projects/sleepcheckup-v2/v1-reference/client/src/lib/__TRACKED_VAR__.ts /Users/heymikemurphy1/Projects/sleepcheckup-v2/src/lib/__TRACKED_VAR__.ts)",
+      "Bash([ -f \"$V1_LIB/content.ts\" ])",
+      "Bash(npm run *)",
+      "Bash(xargs cat)",
+      "Bash(lsof -ti:5173)",
+      "Bash(curl -s http://localhost:5173/screener)",
+      "Bash(curl -s http://localhost:5173/assessment)",
+      "Bash(grep *)",
+      "Bash(npx tsc *)"
+    ]
+  }
+}

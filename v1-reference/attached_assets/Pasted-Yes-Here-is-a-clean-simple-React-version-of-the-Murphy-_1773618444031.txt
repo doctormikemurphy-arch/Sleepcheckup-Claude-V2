@@ -1,0 +1,380 @@
+Yes. Here is a clean, simple React version of the Murphy Method Master Visual that you can paste into your Replit app.
+
+It is designed for:
+
+a non-medical audience
+
+5th grade reading level
+
+one-page clarity
+
+low abandonment
+
+easy mobile and desktop viewing
+
+Use it as a section on your homepage, results page, or educational page.
+
+export default function MurphyMethodMasterVisual() {
+  const stepCard = {
+    background: "#ffffff",
+    borderRadius: "20px",
+    padding: "24px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+    border: "1px solid #e5e7eb",
+  };
+
+  const pillBase = {
+    display: "inline-block",
+    padding: "10px 16px",
+    borderRadius: "999px",
+    fontWeight: 700,
+    fontSize: "1rem",
+    margin: "6px",
+  };
+
+  const arrowStyle = {
+    fontSize: "1.8rem",
+    fontWeight: 700,
+    color: "#1A4FA3",
+    margin: "0 8px",
+  };
+
+  const sectionTitle = {
+    fontSize: "1.4rem",
+    fontWeight: 800,
+    color: "#1A4FA3",
+    marginBottom: "8px",
+  };
+
+  const sectionSubtitle = {
+    fontSize: "1rem",
+    color: "#4b5563",
+    marginBottom: "20px",
+  };
+
+  const listItem = {
+    marginBottom: "8px",
+    color: "#1f2937",
+    fontSize: "1rem",
+    lineHeight: 1.5,
+  };
+
+  return (
+    <section
+      style={{
+        background: "#f8fafc",
+        padding: "48px 20px",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1050px",
+          margin: "0 auto",
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: "36px" }}>
+          <div
+            style={{
+              fontSize: "2.1rem",
+              fontWeight: 900,
+              color: "#1A4FA3",
+              marginBottom: "10px",
+            }}
+          >
+            The Murphy Method™
+          </div>
+          <div
+            style={{
+              fontSize: "1.15rem",
+              color: "#374151",
+              maxWidth: "760px",
+              margin: "0 auto",
+              lineHeight: 1.6,
+            }}
+          >
+            A simple way to understand snoring, sleep apnea, where the airway may
+            be narrowing, and what kinds of treatment may help.
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gap: "24px",
+          }}
+        >
+          {/* STEP 1 */}
+          <div style={stepCard}>
+            <div style={sectionTitle}>Step 1 — How is the breathing at night?</div>
+            <div style={sectionSubtitle}>
+              Breathing can move from normal, to snoring, to sleep apnea.
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "24px",
+              }}
+            >
+              <div
+                style={{
+                  ...pillBase,
+                  background: "#e8f5e9",
+                  color: "#2e7d32",
+                }}
+              >
+                Normal
+              </div>
+              <span style={arrowStyle}>→</span>
+              <div
+                style={{
+                  ...pillBase,
+                  background: "#fff8e1",
+                  color: "#b7791f",
+                }}
+              >
+                Snoring
+              </div>
+              <span style={arrowStyle}>→</span>
+              <div
+                style={{
+                  ...pillBase,
+                  background: "#ffebee",
+                  color: "#c62828",
+                }}
+              >
+                Sleep Apnea
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "16px",
+              }}
+            >
+              <div
+                style={{
+                  background: "#f9fafb",
+                  borderRadius: "16px",
+                  padding: "18px",
+                  border: "1px solid #e5e7eb",
+                }}
+              >
+                <div style={{ fontWeight: 800, color: "#2e7d32", marginBottom: "8px" }}>
+                  Normal
+                </div>
+                <div style={listItem}>Air moves easily</div>
+                <div style={listItem}>Quiet breathing</div>
+                <div style={listItem}>Healthy sleep</div>
+              </div>
+
+              <div
+                style={{
+                  background: "#f9fafb",
+                  borderRadius: "16px",
+                  padding: "18px",
+                  border: "1px solid #e5e7eb",
+                }}
+              >
+                <div style={{ fontWeight: 800, color: "#b7791f", marginBottom: "8px" }}>
+                  Snoring
+                </div>
+                <div style={listItem}>Air becomes noisy</div>
+                <div style={listItem}>Airflow gets rough</div>
+                <div style={listItem}>Snoring may happen</div>
+              </div>
+
+              <div
+                style={{
+                  background: "#f9fafb",
+                  borderRadius: "16px",
+                  padding: "18px",
+                  border: "1px solid #e5e7eb",
+                }}
+              >
+                <div style={{ fontWeight: 800, color: "#c62828", marginBottom: "8px" }}>
+                  Sleep Apnea
+                </div>
+                <div style={listItem}>Airflow gets blocked</div>
+                <div style={listItem}>Breathing can pause</div>
+                <div style={listItem}>This is more serious</div>
+              </div>
+            </div>
+          </div>
+
+          {/* STEP 2 */}
+          <div style={stepCard}>
+            <div style={sectionTitle}>Step 2 — Where can the airway narrow?</div>
+            <div style={sectionSubtitle}>
+              The Murphy Method looks from top to bottom through the airway.
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gap: "14px",
+                maxWidth: "520px",
+                margin: "0 auto",
+              }}
+            >
+              {[
+                { label: "Nose", color: "#6aa84f" },
+                { label: "Palate & Tonsils", color: "#d62839" },
+                { label: "Mandible & Tongue", color: "#1d4ed8" },
+                { label: "Neck", color: "#d4b000" },
+              ].map((item, index) => (
+                <div key={index} style={{ textAlign: "center" }}>
+                  <div
+                    style={{
+                      background: "#f9fafb",
+                      borderRadius: "16px",
+                      padding: "14px 18px",
+                      border: "1px solid #e5e7eb",
+                      fontWeight: 800,
+                      color: item.color,
+                      fontSize: "1.1rem",
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                  {index < 3 && (
+                    <div
+                      style={{
+                        fontSize: "1.5rem",
+                        color: "#1A4FA3",
+                        margin: "6px 0",
+                        fontWeight: 700,
+                      }}
+                    >
+                      ↓
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* STEP 3 */}
+          <div style={stepCard}>
+            <div style={sectionTitle}>Step 3 — What can help?</div>
+            <div style={sectionSubtitle}>
+              Treatment depends on where the blockage is and how serious the problem is.
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "20px",
+              }}
+            >
+              <div
+                style={{
+                  background: "#eef4ff",
+                  borderRadius: "18px",
+                  padding: "20px",
+                  border: "1px solid #dbeafe",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: 900,
+                    color: "#1A4FA3",
+                    fontSize: "1.1rem",
+                    marginBottom: "12px",
+                  }}
+                >
+                  Non-Surgery Options
+                </div>
+                <div style={listItem}>• CPAP</div>
+                <div style={listItem}>• Oral appliance</div>
+                <div style={listItem}>• Other treatments</div>
+              </div>
+
+              <div
+                style={{
+                  background: "#fff1f2",
+                  borderRadius: "18px",
+                  padding: "20px",
+                  border: "1px solid #fecdd3",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: 900,
+                    color: "#c62828",
+                    fontSize: "1.1rem",
+                    marginBottom: "12px",
+                  }}
+                >
+                  Procedure Options
+                </div>
+                <div style={listItem}>• Nose procedures</div>
+                <div style={listItem}>• Palate / tonsil procedures</div>
+                <div style={listItem}>• Jaw / tongue procedures</div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                marginTop: "20px",
+                background: "#f9fafb",
+                borderRadius: "16px",
+                padding: "18px",
+                border: "1px solid #e5e7eb",
+                textAlign: "center",
+                fontSize: "1rem",
+                color: "#374151",
+                lineHeight: 1.6,
+              }}
+            >
+              <strong style={{ color: "#1A4FA3" }}>Simple idea:</strong> first understand
+              the breathing problem, then look at where the airway is narrowing, then
+              choose treatment options that fit that pattern.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+Use it like this:
+
+import MurphyMethodMasterVisual from "./MurphyMethodMasterVisual";
+
+export default function App() {
+  return (
+    <div>
+      <MurphyMethodMasterVisual />
+    </div>
+  );
+}
+
+
+A few important recommendations for your Replit app:
+
+Put this on a page called something like:
+
+/murphy-method
+
+/overview
+
+/how-it-works
+
+Keep this as a clean educational visual only. Do not overload this section with buttons, popups, or long paragraphs.
+
+Under this visual, add just one clear next action, such as:
+
+Take the Free Screening
+
+See My Next Steps
+
+Learn Which Airway Areas Matter Most

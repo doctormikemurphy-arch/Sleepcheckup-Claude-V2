@@ -1,0 +1,284 @@
+REPLIT PROMPT — MURPHY METHOD “NEXT STEPS” PAGES (NO CODE)
+
+You are building a “Next Steps” experience for users who have already completed the Murphy Method obstructive sleep apnea assessment and have already seen their results.
+
+This content appears after the assessment and does not modify the assessment itself.
+
+GLOBAL RULES
+
+Do NOT change assessment logic or scoring.
+
+Do NOT diagnose or prescribe.
+
+Tone must be physician-led, calm, authoritative, and reassuring.
+
+Audience: educated patient / smart consumer.
+
+Emphasize that obstructive sleep apnea has multiple root causes, which is why treatment must be personalized.
+
+Reinforce that this is a decision-support and education system, not a single test or device.
+
+Encourage longitudinal reassessment after interventions.
+
+Each pathway must have its own dedicated section and include the following headers:
+
+What Your Results Suggest
+
+Why This Matters for Your Health
+
+What Usually Works Best for People in This Category
+
+Your Murphy Method Next Steps
+
+Clear Call-to-Action
+
+Business model principles to embed across all pathways:
+
+Free education builds clarity and trust
+
+Paid guidance helps users avoid trial-and-error
+
+Higher-risk pathways emphasize appropriate medical escalation
+
+Lower-risk pathways emphasize conservative management and monitoring
+
+PATHWAY A — OSA WITH MEDICAL PROBLEMS
+
+Trigger: Elevated OSA risk plus medical conditions (heart disease, diabetes, hypertension, stroke history)
+
+Key Focus: Urgent diagnostic priority due to comorbidities
+
+Explain that:
+
+Sleep apnea carries higher risk when combined with medical disease
+
+Symptoms may underestimate danger
+
+Timely diagnosis matters
+
+Unique Next Steps:
+
+Formal sleep study referral
+
+Coordination with primary care and cardiology
+
+Managing underlying medical conditions alongside sleep apnea
+
+CTA:
+“Prioritize Medical Evaluation”
+
+PATHWAY B — OSA WITH OBESITY
+
+Trigger: BMI ≥ 30 and/or neck anatomy score ≥ 2 with elevated OSA risk
+
+Key Focus: Device-based airway treatment plus weight management
+
+Explain that:
+
+Weight and neck anatomy increase airway collapse
+
+Treating sleep apnea improves energy and metabolic health
+
+Weight loss alone rarely resolves apnea
+
+Unique Next Steps:
+
+CPAP trial
+
+Oral appliance evaluation
+
+Structured weight-loss programs
+
+Bariatric surgery discussion when appropriate
+
+CTA:
+“Start the Airway + Weight Strategy”
+
+PATHWAY C — OSA WITH NASAL PROBLEM
+
+Trigger: Elevated OSA risk with nose zone score ≥ 2
+
+Key Focus: Nasal obstruction as a major contributor
+
+Explain that:
+
+The nose plays a critical role in airflow and sleep quality
+
+Nasal blockage worsens snoring, CPAP tolerance, and apnea severity
+
+Nasal problems are often under-addressed
+
+Unique Next Steps:
+
+ENT nasal evaluation
+
+Medical therapy (sprays, allergy management)
+
+Nasal strips or dilators
+
+Surgical options when appropriate
+
+CTA:
+“Optimize Nasal Breathing”
+
+PATHWAY C2 — OSA WITH MANDIBLE & TONGUE OBSTRUCTION
+
+Trigger: BMI < 30, elevated OSA risk, mandible zone ≥ 2 only
+
+Key Focus: Jaw and tongue positioning
+
+Explain that:
+
+Lean patients can still have significant OSA
+
+Tongue and jaw collapse can block the airway
+
+CPAP is not always the best first option
+
+Unique Next Steps:
+
+Sleep dentist evaluation
+
+Oral appliance therapy
+
+Myofunctional therapy and tongue exercises
+
+Follow-up sleep testing
+
+CTA:
+“Address Jaw & Tongue Factors”
+
+PATHWAY C3 — OSA WITH MULTI-LEVEL OBSTRUCTION
+
+Trigger: Elevated OSA risk with 2 or more non-nasal anatomy zones ≥ 2
+
+Key Focus: Multi-level airway involvement
+
+Explain that:
+
+No single treatment works alone
+
+Combination therapy is often required
+
+Trial-and-error leads to frustration
+
+Unique Next Steps:
+
+Comprehensive ENT airway evaluation
+
+Combination therapy planning
+
+Staged surgical approaches when appropriate
+
+CTA:
+“Build a Multi-Level Treatment Plan”
+
+PATHWAY D — OSA WITH PHYSIOLOGY PROBLEM
+
+Trigger: Elevated OSA risk with low anatomy scores but PALM physiology flags ≥ 2
+
+Key Focus: Non-anatomical causes (brain signals, arousal threshold, respiratory control)
+
+Explain that:
+
+The brain’s control of breathing matters
+
+Anatomy may appear normal
+
+This is a real biological form of sleep apnea
+
+Unique Next Steps:
+
+Advanced sleep study interpretation
+
+Adaptive PAP strategies
+
+Medication considerations
+
+Neurology or specialty consultation
+
+CTA:
+“Address Sleep Apnea Physiology”
+
+PATHWAY E — OSA WITH INSOMNIA (COMISA)
+
+Trigger: Elevated OSA risk with moderate-to-severe insomnia and arousal threshold ≥ 2
+
+Key Focus: Treat insomnia first or alongside apnea
+
+Explain that:
+
+Insomnia reduces apnea treatment success
+
+Treating apnea alone often fails
+
+Integrated care improves outcomes
+
+Unique Next Steps:
+
+CBT-I (Cognitive Behavioral Therapy for Insomnia)
+
+Sleep hygiene optimization
+
+Integrated COMISA treatment plan
+
+CTA:
+“Treat Insomnia and Apnea Together”
+
+PATHWAY F — LOW RISK OSA / SNORING
+
+Trigger: Low OSA risk with or without mild anatomy involvement
+
+Key Focus: Conservative management and monitoring
+
+Explain that:
+
+Snoring does not always equal sleep apnea
+
+Lifestyle factors often dominate
+
+Monitoring is appropriate
+
+Unique Next Steps:
+
+Positional therapy
+
+Alcohol avoidance
+
+Weight management
+
+Nasal strips
+
+Sleep schedule optimization
+
+CTA:
+“Optimize Sleep & Snoring”
+
+PATHWAY G — OSA WITH COMPLEX / MIXED FACTORS
+
+Trigger: Does not fit cleanly into other pathways
+
+Key Focus: Comprehensive, multidisciplinary evaluation
+
+Explain that:
+
+Many patients have mixed contributors
+
+Complexity does not mean poor outcomes
+
+Coordination is essential
+
+Unique Next Steps:
+
+Full sleep specialist workup
+
+ENT + sleep medicine collaboration
+
+Personalized treatment roadmap
+
+CTA:
+“Get a Personalized Sleep Strategy”
+
+FINAL INSTRUCTION
+
+Present all pathways clearly and distinctly, and reinforce that users can re-take the Murphy Method assessment over time to measure improvement and guide next decisions.

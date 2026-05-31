@@ -1,0 +1,186 @@
+1) Keep PLATO in PatientProfile (no change needed)
+
+In src/logic/types.ts (or wherever your main types are), keep:
+
+export interface PatientProfile {
+  stopBangScore: number;
+  osaRisk: "low" | "intermediate" | "high";
+  isiScore: number;
+  insomniaSeverity: "none_mild" | "subthreshold" | "moderate" | "severe";
+
+  plato: PlatoProfile; // KEEP this
+
+  zones: ZoneScores;
+  comorbidities: string[];
+  mainComplaint?: string;
+
+  endotypes?: EndotypeFlags;
+  problemDominance?: "anatomy" | "physiology" | "mixed" | "uncertain";
+}
+
+
+No changes here unless you previously removed it.
+
+2) Keep the PLATO section in the Questionnaires step (no change needed)
+
+Wherever you render:
+
+STOP-BANG
+
+ISI
+
+PLATO
+
+Leave your PLATO card/component in place, e.g.:
+
+<section className="card">
+  <h2>PLATO Treatment Profile</h2>
+  <PlatoForm
+    insomniaSeverity={profile.insomniaSeverity}
+    value={profile.plato}
+    onProfileChange={(plato) => setProfile((p) => ({ ...p, plato }))}
+  />
+</section>
+
+3) Remove PLATO from the rule engine (the key change)
+
+Open:
+
+src/logic/pathways.ts (or wherever assignMurphyPathway(profile) lives)
+
+A) Delete any PLATO references inside assignMurphyPathway
+
+Search inside this file for any of these and remove the logic that uses them:
+
+profile.plato.readiness
+
+profile.plato.preference
+
+profile.plato.adherenceRisk
+
+profile.plato.papBarriers
+
+profile.plato.facilitators
+
+You want zero references to profile.plato in the pathway function(s).
+
+B) Replace assignMurphyPathway with a PLATO-free version (copy/paste)
+
+Use this as a clean baseline (edit comorbidity strings to match your app):
+
+import { PatientProfile } from "./types";
+
+export type MurphyPathwayId =
+  | "A_high_risk_diagnostic_priority"
+  | "B_device_focused"
+  | "C_anatomy_dominant"
+  | "D_physiology_dominant"
+  | "E_comisa_insomnia_first"
+  | "F_mild_snoring_lifestyle"
+  | "G_complex_mixed";
+
+function anyZoneAtLeast(profile: PatientProfile, n: number): boolean {
+  const z = profile.zones;
+  return z.nose >= n || z.palate >= n || z.mandible >= n || z.neck >= n;
+}
+
+function totalZoneScore(profile: PatientProfile): number {
+  const z = profile.zones;
+  return z.nose + z.palate + z.mandible + z.neck;
+}
+
+export function determineProblemDominance(
+  profile: PatientProfile
+): PatientProfile["problemDominance"] {
+  const anatomicScore = totalZoneScore(profile);
+  const e = profile.endotypes;
+
+  const physScore =
+    (e?.arousalThresholdLow ? 1 : 0) +
+    (e?.loopGainHigh ? 1 : 0) +
+    (e?.muscleCompensationPoor ? 1 : 0);
+
+  const pcritBoost = e?.pcritHigh ? 1 : 0;
+  const anatomySignal = anatomicScore + pcritBoost;
+
+  if (anatomySignal >= 4 && physScore <= 1) return "anatomy";
+  if (physScore >= 2 && anatomySignal <= 2) return "physiology";
+  if (anatomySignal >= 3 && physScore >= 2) return "mixed";
+  return "uncertain";
+}
+
+export function assignMurphyPathway(profile: PatientProfile): MurphyPathwayId {
+  const dominance = determineProblemDominance(profile);
+  profile.problemDominance = dominance;
+
+  // A: High risk diagnostic priority
+  if (
+    profile.osaRisk === "high" &&
+    profile.comorbidities?.some((c) =>
+      ["htn", "afib", "stroke", "heart_failure"].includes(c)
+    )
+  ) {
+    return "A_high_risk_diagnostic_priority";
+  }
+
+  // E: COMISA / insomnia-first
+  if (
+    (profile.insomniaSeverity === "moderate" ||
+      profile.insomniaSeverity === "severe") &&
+    (profile.osaRisk === "low" || profile.osaRisk === "intermediate")
+  ) {
+    return "E_comisa_insomnia_first";
+  }
+
+  // C: Anatomy-dominant
+  if (dominance === "anatomy" && anyZoneAtLeast(profile, 2)) {
+    return "C_anatomy_dominant";
+  }
+
+  // D: Physiology-dominant
+  if (dominance === "physiology") {
+    return "D_physiology_dominant";
+  }
+
+  // G: Mixed / complex
+  if (dominance === "mixed") {
+    return "G_complex_mixed";
+  }
+
+  // F: Mild snoring lifestyle
+  if (profile.osaRisk === "low" && profile.mainComplaint === "snoring") {
+    return "F_mild_snoring_lifestyle";
+  }
+
+  // B: Default
+  return "B_device_focused";
+}
+
+
+✅ This keeps your Murphy Method logic purely based on:
+
+STOP-BANG risk
+
+ISI insomnia severity
+
+Zones (and optional endotype flags)
+
+…and ignores PLATO completely.
+
+4) Keep PLATO on the Results page, but label it correctly
+
+In src/components/ResultsSummary.tsx, keep showing PLATO, but add a line like:
+
+“PLATO helps us understand your preferences and barriers. It does not change your pathway assignment.”
+
+Example snippet:
+
+<h3>PLATO Treatment Profile (Preferences & Barriers)</h3>
+<p style={{ marginTop: 0 }}>
+  This section helps describe what treatments may fit you best. It does not change your Murphy Method™ pathway.
+</p>
+<ul>
+  <li>Readiness: {profile.plato.readiness}</li>
+  <li>Preference: {profile.plato.preference}</li>
+  <li>Adherence risk: {profile.plato.adherenceRisk}</li>
+</ul>

@@ -1,0 +1,152 @@
+⭐ FULL PALM MINI-SCREENER
+
+Patient-Friendly, One Question Set per Endotype (3–4 questions each)
+
+Use:
+
+1 “core” question
+
+1–2 optional supporting questions
+
+Score:
+
+≥2 “Yes” answers → endotype flag = positive
+
+1️⃣ Pcrit (Anatomy / Collapsibility)
+
+Already captured via your Top-Down 4-Zone Anatomy, STOP-BANG, and symptoms.
+You do NOT need extra questions.
+
+But if you want one 5th-grade cross-check:
+
+✔ Patient-Core Question
+
+“Does your throat or nose often feel blocked when you lie down or sleep?”
+
+✔ Supporting
+
+“Do you snore loudly most nights?”
+“Has someone told you your breathing stops or sounds tight?”
+
+Rule engine:
+
+Already handled by Zones 1–4
+
+PcritHigh = true if total zone score ≥4 or any single zone ≥3
+
+2️⃣ Low Arousal Threshold (Wakes too easily)
+
+(You already approved these—now packaged for the PALM screener.)
+
+✔ Patient-Core Question
+
+“Are you a very light sleeper who wakes up easily during the night?”
+
+✔ Supporting
+
+“Do small breathing changes or noises wake you up?”
+“Do you wake up tired even when your sleep apnea isn’t very bad?”
+“Does a breathing machine make you wake up more instead of sleep better?”
+
+3️⃣ High Loop Gain (Over-reactive breathing control / unstable breathing)
+
+This is the hardest endotype to detect without physiology testing, but patient-level correlates exist.
+
+✔ Patient-Core Question
+
+“Do you feel like your breathing at night goes in waves — breathing too much, then too little?”
+
+✔ Supporting
+
+“Do you sometimes wake up suddenly feeling like you took a big gasp of air?”
+“Do you have nights where your breathing feels ‘up and down’ rather than steady?”
+“Has anyone said you breathe fast, then slow, during sleep?”
+
+Clinician Correlates
+
+Central apnea tendency
+
+CO₂ sensitivity
+
+CPAP intolerance due to over-ventilation
+
+Cheyne-Stokes–type instability (but milder in many OSA patients)
+
+Waxing/waning airflow
+
+Your tool will NOT diagnose—only flag patterns.
+
+4️⃣ Poor Muscle Compensation (Weak pharyngeal muscle response)
+
+Patients cannot perceive airflow changes, but they can perceive positional challenges, effort, and tongue behaviors.
+
+✔ Patient-Core Question
+
+“Does your tongue fall back or block your throat when you lie on your back?”
+
+✔ Supporting
+
+“Do you snore much more when you sleep on your back?”
+“Do you feel like your throat muscles get tired or weak at night?”
+“Do you wake up choking or gasping when rolled onto your back?”
+
+Clinician Correlates
+
+High neuromuscular gain required to maintain patency
+
+Positional OSA
+
+Large tongue base (Zone 3)
+
+Mandible/tongue crowding + weak compensatory reflexes
+
+⭐ SUMMARY: PALM Screener – Core Questions Only
+
+(What your Kajabi or Replit UI should show)
+
+● Low Arousal Threshold
+
+“Are you a very light sleeper who wakes up easily during the night?”
+
+● High Loop Gain
+
+“Does your breathing at night sometimes go in waves — breathing too much, then too little?”
+
+● Poor Muscle Compensation
+
+“Does your tongue fall back or block your throat when you lie on your back?”
+
+● High Pcrit (Anatomic Collapse)
+
+Captured by your 4-zone system
+(Add this if you need 1 question:)
+
+“Does your throat or nose often feel blocked when you lie down?”
+
+⭐ Rule-Engine Cut-and-Paste Code
+
+Put in: endotypes.ts
+
+export function deriveEndotypes(answers: EndotypeAnswers) {
+  return {
+    pcritHigh: answers.totalZoneScore >= 4 || answers.anyZone3Plus,
+
+    arousalThresholdLow:
+      (answers.lightSleeper ? 1 : 0) +
+        (answers.wakesFromSmallBreathingChanges ? 1 : 0) +
+        (answers.unrefreshingDespiteMildOSA ? 1 : 0) +
+        (answers.papMakesSleepLighter ? 1 : 0) >= 2,
+
+    loopGainHigh:
+      (answers.breathingWaves ? 1 : 0) +
+        (answers.suddenGaspAwakenings ? 1 : 0) +
+        (answers.upDownBreathingPattern ? 1 : 0) +
+        (answers.fastThenSlowBreathingReported ? 1 : 0) >= 2,
+
+    muscleCompensationPoor:
+      (answers.tongueFallsBack ? 1 : 0) +
+        (answers.positionalWorseOnBack ? 1 : 0) +
+        (answers.throatMusclesFeelWeak ? 1 : 0) +
+        (answers.chokingSupine ? 1 : 0) >= 2,
+  };
+}

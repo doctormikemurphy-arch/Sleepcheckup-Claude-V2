@@ -1,0 +1,359 @@
+You are building a production-ready web application called “Murphy Method™ Sleep Pathways.”
+This app will be embedded inside a Kajabi site using an iframe, so it must be responsive, self-contained, and run in a single domain.
+
+1. Tech stack & project structure
+
+Build a single-page application using:
+
+React + TypeScript
+
+Vite or Create React App (Vite preferred if available)
+
+Use functional components and React hooks.
+
+Use plain CSS modules or a simple global CSS file (no Tailwind, no heavy UI libraries).
+
+No database. Store any temporary user state in memory and optionally in localStorage.
+
+Expose the app at / so it can be embedded in Kajabi via an <iframe>.
+
+Project structure example:
+
+/src
+
+main.tsx / index.tsx
+
+App.tsx
+
+components/
+
+StepLayout.tsx (generic step wrapper)
+
+StopBangForm.tsx
+
+IsiForm.tsx
+
+PlatoForm.tsx
+
+ZoneAirwaySelfCheck.tsx
+
+ResultsSummary.tsx
+
+ProgressBar.tsx
+
+Disclaimer.tsx
+
+logic/
+
+scoring.ts
+
+pathways.ts
+
+types.ts
+
+styles/
+
+global.css
+
+2. Overall UX flow
+
+The app is a multi-step wizard with 4 main steps:
+
+Welcome & Disclaimers
+
+Title: “Murphy Method™ Sleep Breathing Assessment”
+
+Very clear text that this is educational only, not a diagnosis, does not replace a doctor.
+
+A “Start Assessment” button.
+
+Questionnaires
+
+Tabs or sections for:
+
+STOP-BANG questionnaire
+
+Insomnia Severity Index (ISI)
+
+PLATO-derived treatment profile
+
+For STOP-BANG and ISI:
+
+Do not hard-code official copyrighted questionnaire text.
+
+Instead, create config objects with placeholder questions like “Question 1 text here,” “Question 2 text here” and comments telling the user where to insert the official wording.
+
+For PLATO:
+
+Also use placeholder PLATO questions with clear comments instructing the owner to replace them with official AASM PLATO items.
+
+All questions should be simple radio buttons or select dropdowns.
+
+Top-Down Anatomy Self-Check (4 zones)
+
+A step called “Where might your airway be narrow?”
+
+4 zones from top to bottom:
+
+Nose
+
+Palate & tonsils
+
+Mandible & tongue
+
+Neck (soft tissue / parapharyngeal fat)
+
+For each zone, show 3 simple yes/no/not sure questions using friendly lay language.
+
+Use placeholder text for the questions, and group them per zone.
+
+Score each “yes” as 1 point per question, “no” = 0, “not sure” = 0.
+
+Results & Murphy Method™ Pathway
+
+Show:
+
+STOP-BANG score and risk category.
+
+ISI score and insomnia severity category.
+
+PLATO-derived profile (readiness, preferences, barriers, adherence risk).
+
+Zone scores (0–3 per zone).
+
+Assigned Murphy Method™ Patient Pathway based on a rule engine.
+
+Show everything in plain, 5th–8th grade reading level language.
+
+Add a prominent line: “This is for education only and cannot diagnose sleep apnea or any other condition. Please discuss your results with a doctor or sleep specialist.”
+
+Include a progress bar across the top showing steps:
+“Welcome → Questionnaires → Airway Zones → Results”
+
+3. Data types and scoring logic (put in logic/)
+
+Create a types.ts with interfaces like:
+
+export type OsaRisk = "low" | "intermediate" | "high";
+export type InsomniaSeverity = "none_mild" | "subthreshold" | "moderate" | "severe";
+
+export interface PlatoProfile {
+  readiness: "ready" | "uncertain" | "resistant";
+  preference: "pap" | "oral_appliance" | "non_device" | "none";
+  papBarriers: string[]; // e.g. "mask_discomfort", "claustrophobia"
+  facilitators: string[]; // e.g. "reduce_health_risk"
+  adherenceRisk: "low" | "medium" | "high";
+}
+
+export interface ZoneScores {
+  nose: number;      // 0–3
+  palate: number;    // 0–3
+  mandible: number;  // 0–3
+  neck: number;      // 0–3
+}
+
+export interface PatientProfile {
+  stopBangScore: number;
+  osaRisk: OsaRisk;
+  isiScore: number;
+  insomniaSeverity: InsomniaSeverity;
+  plato: PlatoProfile;
+  zones: ZoneScores;
+  comorbidities: string[]; // keep as optional, can be empty
+  mainComplaint?: string;  // e.g. "snoring", "daytime sleepiness"
+}
+
+
+In scoring.ts, implement:
+
+STOP-BANG scoring
+
+Accept an object of answers.
+
+Return stopBangScore (0–8) and osaRisk:
+
+0–2 → "low"
+
+3–4 → "intermediate"
+
+5–8 → "high"
+
+ISI scoring
+
+Sum Likert responses (0–4 per item, 7 items total).
+
+Return isiScore and insomniaSeverity:
+
+0–7 → "none_mild"
+
+8–14 → "subthreshold"
+
+15–21 → "moderate"
+
+22–28 → "severe"
+
+PLATO profile derivation
+
+Use placeholder scoring logic that maps answers to:
+
+readiness
+
+preference
+
+papBarriers
+
+facilitators
+
+adherenceRisk
+
+Keep this logic in one function so it can be easily tuned later.
+
+Zone scoring
+
+For each of the 4 zones, count number of “yes” answers (0–3).
+
+4. Murphy Method™ Pathways & rule engine
+
+In pathways.ts:
+
+Define an enum or string union for pathways:
+
+export type MurphyPathwayId =
+  | "A_high_risk_diagnostic_priority"
+  | "B_device_focused"
+  | "C_anatomy_dominant"
+  | "D_physiology_dominant"
+  | "E_comisa_insomnia_first"
+  | "F_mild_snoring_lifestyle"
+  | "G_complex_mixed";
+
+
+Create an object describing each pathway with patient-friendly text:
+
+export interface PathwayDefinition {
+  id: MurphyPathwayId;
+  title: string;
+  shortDescription: string;
+  educationalSummary: string; // 2–4 simple paragraphs, 5th–8th grade level
+}
+
+export const MURPHY_PATHWAYS: PathwayDefinition[] = [ /* fill in */ ];
+
+
+Implement a function:
+
+export function assignMurphyPathway(profile: PatientProfile): MurphyPathwayId;
+
+
+Use a simple rule-based system, such as:
+
+If osaRisk === "high" and comorbidities includes things like "htn" or "afib" → "A_high_risk_diagnostic_priority".
+
+Else if zones show clear anatomic involvement (any zone score ≥ 2) → "C_anatomy_dominant".
+
+Else if insomniaSeverity is "moderate" or "severe" and osaRisk is "low" or "intermediate" → "E_comisa_insomnia_first".
+
+Else if osaRisk === "low" and mainComplaint === "snoring" → "F_mild_snoring_lifestyle".
+
+Else if PLATO and profile suggest strong physiologic traits (placeholder logic) → "D_physiology_dominant".
+
+Otherwise → "B_device_focused" or fallback "G_complex_mixed".
+
+Keep the rules in code comments so they can be refined later.
+
+5. Components & UI behavior
+
+App.tsx
+
+Hold top-level currentStep state (1–4).
+
+Hold a PatientProfile state that is gradually filled as the user answers questions.
+
+Render:
+
+<ProgressBar currentStep={currentStep} />
+
+The relevant step component.
+
+“Back” and “Next” buttons.
+
+Disable “Next” until required fields on that step are completed.
+
+Forms
+
+Use controlled form components with basic validation (e.g., require answers for all STOP-BANG and ISI items).
+
+On submit of each step, update the central PatientProfile state.
+
+ResultsSummary.tsx
+
+Call assignMurphyPathway with the final PatientProfile.
+
+Display:
+
+STOP-BANG score + descriptive label.
+
+ISI score + descriptive label.
+
+Short summary of PLATO profile (e.g., “You are ready/uncertain about treatment and prefer PAP/non-device/oral appliance…”).
+
+A simple vertical list of the 4 zones with a qualitative label:
+
+0 “yes” → “This area does not clearly stand out in your answers.”
+
+1 “yes” → “This area might play a role.”
+
+2–3 “yes” → “This area is more likely to matter for your breathing during sleep.”
+
+The Murphy Method™ pathway card:
+
+Title
+
+Short description
+
+Educational summary paragraphs
+
+Include a “Print / Save as PDF” button that simply opens the browser print dialog (window.print()).
+
+6. Styling & responsiveness
+
+Use a clean, medical-feeling palette (e.g., blues and whites).
+
+Make everything mobile-friendly:
+
+Multi-step layout should stack vertically on small screens.
+
+Inputs large enough for touch.
+
+Ensure text is readable, with 16px base font and good contrast.
+
+7. Disclaimers and safety
+
+Display this (or similar) disclaimer on both the Welcome step and Results step:
+
+“This Murphy Method™ Sleep Breathing Assessment is for education only.
+It cannot diagnose obstructive sleep apnea or any other condition.
+It is not a substitute for seeing a doctor or sleep specialist.
+Always talk with a healthcare professional about your sleep and breathing.”
+
+8. Embeddability for Kajabi
+
+The app should run fully at / and not depend on any external navigation.
+
+Ensure the main container is full-width and fluid so that when embedded in an iframe on Kajabi, it scales to the iframe size.
+
+Do not use window.top or cross-domain assumptions.
+
+Finally:
+
+Include README.md with:
+
+How to run locally (npm install, npm run dev).
+
+How to build for production (npm run build).
+
+Instructions that questionnaire texts for STOP-BANG, ISI, and PLATO are placeholders that must be replaced by the app owner with official wording to respect copyright.
+
+Write clear comments throughout the code to make it easy for a physician-owner to adjust questions and pathway text.
+
+Build all of this now.

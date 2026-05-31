@@ -1,0 +1,50 @@
+import { PathwayNextStepsPage, PathwayNextStepsContent } from "./PathwayNextStepsPage";
+
+const content: PathwayNextStepsContent = {
+  pathwayLetter: "A",
+  title: "Pathway A: Sleep Apnea with Insomnia (COMISA)",
+  subtitle: "Addressing your insomnia is a key to successful treatment of your sleep apnea",
+  whatResultsSuggest: [
+    "Your screening indicates an elevated risk for obstructive sleep apnea.",
+    "You also have significant insomnia symptoms—difficulty falling asleep, staying asleep, or waking too early.",
+    "This combination is called COMISA (Comorbid Insomnia and Sleep Apnea) and requires an integrated treatment approach.",
+  ],
+  whyItMatters: {
+    intro: "When insomnia and sleep apnea occur together, they can make each other worse. Treating only one condition often leads to poor outcomes.",
+    points: [
+      "Insomnia makes it much harder to adapt to sleep apnea treatments such as CPAP — leading to higher failure rates.",
+      "Anxiety about sleep creates a cycle that perpetuates both conditions.",
+      "Treating sleep apnea alone often fails in COMISA patients because insomnia persists.",
+      "Integrated treatment that addresses both conditions simultaneously produces the best results.",
+    ],
+  },
+  whatWorksBest: {
+    intro: "For people with COMISA, the most effective approach often involves treating insomnia first—or at least at the same time as sleep apnea.",
+    options: [
+      "CBT-I (Cognitive Behavioral Therapy for Insomnia)—the gold-standard, non-medication treatment for insomnia.",
+      "Sleep hygiene optimization including consistent sleep schedules and bedroom environment improvements.",
+      "Integrated COMISA treatment protocols developed specifically for this combination.",
+      "Initiate sleep apnea treatment and take a break if needed until insomnia symptoms improve.",
+      "Sleep medication used strategically and temporarily when appropriate.",
+      "People with insomnia may benefit from surgical treatment of their sleep apnea, avoiding either CPAP or oral appliance treatment. Make an appointment with an Ear, Nose & Throat Specialist to see if surgery is a treatment option for your sleep apnea.",
+    ],
+  },
+  nextSteps: {
+    intro: "Based on your pathway, here is a recommended action plan:",
+    steps: [
+      "Get a sleep study to confirm and measure your sleep apnea severity. Make a plan and start treatment for your sleep apnea. If you are having trouble with treatment because of your insomnia it is okay to take a break and work on treating your insomnia first.",
+      "Ask for a referral to a provider trained in CBT-I (cognitive behavioral therapy for insomnia).",
+      "Begin CBT-I treatment—typically 6-8 sessions over several weeks.",
+      "Work on sleep hygiene: consistent wake time, limiting time in bed, reducing sleep anxiety.",
+      "After insomnia improves, reintroduce sleep apnea treatment with better tolerance.",
+    ],
+  },
+  cta: {
+    text: "Treat Insomnia and Apnea Together",
+    description: "COMISA requires an integrated approach. Many patients find that once insomnia is addressed, they're much more successful with sleep apnea treatment.",
+  },
+};
+
+export default function PathwayAPage() {
+  return <PathwayNextStepsPage content={content} />;
+}

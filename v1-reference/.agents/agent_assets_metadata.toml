@@ -1,0 +1,31 @@
+uploads = []
+
+[[generated]]
+id = "UscKkT_QAw4JwKr4cBs7x"
+uri = "file://client/src/assets/images/hero-snoring-couple.png"
+type = "image"
+title = "snoring couple hero"
+
+[[generated]]
+id = "3sv8TPbF8Ks2tR2jJoCi0"
+uri = "file://attached_assets/generated_images/logo-concept-a.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "4X53Rkps4lWvX8nQqyoII"
+uri = "file://attached_assets/generated_images/logo-concept-b.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "TbTFF9nFipX2b9pK8ctAf"
+uri = "file://attached_assets/generated_images/logo-concept-c.png"
+type = "image"
+title = "generated_image"
+
+[[outputs]]
+id = "tsN9OdgKEwjbL1J5cVyiS"
+uri = "file://sleepcheckup-business-context.md"
+type = "text"
+title = "SleepCheckup.com — Full Business Context for Claude"

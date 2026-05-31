@@ -1,0 +1,280 @@
+Replit Plan Mode Prompt (FINAL)
+
+You are extending an existing, fully functional Murphy Method™ Sleep Pathways Assessment into a complete assessment-first website MVP.
+
+Do NOT modify the assessment app in any way.
+Treat it as a sealed black box: no changes to UI, styling, copy, logic, components, routes, or storage behavior.
+
+The assessment is the core feature and must run exactly as it does today.
+
+Primary Objective
+
+Build a website that:
+
+Funnels users into the assessment as the primary action
+
+Preserves the assessment experience unchanged
+
+Provides a post-assessment experience (results hub, pathway pages, dashboard)
+
+Introduces optional persistence via simple login
+
+Enables future monetization after assessment completion
+
+Core Concept
+
+This is an assessment-first, pathway-driven health platform.
+
+Before assessment → minimal site, strong CTA
+After assessment → personalized, pathway-aware experience
+
+Non-Negotiables
+
+Zero modifications to the existing assessment app
+
+All pathways supported: A, B, C, C2, C3, D, E, F, G
+
+Brand color: deep medical blue
+
+UI: modern, clinical, calm, credible (not wellness, not playful)
+
+Login is optional and not required to take the assessment
+
+Results are never gated behind login
+
+Site Structure & Routes
+Public / Pre-Assessment Experience
+/ — Homepage (Pre-Assessment Mode)
+
+Minimal navigation
+
+Clear framing: sleep apnea is not one-size-fits-all
+
+Introduce “Sleep Pathways” concept
+
+Primary CTA: Start the Assessment
+
+Secondary link: How It Works
+
+Footer with Privacy, Terms, Disclaimer, Contact
+
+/how-it-works
+
+Step 1: Guided questions & anatomy self-check
+
+Step 2: Pathway classification
+
+Step 3: Personalized next steps
+
+Educational framing only
+
+CTA: Start the Assessment
+
+Assessment Integration (Unchanged)
+/assessment
+
+Loads the existing assessment app exactly as-is
+
+No UI, copy, or logic changes
+
+No added buttons inside the assessment
+
+If embedding, wrap in a site shell without altering the app
+
+Provide a persistent website-level “Next Steps” link outside the assessment UI (header or top bar) that routes to /results
+
+Post-Assessment Experience
+/results — Website-Level Results Hub
+
+Separate from the assessment’s internal results screen
+
+Reads pathway from localStorage (read-only) written by the assessment
+
+If no pathway found: prompt user to take/re-take the assessment
+
+If pathway found:
+
+Display assigned pathway
+
+Explain what it means
+
+Provide CTA to pathway-specific page
+
+Prompt: “Save your results to access your personalized dashboard anywhere”
+
+Pathway Pages (ALL must exist)
+
+Create pages for all 9 pathways:
+
+/pathways/a
+
+/pathways/b
+
+/pathways/c
+
+/pathways/c2
+
+/pathways/c3
+
+/pathways/d
+
+/pathways/e
+
+/pathways/f
+
+/pathways/g
+
+Each pathway page includes:
+
+Plain-language description
+
+“Why this pathway fits” (general explanation)
+
+“Typical next steps” (education, treatment categories, consult placeholders)
+
+CTAs:
+
+Retake Assessment
+
+Save / View Dashboard
+
+Educational disclaimer
+
+No hard selling.
+
+Optional Login System (MVP)
+Authentication
+
+Passwordless email login (magic link)
+
+Optional
+
+No login required to take or view assessment results
+
+Purpose of Login
+
+Persist pathway assignment beyond localStorage
+
+Enable personalized post-assessment homepage
+
+Support re-engagement without re-taking assessment
+
+Post-Assessment Dashboard (Logged-In Users)
+/dashboard or Homepage (Logged-In State)
+
+If user is logged in and has a saved pathway:
+
+Homepage becomes a dashboard
+
+Show:
+
+“Your Pathway”
+
+“Your Recommended Next Steps”
+
+“Learn About Your Pathway”
+
+“Retake Assessment / Track Progress”
+
+Export / report links (placeholders acceptable)
+
+If logged in without saved pathway:
+
+Prompt to take the assessment
+
+Data Handling Rules (MVP Safe)
+
+Do NOT change assessment data storage
+
+Website may read from localStorage to get:
+
+pathway label
+
+completion timestamp (if available)
+
+When user opts to save results:
+
+Store minimal data only:
+
+user_id
+
+pathway
+
+completion timestamp
+
+Do NOT store raw answers or detailed questionnaire data in MVP
+
+If localStorage is cleared:
+
+Logged-in users still see dashboard via saved pathway
+
+Logged-out users are prompted to re-take assessment
+
+UI / Brand Direction
+
+Primary color: deep medical blue
+
+Clean typography, high contrast, generous spacing
+
+Minimal animation
+
+Card-based layout
+
+No playful illustrations, no wellness gradients
+
+Serious, medical, structured feel
+
+Copy & Tone
+
+Calm, direct, declarative
+
+No hype
+
+Emphasize:
+
+“Not one-size-fits-all”
+
+“Pathway-based”
+
+“Educational only”
+
+“Consult a clinician”
+
+Legal Pages (MVP)
+
+/privacy
+
+/terms
+
+/disclaimer
+Clear educational/medical disclaimers throughout.
+
+Definition of Done
+
+Assessment runs unchanged
+
+All 9 pathways supported end-to-end
+
+Pre-assessment and post-assessment experiences are distinct
+
+Optional login works
+
+Results persist for logged-in users
+
+UI is cohesive, clinical, and assessment-first
+
+Plan Output Expectations
+
+Produce:
+
+Page/route map
+
+Integration plan for unchanged assessment
+
+Auth + data model (high level)
+
+UI/brand token summary
+
+User flow diagrams (pre vs post assessment)
+
+Testing checklist

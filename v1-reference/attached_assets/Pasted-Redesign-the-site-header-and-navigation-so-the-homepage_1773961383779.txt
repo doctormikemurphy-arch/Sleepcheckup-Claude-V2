@@ -1,0 +1,130 @@
+Redesign the site header and navigation so the homepage feels more premium, medically credible, and conversion-focused. Keep the visual style clean, modern, and trustworthy.
+
+The current problems to fix are:
+
+The left sidebar is too wide and steals attention from the hero section.
+
+The logo is too small to read clearly.
+
+The site name and logo feel mismatched in scale.
+
+The sidebar toggle/button at the top left feels disconnected from the rest of the layout.
+
+The navigation looks more like an app dashboard than a polished consumer-facing medical website landing page.
+
+Please make these layout changes:
+
+Switch from the current bulky left navigation feel to a cleaner, lighter navigation system
+
+On desktop, use a narrower left sidebar or a top header with a collapsible side panel.
+
+The homepage should feel like a public-facing website first, not a software portal.
+
+Reduce the permanent visual weight of navigation so the hero section becomes the clear focal point.
+
+Improve logo treatment
+
+Make the logo much more legible and intentional.
+
+Increase logo size modestly.
+
+Keep the logo icon and site name aligned as a single branded unit.
+
+Use consistent spacing between icon and text.
+
+The brand should read clearly as “sleepcheckup.com” without looking cramped or tiny.
+
+Refine the header/nav hierarchy
+
+The navigation should feel secondary to the main message.
+
+Reduce padding and width in the left rail.
+
+Make nav items cleaner and slightly smaller.
+
+Use a more elegant active state for the selected tab.
+
+Keep the interface medically professional, calm, and premium.
+
+Improve menu structure
+Use this order:
+
+Home
+
+How It Works
+
+Explore Pathways
+
+My Portal
+
+Move “Log In” out of the bottom corner treatment and place it more intentionally:
+
+either in the top right if using a top header
+
+or as a cleaner secondary action near the lower part of the sidebar
+It should not feel like an afterthought.
+
+Fix the hero and navigation relationship
+
+The hero section should dominate the page visually.
+
+The navigation should frame the experience, not compete with it.
+
+Ensure the left edge of the hero content has enough breathing room.
+
+Text should remain centered and readable over the background image.
+
+Keep the CTA button as the strongest interactive element on the page.
+
+Overall visual direction
+
+Trustworthy sleep medicine brand
+
+Premium but approachable
+
+Less “admin dashboard”
+
+More “expert-guided health website”
+
+Strong whitespace
+
+Better alignment and spacing
+
+Polished desktop experience first, with mobile responsiveness maintained
+
+Specific style guidance
+
+Use a compact, elegant brand area at the top.
+
+Make the logo and wordmark feel balanced.
+
+Soften the visual heaviness of the left panel.
+
+Keep the blue palette, but reduce unnecessary contrast in the navigation area.
+
+Preserve the hero image and main headline, but give them more visual dominance.
+
+Best layout direction
+My recommendation is this:
+
+For the public homepage, use a top header instead of a full-time wide left sidebar.
+
+Top header should include:
+
+logo + sleepcheckup.com on the left
+
+Home / How It Works / Explore Pathways in the center or right
+
+Log In as a subtle secondary action
+
+Start Free Screening as the primary button
+
+Then only use a left sidebar later inside the logged-in portal or app sections.
+
+That is the cleaner structure because:
+
+public website = website-style navigation
+
+portal/app experience = sidebar navigation
+
+That split will make the whole brand feel much more professional.
