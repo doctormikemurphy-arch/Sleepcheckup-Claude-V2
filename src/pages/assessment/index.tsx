@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useSearch } from "wouter";
 import { useAssessment } from "@/hooks/useAssessment";
 import { ProgressTopBar } from "@/components/layout/ProgressTopBar";
 import { TOTAL_ASSESSMENT_STEPS, ASSESSMENT_STEP_NAMES } from "@/lib/assessment-types";
 import { ZONE_QUESTIONS } from "@/lib/questionnaires";
+import { isPaid, setPaidSession } from "@/lib/storage";
 import { Step1Welcome } from "./Step1Welcome";
 import { Step2MedicalHistory } from "./Step2MedicalHistory";
 import { Step3Bmi } from "./Step3Bmi";
@@ -15,6 +16,35 @@ import { Step11Palm } from "./Step11Palm";
 
 export default function AssessmentPage() {
   const [, navigate] = useLocation();
+  const search = useSearch();
+
+  // Verify Stripe payment session on mount; redirect to checkout if unpaid
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const sessionId = params.get("session_id");
+
+    if (sessionId) {
+      fetch(`/api/verify-payment?session_id=${encodeURIComponent(sessionId)}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.paid) {
+            setPaidSession(sessionId, data.email ?? null);
+            // Clean session_id from URL without reload
+            window.history.replaceState({}, "", "/assessment");
+          } else {
+            navigate("/assessment/checkout");
+          }
+        })
+        .catch(() => {
+          // Network error — allow if already paid locally
+          if (!isPaid()) navigate("/assessment/checkout");
+        });
+    } else if (!isPaid()) {
+      navigate("/assessment/checkout");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const {
     step,
     medicalHistory,

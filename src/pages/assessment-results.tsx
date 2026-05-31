@@ -4,8 +4,8 @@ import {
   Printer, FileText, Download, RotateCcw, ArrowLeft, Target,
   Lightbulb, Footprints, Activity, AlertCircle, Stethoscope, ChevronRight,
 } from "lucide-react";
-import { loadState, clearState } from "@/lib/storage";
-import { KEYS } from "@/lib/storage";
+import { loadState, clearState, getPaidSession, KEYS } from "@/lib/storage";
+import { PATHWAY_CONTENT } from "@/lib/pathway-content";
 import type { AssessmentState } from "@/lib/assessment-types";
 import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "@/lib/types";
 import {
@@ -138,6 +138,54 @@ export default function AssessmentResultsPage() {
     const result = loadResultsData();
     if (!result) { setMissing(true); return; }
     setData(result);
+
+    // Send report email once per session (guard against double-send on re-render/refresh)
+    const sentKey = "report_email_sent_v2";
+    const paidSession = getPaidSession();
+    if (paidSession?.email && !sessionStorage.getItem(sentKey)) {
+      sessionStorage.setItem(sentKey, "1");
+      const { profile: p, pathway: pw, pathwayDef: pd, assessmentDate: ad, bmiValue: bv } = result;
+      const pc = PATHWAY_CONTENT[pw];
+      fetch("/api/submit-assessment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: paidSession.email,
+          pathwayName: pd.title,
+          pathwayLetter: PATHWAY_LETTERS[pw] ?? "",
+          pathwayDescription: pd.shortDescription,
+          stopBangScore: p.stopBangScore,
+          osaRisk: p.osaRisk,
+          isiScore: p.isiScore,
+          insomniaSeverity: p.insomniaSeverity,
+          bmiValue: bv,
+          bmiLabel: bv ? (bv < 18.5 ? "Underweight" : bv < 25 ? "Normal weight" : bv < 30 ? "Overweight" : "Obesity") : "N/A",
+          assessmentDate: ad,
+          anatomyTotal: p.anatomy?.totalScore ?? 0,
+          anatomyZones: anatomyZones.map((z) => ({
+            label: z.label,
+            score: p.anatomy[z.scoreKey] ?? 0,
+            max: z.maxScore,
+            isPositive: p.anatomy[z.positiveKey] ?? false,
+            answers: p.anatomy[z.responsesKey]?.answeredYes ?? [],
+          })),
+          palmResults: palmLetters.map((r) => ({
+            letter: r.letter,
+            name: r.name,
+            score: p.palm[r.key]?.score ?? 0,
+            isPositive: p.palm[r.key]?.isPositive ?? false,
+            questions: p.palm[r.key]?.positiveQuestions ?? [],
+          })),
+          medicalHistoryScore: p.medicalHistory?.totalScore ?? 0,
+          medicalHistoryConditions: p.medicalHistory?.answeredYes ?? [],
+          platoTotal: p.plato?.totalScore ?? 0,
+          whatResultsSuggest: pc?.whatResultsSuggest ?? [],
+          whyItMattersPts: pc?.whyItMatters?.points ?? [],
+          whatWorksBestOpts: pc?.whatWorksBest?.options ?? [],
+          nextStepsSteps: pc?.nextSteps?.steps ?? [],
+        }),
+      }).catch(() => {/* non-fatal */});
+    }
   }, []);
 
   if (missing || !data) {

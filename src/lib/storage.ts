@@ -1,7 +1,8 @@
 export const KEYS = {
   screener: "screener_state_v2",
   assessment: "assessment_state_v2",
-  mockPaidAt: "mock_paid_at",
+  paidSession: "paid_session_v2",
+  screenerEmail: "mm_screener_email",
 } as const;
 
 export function loadState<T>(key: string): T | null {
@@ -25,10 +26,23 @@ export function clearState(key: string): void {
   localStorage.removeItem(key);
 }
 
-export function isMockPaid(): boolean {
-  return localStorage.getItem(KEYS.mockPaidAt) !== null;
+export function isPaid(): boolean {
+  return localStorage.getItem(KEYS.paidSession) !== null;
 }
 
-export function setMockPaid(): void {
-  localStorage.setItem(KEYS.mockPaidAt, new Date().toISOString());
+export function setPaidSession(sessionId: string, email: string | null): void {
+  localStorage.setItem(KEYS.paidSession, JSON.stringify({ sessionId, email, paidAt: new Date().toISOString() }));
+}
+
+export function getPaidSession(): { sessionId: string; email: string | null; paidAt: string } | null {
+  try {
+    const raw = localStorage.getItem(KEYS.paidSession);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function getScreenerEmail(): string {
+  return localStorage.getItem(KEYS.screenerEmail) ?? "";
 }

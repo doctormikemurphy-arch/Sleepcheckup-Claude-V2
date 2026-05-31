@@ -123,6 +123,23 @@ export default function ScreenerResults() {
     if (!trimmed) return;
     localStorage.setItem("mm_screener_email", trimmed);
     setEmailSaved(true);
+
+    // Send free screener results email (non-blocking)
+    fetch("/api/screener-submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: trimmed,
+        stopBangScore: profile.stopBangScore,
+        osaRisk: profile.osaRisk,
+        flaggedZones: [
+          profile.anatomy?.noseIsPositive ? "nose" : null,
+          profile.anatomy?.palateIsPositive ? "palate" : null,
+          profile.anatomy?.mandibleIsPositive ? "mandible" : null,
+          profile.anatomy?.neckIsPositive ? "neck" : null,
+        ].filter(Boolean) as string[],
+      }),
+    }).catch(() => {/* non-fatal */});
   };
 
   return (
