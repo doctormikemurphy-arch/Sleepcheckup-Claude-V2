@@ -3,7 +3,9 @@ import { Link, useLocation } from "wouter";
 import {
   Printer, FileText, Download, RotateCcw, ArrowLeft, Target,
   Lightbulb, Footprints, Activity, AlertCircle, Stethoscope, ChevronRight,
+  Video, BookOpen, ShoppingBag, BookMarked, ExternalLink,
 } from "lucide-react";
+import { PATHWAY_CONTENT_SEED } from "@/lib/admin-seed-data";
 import { loadState, clearState, getPaidSession, KEYS } from "@/lib/storage";
 import { PATHWAY_CONTENT } from "@/lib/pathway-content";
 import type { AssessmentState } from "@/lib/assessment-types";
@@ -87,6 +89,89 @@ function loadResultsData(): ResultsData | null {
   } catch {
     return null;
   }
+}
+
+const RESOURCE_TYPE_CONFIG: Record<string, { label: string; sectionTitle: string; icon: typeof Video }> = {
+  video:      { label: "Video", sectionTitle: "Video Courses", icon: Video },
+  article:    { label: "Article", sectionTitle: "Written Content", icon: FileText },
+  book:       { label: "Book", sectionTitle: "Recommended Reading", icon: BookMarked },
+  product:    { label: "Product", sectionTitle: "Recommended Products", icon: ShoppingBag },
+  specialist: { label: "Specialist", sectionTitle: "Find A Specialist", icon: Stethoscope },
+};
+const RESOURCE_TYPE_ORDER = ["video", "article", "book", "product", "specialist"];
+
+function PathwayResources({ pathwayId }: { pathwayId: string }) {
+  const items = PATHWAY_CONTENT_SEED.filter((r) => r.pathwayId === pathwayId);
+  if (items.length === 0) return null;
+
+  const grouped: Record<string, typeof items> = {};
+  for (const item of items) {
+    if (!grouped[item.contentType]) grouped[item.contentType] = [];
+    grouped[item.contentType].push(item);
+  }
+
+  return (
+    <div className="card mb-6" style={{ padding: "32px" }}>
+      <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "4px" }}>
+        Your Pathway Resources
+      </div>
+      <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", marginBottom: "24px", lineHeight: 1.55 }}>
+        Curated by Dr. Murphy — matched to your assigned pathway.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
+        {RESOURCE_TYPE_ORDER.map((type) => {
+          const group = grouped[type];
+          if (!group || group.length === 0) return null;
+          const config = RESOURCE_TYPE_CONFIG[type];
+          const Icon = config.icon;
+          return (
+            <div key={type}>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center justify-center flex-shrink-0" style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "var(--blue-soft)" }}>
+                  <Icon className="w-4 h-4" style={{ color: "var(--blue)" }} />
+                </div>
+                <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "14px", color: "var(--text-ink)" }}>{config.sectionTitle}</p>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {group.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.url ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="no-underline block rounded-xl border overflow-hidden transition-shadow hover:shadow-md"
+                    style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}
+                  >
+                    {item.imageUrl && (
+                      <div style={{ width: "100%", aspectRatio: type === "book" ? "3/2" : "16/9", overflow: "hidden", backgroundColor: "#F1F5F9" }}>
+                        <img
+                          src={item.imageUrl}
+                          alt=""
+                          aria-hidden="true"
+                          style={{ width: "100%", height: "100%", objectFit: type === "specialist" || type === "book" ? "contain" : "cover", padding: type === "specialist" || type === "book" ? "12px" : "0" }}
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                        />
+                      </div>
+                    )}
+                    <div style={{ padding: "14px 16px" }}>
+                      <p style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "14px", color: "var(--text-ink)", marginBottom: "4px", lineHeight: 1.4 }}>{item.title}</p>
+                      {item.description && (
+                        <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5, marginBottom: "10px" }}>{item.description}</p>
+                      )}
+                      <span className="inline-flex items-center gap-1" style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 600, color: "var(--blue)" }}>
+                        {type === "video" ? "Watch" : type === "specialist" ? "Find Providers" : type === "product" ? "View" : "Read More"}
+                        <ExternalLink className="w-3 h-3" />
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }) {
@@ -552,6 +637,9 @@ export default function AssessmentResultsPage() {
             </Link>
           </div>
         </div>
+
+        {/* ── YOUR PATHWAY RESOURCES ── */}
+        <PathwayResources pathwayId={pathway} />
 
         {/* Export */}
         <div className="card mb-6" style={{ padding: "32px" }}>
