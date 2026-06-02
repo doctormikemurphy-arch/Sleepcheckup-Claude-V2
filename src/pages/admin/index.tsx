@@ -618,6 +618,21 @@ export default function AdminPage() {
                                       <ArrowDown className="w-4 h-4" />
                                     </Button>
                                   </div>
+                                  {item.imageUrl ? (
+                                    <div className="flex-shrink-0 rounded-lg overflow-hidden" style={{ width: "72px", height: "56px", backgroundColor: "#F1F5F9", border: "1px solid #E2E8F0" }}>
+                                      <img
+                                        src={item.imageUrl}
+                                        alt=""
+                                        aria-hidden="true"
+                                        style={{ width: "100%", height: "100%", objectFit: ct.value === "specialist" || ct.value === "book" ? "contain" : "cover", padding: ct.value === "specialist" || ct.value === "book" ? "6px" : "0" }}
+                                        onError={(e) => { (e.currentTarget.parentElement as HTMLElement).style.display = "none"; }}
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="flex-shrink-0 rounded-lg flex items-center justify-center" style={{ width: "72px", height: "56px", backgroundColor: "#F1F5F9", border: "1px solid #E2E8F0" }}>
+                                      <ct.icon className="w-5 h-5" style={{ color: "#CBD5E1" }} />
+                                    </div>
+                                  )}
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap mb-1">
                                       <span className="font-medium text-sm" style={{ color: "var(--text-ink)" }}>{item.title}</span>
