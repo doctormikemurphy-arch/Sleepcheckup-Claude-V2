@@ -105,7 +105,7 @@ Snoring is not harmless. Snoring causes events called respiratory arousals (a fa
 • Irritability or short temper
 • Increased risk of health problems such as hypertension, prediabetes, weight gain
 
-Following the Murphy Method™ works for people who snore. The Top-Down Approach to Anatomy™ will show you what level or levels of your airway are causing the snoring. This Your Results summary includes an Anatomy Level Assessment section above listing your positive answers for the four levels of anatomy (and the likely cause of the problem).
+Following The Murphy Method™ works for people who snore. The Top-Down Approach to Anatomy™ will show you what level or levels of your airway are causing the snoring. This Your Results summary includes an Anatomy Level Assessment section above listing your positive answers for the four levels of anatomy (and the likely cause of the problem).
 
 Following the Fork in the Road Approach to Treatment™ works because the basic treatment decision is still procedures/surgery (depending on the level of the problem) or non-procedure/surgery options. Most of the time people start with the non-procedure/surgery options for treatment. These options include good sleep habits (sleep hygiene), addressing any nasal issues to make sure there is good breathing through the nose, sleeping in certain positions to prevent snoring and possibly an oral appliance if the mandible and tongue position are a problem. These are just a few of the treatment options for snoring.
 
@@ -117,7 +117,7 @@ Your Next Step: The next step is to see a doctor to discuss the results of this 
   {
     id: "H_complex",
     title: "Pathway H: Sleep Apnea with Other Factors",
-    shortDescription: "Not everyone fits into a nice, clean path. This is not a bad thing. Proceed with evaluation and the same Murphy Method principles will direct you to the correct treatment.",
+    shortDescription: "Not everyone fits into a nice, clean path. This is not a bad thing. Proceed with evaluation and the same Murphy Method™ principles will direct you to the correct treatment.",
     educationalSummary: `The results of your assessment do not place you in one of the other pathways. This is not unusual. The other pathways are just common scenarios for people with snoring or sleep apnea. For example, you could have sleep apnea with blockage only at the level of your palate & tonsils (this is not as common as the other pathways but still happens). This situation is easily treated.
 
 Key Concept: Just because you do not fit into one of the other pathways, this does not automatically mean that your situation is more serious or difficult to treat. Finding a successful solution to your situation may include seeing several different doctors.

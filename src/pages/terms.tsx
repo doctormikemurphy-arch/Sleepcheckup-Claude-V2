@@ -60,7 +60,7 @@ export default function TermsPage() {
               <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "18px", color: "var(--text-ink)", marginBottom: "12px" }}>
                 4. Payment and Refunds
               </h2>
-              <p>The full assessment is offered at a one-time fee of $1.00 USD. If you complete the assessment and are not satisfied with your report, you may request a full refund within 7 days of purchase by contacting support@sleepcheckup.com. Refunds are issued to the original payment method.</p>
+              <p>The full assessment is offered at a one-time fee of $79.00 USD. If you complete the assessment and are not satisfied with your report, you may request a full refund within 7 days of purchase by contacting support@sleepcheckup.com. Refunds are issued to the original payment method.</p>
             </section>
 
             <section>

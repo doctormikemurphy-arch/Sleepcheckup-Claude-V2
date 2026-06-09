@@ -139,7 +139,7 @@ export default function PathwayDetailPage() {
               💡
             </div>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>
-              The Murphy Method pathways represent common clinical situations and are designed to give you the most efficient path forward with your doctor. Your pathway assignment is based on your specific assessment answers — it is the starting point for a productive conversation with your sleep specialist.
+              The Murphy Method™ pathways represent common clinical situations and are designed to give you the most efficient path forward with your doctor. Your pathway assignment is based on your specific assessment answers — it is the starting point for a productive conversation with your sleep specialist.
             </p>
           </div>
         </div>

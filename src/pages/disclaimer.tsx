@@ -51,7 +51,7 @@ export default function DisclaimerPage() {
               <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "18px", color: "var(--text-ink)", marginBottom: "12px" }}>
                 No Doctor-Patient Relationship
               </h2>
-              <p>Use of SleepCheckup.com does not create a doctor-patient relationship between you and Dr. Michael Murphy or any other physician. Dr. Murphy is the content author of the Murphy Method™ framework — he is not your treating physician and has not reviewed your individual case.</p>
+              <p>Use of SleepCheckup.com does not create a doctor-patient relationship between you and Dr. Michael Murphy or any other physician. Dr. Murphy is the content author of The Murphy Method™ framework — he is not your treating physician and has not reviewed your individual case.</p>
             </section>
 
             <section>

@@ -38,7 +38,7 @@ function ReportMockup() {
         {/* Pathway assignment */}
         <div style={{ backgroundColor: "var(--blue-soft)", borderRadius: "12px", padding: "16px", border: "1px solid #BFDBFE" }}>
           <p style={{ color: "var(--blue)", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "10px" }}>
-            Your Murphy Method Assigned Pathway
+            Your Murphy Method™ Assigned Pathway
           </p>
           <div style={{ height: "14px", borderRadius: "6px", backgroundColor: "#BFDBFE", width: "78%", marginBottom: "8px" }} />
           <div style={{ height: "11px", borderRadius: "6px", backgroundColor: "#DBEAFE", width: "55%" }} />
@@ -588,10 +588,10 @@ export default function HomePage() {
 
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "40px" }}>
                 {[
-                  "Cover Page · Your Murphy Method Assigned Pathway",
-                  "Your Results · 3-Step Murphy Method Analysis",
+                  "Cover Page · Your Murphy Method™ Assigned Pathway",
+                  "Your Results · 3-Step Murphy Method™ Analysis",
                   "Your Personalized Guide · What Works Best & Why It Matters",
-                  "Your Murphy Method Next Steps · Pathway-specific Specialist Directory",
+                  "Your Murphy Method™ Next Steps · Pathway-specific Specialist Directory",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3">
                     <div
@@ -638,7 +638,7 @@ export default function HomePage() {
               What People <em>Are Saying</em>
             </h2>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "18px", color: "var(--text-muted)" }}>
-              Real experiences from people who have used the Murphy Method™
+              Real experiences from people who have used The Murphy Method™
             </p>
           </div>
 

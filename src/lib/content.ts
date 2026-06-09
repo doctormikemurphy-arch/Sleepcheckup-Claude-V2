@@ -13,9 +13,9 @@ export const DR_MURPHY = {
   longBio1:
     "Dr. Murphy is a dual board-certified ENT surgeon and Sleep Medicine physician with over 20 years of experience treating snoring and obstructive sleep apnea at Stanford Medicine. His rare combination of surgical and non-surgical expertise allows him to see the full picture of sleep-disordered breathing — not just one treatment option — and to match each patient to the approach most likely to help them specifically.",
   longBio2:
-    "After years of watching patients arrive unprepared to their appointments — not knowing what kind of sleep problem they had, what questions to ask, or what treatment paths existed — Dr. Murphy developed the Murphy Method™ to change that. It's the same framework he uses with his own patients, distilled into a structured assessment that anyone can complete in under 20 minutes.",
+    "After years of watching patients arrive unprepared to their appointments — not knowing what kind of sleep problem they had, what questions to ask, or what treatment paths existed — Dr. Murphy developed The Murphy Method™ to change that. It's the same framework he uses with his own patients, distilled into a structured assessment that anyone can complete in under 20 minutes.",
   quote:
-    "I have used the Murphy Method every day for years to help my patients with snoring and sleep apnea. I built this so you get the full benefit of an office visit with me — without the visit. The same questions I ask every patient. The same framework. The same clarity.",
+    "I have used The Murphy Method™ every day for years to help my patients with snoring and sleep apnea. I built this so you get the full benefit of an office visit with me — without the visit. The same questions I ask every patient. The same framework. The same clarity.",
   quoteAttribution: "— Michael Murphy, MD, MPH",
   reportQuote:
     "\"If a patient came to their appointment with this report, they would be the most prepared patient I've ever seen.\"",
@@ -95,7 +95,7 @@ export const HOME = {
   pathways: {
     headline: "Your Situation Is Unique — Your Pathway Should Be Too",
     subheadline:
-      "Snoring and sleep apnea aren't one-size-fits-all. The Murphy Method Full Assessment identifies 8 distinct pathways based on your symptoms, risk factors and anatomy - so you get guidance that actually fits your situation.",
+      "Snoring and sleep apnea aren't one-size-fits-all. The Murphy Method™ Full Assessment identifies 8 distinct pathways based on your symptoms, risk factors and anatomy - so you get guidance that actually fits your situation.",
     card1: {
       title: "Example: Sleep Apnea + Insomnia",
       intro: "When sleep apnea and insomnia overlap, treating one without the other often leads to frustration. This pathway focuses on:",
@@ -143,7 +143,7 @@ export const HOME = {
       },
     ],
     reportCaption:
-      "Your Full Assessment Report includes your Murphy Method Pathway, Detailed Assessment Results, Pathway Overview, and Personalized Guide.",
+      "Your Full Assessment Report includes your Murphy Method™ Pathway, Detailed Assessment Results, Pathway Overview, and Personalized Guide.",
   },
 
   // Section 6: Pricing
@@ -165,7 +165,7 @@ export const HOME = {
     paid: {
       label: "Full Assessment",
       badge: "RECOMMENDED",
-      price: "$1",
+      price: "$79",
       duration: "one-time · no subscription",
       features: [
         "Everything in Free Screening, plus:",
@@ -272,7 +272,7 @@ export const HOME = {
 export const HOW_IT_WORKS = {
   hero: {
     label: "The Process",
-    headline: "How the Murphy Method™ Works",
+    headline: "How The Murphy Method™ Works",
     subheadline:
       "A 20-year clinical methodology, built into a 3-step process that gives you answers — not just a score.",
   },
@@ -356,14 +356,14 @@ export const HOW_IT_WORKS = {
   reportSection: {
     headline: "Inside the Report",
     subheadline:
-      "Your $1 report is a personalized, professionally designed PDF that translates your full assessment into something you can read, understand, and hand to any doctor. Most patients arrive at sleep appointments with no information — yours arrives with a complete picture.",
+      "Your $79 report is a personalized, professionally designed PDF that translates your full assessment into something you can read, understand, and hand to any doctor. Most patients arrive at sleep appointments with no information — yours arrives with a complete picture.",
     rows: [
       { title: "Cover Page", body: "Assigned Pathway · Patient Name · Assessment Date" },
       { title: "Your Results", body: "Step 1: How Is the Breathing at Night? — Medical History · BMI · Sleep Apnea Risk (STOP-BANG) · Insomnia Severity (ISI) · Sleep Quality & Daytime Impact (PLATO-11)\nStep 2: Where Can the Airway Narrow? — Nose · Palate & Tonsils · Mandible & Tongue · Neck\nStep 3: Understand the Overall Approach and how the PALM Classification helps — PALM Classification (Airway Narrowing · Arousal Threshold · Loop Gain · Muscle Responsiveness)" },
-      { title: "Your Murphy Method Assigned Pathway", body: "Key Concept · Pathway Educational Summary" },
+      { title: "Your Murphy Method™ Assigned Pathway", body: "Key Concept · Pathway Educational Summary" },
       { title: "Your Personalized Guide", body: "What Your Results Suggest · Why This Matters for Your Health · What Usually Works Best" },
-      { title: "Your Murphy Method Next Steps", body: "Recommended Next Steps · Find a Specialist (pathway-specific specialist directory)" },
-      { title: "Back Cover", body: "About the Murphy Method™ · About Dr. Murphy · Medical Disclaimer" },
+      { title: "Your Murphy Method™ Next Steps", body: "Recommended Next Steps · Find a Specialist (pathway-specific specialist directory)" },
+      { title: "Back Cover", body: "About The Murphy Method™ · About Dr. Murphy · Medical Disclaimer" },
     ],
   },
 
@@ -412,14 +412,14 @@ export const ABOUT = {
     headline: "Why I Built This",
     paragraphs: [
       "After 20 years in practice, I noticed a consistent pattern: patients were arriving to their appointments completely unprepared. They didn't know what kind of sleep problem they had, what questions to ask, or what treatment paths existed. A 15-minute appointment was being spent on the basics instead of on a real plan.",
-      "I developed the Murphy Method™ to change that. The methodology sorts patients into one of 8 distinct pathways based on their anatomy, symptoms, and risk profile — so that by the time they sit down with a specialist, they already understand their situation and can have a real, informed conversation about treatment.",
+      "I developed The Murphy Method™ to change that. The methodology sorts patients into one of 8 distinct pathways based on their anatomy, symptoms, and risk profile — so that by the time they sit down with a specialist, they already understand their situation and can have a real, informed conversation about treatment.",
       "What surprised me was how much difference it made — not just for complex cases, but for every kind of patient. The ones who came in with a clear picture of their situation got better diagnoses, moved through treatment faster, and had far better outcomes.",
       "This tool exists to give every patient that same advantage — regardless of whether they've ever seen a specialist, regardless of whether they can afford multiple appointments to figure out the basics.",
     ],
   },
 
   methodSection: {
-    headline: "About the Murphy Method™",
+    headline: "About The Murphy Method™",
     paragraphs: [
       "The Murphy Method™ is a clinical framework that categorizes sleep apnea and snoring into 8 distinct pathways based on anatomy, symptoms, medical history, and physiological risk factors. Each pathway corresponds to a specific clinical picture — with targeted treatment options, specialist recommendations, and tailored doctor questions.",
       "The methodology draws on validated clinical instruments including the STOP-BANG questionnaire, the Insomnia Severity Index (ISI), the PLATO-11 treatment readiness scale, and the PALM classification — the same tools used by sleep medicine physicians in clinical practice worldwide.",
@@ -469,7 +469,7 @@ export const FOOTER = {
       links: [
         { label: "Free Screener", href: "/screener" },
         { label: "How It Works", href: "/how-it-works" },
-        { label: "Full Assessment — $1", href: "/screener" },
+        { label: "Full Assessment — $79", href: "/screener" },
       ],
     },
     company: {

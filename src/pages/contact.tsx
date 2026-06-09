@@ -31,7 +31,7 @@ export default function ContactPage() {
             Get in <em>Touch</em>
           </h1>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-muted)", lineHeight: 1.65 }}>
-            Questions about the assessment, your results, or the Murphy Method™? We'll respond within one business day.
+            Questions about the assessment, your results, or The Murphy Method™? We'll respond within one business day.
           </p>
         </div>
       </section>

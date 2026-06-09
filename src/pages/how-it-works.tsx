@@ -44,7 +44,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 32px",
             }}
           >
-            How the Murphy <em>Method™</em> Works
+            How The Murphy <em>Method™</em> Works
           </h1>
           <p
             style={{
@@ -62,7 +62,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* ── 2. THE MURPHY METHOD (3 steps) ──────────────────────────────── */}
-      <section className="section" aria-label="The Murphy Method">
+      <section className="section" aria-label="The Murphy Method™">
         <div className="section-inner px-6">
 
           {/* Step A — Breathing at night */}
@@ -212,7 +212,7 @@ export default function HowItWorksPage() {
                 Step 2 — Where can the airway narrow?
               </h3>
               <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-muted)", lineHeight: 1.6 }}>
-                The Murphy Method looks from top to bottom through the airway.
+                The Murphy Method™ looks from top to bottom through the airway.
               </p>
             </div>
           </div>

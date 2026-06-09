@@ -599,7 +599,7 @@ export default function AssessmentReportPage() {
                 marginBottom: "6px",
               }}
             >
-              Your Murphy Method Assigned Pathway
+              Your Murphy Method™ Assigned Pathway
             </h2>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)" }}>
               Your personalized treatment pathway based on your assessment
@@ -702,7 +702,7 @@ export default function AssessmentReportPage() {
         <div style={{ backgroundColor: "var(--bg-card)", padding: "40px clamp(16px,5vw,48px)", marginBottom: "12px" }}>
           <div style={{ borderRadius: "var(--radius-card)", padding: "24px 28px", marginBottom: "24px", backgroundColor: "#EFF6FF", border: "1px solid #BFDBFE" }}>
             <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: "clamp(18px, 2.5vw, 26px)", color: "var(--text-ink)", textTransform: "uppercase", letterSpacing: "0.03em", marginBottom: "6px" }}>
-              Your Murphy Method Next Steps
+              Your Murphy Method™ Next Steps
             </h2>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)" }}>
               Actionable steps based on your assigned pathway
@@ -810,10 +810,10 @@ export default function AssessmentReportPage() {
           className="print:break-before-page"
           style={{ backgroundColor: "var(--bg-card)", padding: "40px clamp(16px,5vw,48px)", marginBottom: "12px" }}
         >
-          {/* About the Murphy Method */}
+          {/* About The Murphy Method */}
           <div style={{ marginBottom: "32px" }}>
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px" }}>
-              About the Murphy Method™
+              About The Murphy Method™
             </p>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>
               The Murphy Method™ is a clinical system for understanding and treating snoring and obstructive sleep apnea, developed by Michael Murphy, MD, MPH. The Murphy Method is a simple, organized approach to understand both snoring and sleep apnea. Doctor Murphy uses this same method with every snoring and sleep apnea patient he sees in his office.
