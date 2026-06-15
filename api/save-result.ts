@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { createClerkClient } from "@clerk/backend";
+import { createClerkClient, verifyToken } from "@clerk/backend";
 
 interface SavedAssessment {
   completedAt: string;
@@ -34,7 +34,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const clerk = createClerkClient({ secretKey });
 
     // Verify the Clerk session JWT — never trust the client's claimed user ID
-    const payload = await clerk.verifyToken(token);
+    const payload = await verifyToken(token, { secretKey });
     const userId = payload.sub;
 
     const body = (req.body ?? {}) as Partial<SavedAssessment>;
