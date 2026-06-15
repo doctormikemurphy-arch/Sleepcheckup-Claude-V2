@@ -2,3 +2,5 @@ node_modules
 public/videos/raw/
 dist
 .env
+.env.local
+.vercel

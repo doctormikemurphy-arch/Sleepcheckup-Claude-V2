@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
+import { useAuth } from "@clerk/clerk-react";
 import {
   Printer, FileText, Download, RotateCcw, ArrowLeft, Target,
   Lightbulb, Footprints, Activity, AlertCircle, Stethoscope, ChevronRight,
@@ -16,6 +17,8 @@ import {
   getOsaRiskLabel, getInsomniaSeverityLabel, getZoneInterpretation,
 } from "@/lib/scoring";
 import { assignMurphyPathway, getPathwayDefinition } from "@/lib/pathways";
+
+const clerkEnabled = !!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const PATHWAY_LETTERS: Record<string, string> = {
   A_insomnia: "A", B_obesity: "B", C_nasal: "C", D_mandible: "D",
@@ -214,6 +217,79 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
   );
 }
 
+// Isolated so useAuth() only runs inside ClerkProvider (when clerkEnabled is true).
+function AccountSaveBanner({ data }: { data: ResultsData }) {
+  const { isSignedIn, getToken } = useAuth();
+  const [status, setStatus] = useState<"saving" | "saved" | "error" | null>(null);
+
+  useEffect(() => {
+    if (!isSignedIn) return;
+
+    const savedKey = "result_saved_to_account_v1";
+    if (sessionStorage.getItem(savedKey)) return;
+    sessionStorage.setItem(savedKey, "1");
+
+    setStatus("saving");
+
+    const paidSession = getPaidSession();
+    const { pathway: pw, pathwayDef: pd, bmiValue: bv, profile: p } = data;
+    const letter = PATHWAY_LETTERS[pw] ?? "";
+
+    getToken()
+      .then((token) => {
+        if (!token) throw new Error("No token");
+        return fetch("/api/save-result", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            completedAt: new Date().toISOString(),
+            pathway: pw,
+            pathwayLetter: letter,
+            pathwayName: pd.title,
+            stripeSessionId: paidSession?.sessionId ?? "",
+            stopBangScore: p.stopBangScore,
+            osaRisk: p.osaRisk,
+            isiScore: p.isiScore,
+            insomniaSeverity: p.insomniaSeverity,
+            bmiValue: bv,
+          }),
+        });
+      })
+      .then((res) => {
+        if (res.ok) setStatus("saved");
+        else setStatus("error");
+      })
+      .catch(() => setStatus("error"));
+  }, [isSignedIn]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!status) return null;
+
+  const cfg = {
+    saving: { bg: "#F0F9FF", border: "#BAE6FD", color: "#0369A1", text: "Saving to your account…" },
+    saved:  { bg: "#F0FDF4", border: "#86EFAC", color: "#15803D", text: "✓ Saved to your account" },
+    error:  { bg: "#FEF2F2", border: "#FECACA", color: "#B91C1C", text: "Could not save to account — please contact support if this persists" },
+  }[status];
+
+  return (
+    <div
+      style={{
+        backgroundColor: cfg.bg,
+        borderBottom: `1px solid ${cfg.border}`,
+        padding: "10px 24px",
+        textAlign: "center",
+        fontFamily: "var(--font-sans)",
+        fontSize: "14px",
+        color: cfg.color,
+      }}
+    >
+      {cfg.text}
+    </div>
+  );
+}
+
 export default function AssessmentResultsPage() {
   const [, navigate] = useLocation();
   const [data, setData] = useState<ResultsData | null>(null);
@@ -325,6 +401,9 @@ export default function AssessmentResultsPage() {
 
   return (
     <div style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }}>
+
+      {/* Account save banner — only mounts when Clerk is enabled and data is ready */}
+      {clerkEnabled && data && <AccountSaveBanner data={data} />}
 
       {/* Sticky top bar */}
       <div className="sticky top-0 z-40 border-b flex items-center justify-between gap-4 px-6 py-3" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-soft)" }}>
