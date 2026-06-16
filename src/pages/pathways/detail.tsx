@@ -1,6 +1,7 @@
 import { Link, useParams, useSearch } from "wouter";
-import { Check, ArrowLeft } from "lucide-react";
+import { Check, ArrowLeft, Lock } from "lucide-react";
 import { PATHWAY_CONTENT } from "@/lib/pathway-content";
+import { loadState, KEYS } from "@/lib/storage";
 
 const LETTER_TO_KEY: Record<string, string> = {
   a: "A_insomnia",
@@ -47,6 +48,8 @@ export default function PathwayDetailPage() {
       </main>
     );
   }
+
+  const hasAssessment = loadState(KEYS.assessment) !== null;
 
   const titleParts = italicWord
     ? content.title.split(italicWord)
@@ -145,139 +148,183 @@ export default function PathwayDetailPage() {
         </div>
       </section>
 
-      {/* ── 3. WHAT YOUR RESULTS SUGGEST ── */}
-      <section className="section">
-        <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
-          <div className="eyebrow mb-4">WHAT YOUR RESULTS SUGGEST</div>
-          <h2
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 400,
-              fontSize: "clamp(22px, 3vw, 32px)",
-              lineHeight: 1.1,
-              color: "var(--text-ink)",
-              marginBottom: "32px",
-            }}
-          >
-            What Your Results <em>Suggest</em>
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {content.whatResultsSuggest.map((item, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div
-                  className="flex-shrink-0 flex items-center justify-center rounded-full"
-                  style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "3px" }}
-                >
-                  <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
-                </div>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{item}</p>
+      {hasAssessment ? (
+        <>
+          {/* ── 3. WHAT YOUR RESULTS SUGGEST ── */}
+          <section className="section">
+            <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
+              <div className="eyebrow mb-4">WHAT YOUR RESULTS SUGGEST</div>
+              <h2
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontWeight: 400,
+                  fontSize: "clamp(22px, 3vw, 32px)",
+                  lineHeight: 1.1,
+                  color: "var(--text-ink)",
+                  marginBottom: "32px",
+                }}
+              >
+                What Your Results <em>Suggest</em>
+              </h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                {content.whatResultsSuggest.map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div
+                      className="flex-shrink-0 flex items-center justify-center rounded-full"
+                      style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "3px" }}
+                    >
+                      <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
+                    </div>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{item}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      {/* ── 4. WHY IT MATTERS ── */}
-      <section className="section-tinted">
-        <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
-          <div className="eyebrow mb-4">WHY THIS MATTERS</div>
-          <h2
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 400,
-              fontSize: "clamp(22px, 3vw, 32px)",
-              lineHeight: 1.1,
-              color: "var(--text-ink)",
-              marginBottom: "24px",
-            }}
-          >
-            Why This Matters for Your Health
-          </h2>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "24px" }}>
-            {content.whyItMatters.intro}
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {content.whyItMatters.points.map((p, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div
-                  style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px", flexShrink: 0 }}
-                />
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{p}</p>
+          {/* ── 4. WHY IT MATTERS ── */}
+          <section className="section-tinted">
+            <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
+              <div className="eyebrow mb-4">WHY THIS MATTERS</div>
+              <h2
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontWeight: 400,
+                  fontSize: "clamp(22px, 3vw, 32px)",
+                  lineHeight: 1.1,
+                  color: "var(--text-ink)",
+                  marginBottom: "24px",
+                }}
+              >
+                Why This Matters for Your Health
+              </h2>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "24px" }}>
+                {content.whyItMatters.intro}
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {content.whyItMatters.points.map((p, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div
+                      style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px", flexShrink: 0 }}
+                    />
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{p}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      {/* ── 5. WHAT USUALLY WORKS BEST ── */}
-      <section className="section">
-        <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
-          <div className="eyebrow mb-4">TREATMENT OPTIONS</div>
-          <h2
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 400,
-              fontSize: "clamp(22px, 3vw, 32px)",
-              lineHeight: 1.1,
-              color: "var(--text-ink)",
-              marginBottom: "24px",
-            }}
-          >
-            What Usually Works Best
-          </h2>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "24px" }}>
-            {content.whatWorksBest.intro}
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {content.whatWorksBest.options.map((opt, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div
-                  className="flex-shrink-0 flex items-center justify-center rounded-full"
-                  style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "3px" }}
-                >
-                  <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
-                </div>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{opt}</p>
+          {/* ── 5. WHAT USUALLY WORKS BEST ── */}
+          <section className="section">
+            <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
+              <div className="eyebrow mb-4">TREATMENT OPTIONS</div>
+              <h2
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontWeight: 400,
+                  fontSize: "clamp(22px, 3vw, 32px)",
+                  lineHeight: 1.1,
+                  color: "var(--text-ink)",
+                  marginBottom: "24px",
+                }}
+              >
+                What Usually Works Best
+              </h2>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "24px" }}>
+                {content.whatWorksBest.intro}
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {content.whatWorksBest.options.map((opt, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div
+                      className="flex-shrink-0 flex items-center justify-center rounded-full"
+                      style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "3px" }}
+                    >
+                      <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
+                    </div>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{opt}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      {/* ── 6. NEXT STEPS ── */}
-      <section className="section-tinted">
-        <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
-          <div className="eyebrow mb-4">NEXT STEPS</div>
-          <h2
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 400,
-              fontSize: "clamp(22px, 3vw, 32px)",
-              lineHeight: 1.1,
-              color: "var(--text-ink)",
-              marginBottom: "24px",
-            }}
-          >
-            Recommended Next Steps
-          </h2>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "32px" }}>
-            {content.nextSteps.intro}
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {content.nextSteps.steps.map((step, i) => (
-              <div key={i} className="flex items-start gap-4">
-                <div
-                  className="flex-shrink-0 flex items-center justify-center rounded-full text-white font-bold"
-                  style={{ width: "28px", height: "28px", backgroundColor: "var(--blue)", fontFamily: "var(--font-sans)", fontSize: "13px", flexShrink: 0, marginTop: "1px" }}
-                >
-                  {i + 1}
-                </div>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{step}</p>
+          {/* ── 6. NEXT STEPS ── */}
+          <section className="section-tinted">
+            <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
+              <div className="eyebrow mb-4">NEXT STEPS</div>
+              <h2
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontWeight: 400,
+                  fontSize: "clamp(22px, 3vw, 32px)",
+                  lineHeight: 1.1,
+                  color: "var(--text-ink)",
+                  marginBottom: "24px",
+                }}
+              >
+                Recommended Next Steps
+              </h2>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "32px" }}>
+                {content.nextSteps.intro}
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                {content.nextSteps.steps.map((step, i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <div
+                      className="flex-shrink-0 flex items-center justify-center rounded-full text-white font-bold"
+                      style={{ width: "28px", height: "28px", backgroundColor: "var(--blue)", fontFamily: "var(--font-sans)", fontSize: "13px", flexShrink: 0, marginTop: "1px" }}
+                    >
+                      {i + 1}
+                    </div>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{step}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+          </section>
+        </>
+      ) : (
+        /* ── TEASER (no assessment on file) ── */
+        <section className="section">
+          <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
+            <div
+              className="card"
+              style={{ borderRadius: "20px", padding: "48px 40px", textAlign: "center" }}
+            >
+              <div
+                className="flex items-center justify-center mx-auto mb-6"
+                style={{ width: "56px", height: "56px", borderRadius: "16px", backgroundColor: "var(--blue-soft)" }}
+              >
+                <Lock className="w-6 h-6" style={{ color: "var(--blue)" }} />
+              </div>
+              <h2
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontWeight: 400,
+                  fontSize: "clamp(20px, 2.5vw, 28px)",
+                  lineHeight: 1.15,
+                  color: "var(--text-ink)",
+                  marginBottom: "16px",
+                }}
+              >
+                Take the assessment to see your full pathway
+              </h2>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "480px", margin: "0 auto 32px" }}>
+                The detailed breakdown — what your results suggest, why it matters, what usually works best, and your recommended next steps — is included in your personalized report.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link href="/screener" className="no-underline">
+                  <button className="btn-secondary">Start Free Screener</button>
+                </Link>
+                <Link href="/assessment/info" className="no-underline">
+                  <button className="btn-primary">Get My Full Report — $79</button>
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── CTA ── */}
       <section className="section-dark" style={{ padding: "72px 24px" }}>
