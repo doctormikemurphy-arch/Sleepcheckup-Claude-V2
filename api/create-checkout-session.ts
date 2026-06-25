@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import Stripe from "stripe";
 
-const PRICE_CENTS = 100; // $1 test price
+const PRICE_CENTS = 7900; // $79
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -21,6 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
+      allow_promotion_codes: true,
       customer_email: email || undefined,
       line_items: [
         {
