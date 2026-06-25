@@ -15,7 +15,7 @@ export const DR_MURPHY = {
   longBio2:
     "After years of watching patients arrive unprepared to their appointments — not knowing what kind of sleep problem they had, what questions to ask, or what treatment paths existed — Dr. Murphy developed The Murphy Method™ to change that. It's the same framework he uses with his own patients, distilled into a structured assessment that anyone can complete in under 20 minutes.",
   quote:
-    "I have used The Murphy Method™ every day for years to help my patients with snoring and sleep apnea. I built this so you get the full benefit of an office visit with me — without the visit. The same questions I ask every patient. The same framework. The same clarity.",
+    "I have used The Murphy Method™ every day for years to help my patients with snoring and sleep apnea. I built this so you get the benefit of an office visit with me — without the visit. The same questions I ask every patient. The same framework. The same clarity.",
   quoteAttribution: "— Michael Murphy, MD, MPH",
   reportQuote:
     "\"If a patient came to their appointment with this report, they would be the most prepared patient I've ever seen.\"",
@@ -132,7 +132,7 @@ export const HOME = {
       {
         num: "2",
         title: "Complete the Full Assessment",
-        sub: "15–20 minutes · $1 one-time",
+        sub: "15–20 minutes · $79 one-time",
         body: "Go deeper with the complete Murphy Method™ protocol — medical history, anatomy, treatment readiness, and clinical scoring. Designed by a Stanford specialist.",
       },
       {
@@ -179,7 +179,7 @@ export const HOME = {
         "Emailed to you instantly on completion",
         "My Portal — save results, track retakes & access live pathway resources (free)",
       ],
-      ctaButton: "Get My Full Report — $1 →",
+      ctaButton: "Get My Full Report — $79 →",
     },
   },
 
@@ -292,7 +292,7 @@ export const HOW_IT_WORKS = {
       ctaButton: "Start Free Screener →",
     },
     paid: {
-      badge: "$1 one-time · 15–20 min",
+      badge: "$79 one-time · 15–20 min",
       title: "Full Assessment",
       body: "The full assessment goes deeper across all six clinical dimensions. Your screener responses carry forward — no need to repeat them. This is where the pathway assignment happens and where your personalized PDF report is generated.",
       features: [
@@ -302,7 +302,7 @@ export const HOW_IT_WORKS = {
         "PLATO-11 treatment readiness",
         "Full personalized PDF report — emailed instantly",
       ],
-      ctaButton: "Get My Full Report — $1 →",
+      ctaButton: "Get My Full Report — $79 →",
     },
   },
 
@@ -340,7 +340,7 @@ export const HOW_IT_WORKS = {
     headline: "8 Pathways. One That's Yours.",
     body: "The full assessment sorts you into one of 8 clinically distinct pathways. Each pathway has different causes, different treatment options, and a different roadmap. Knowing yours changes everything.",
     footerText: "The full assessment tells you which pathway is yours, what it means, and what to do about it.",
-    ctaButton: "Discover My Pathway — $1",
+    ctaButton: "Discover My Pathway — $79",
     pathways: [
       "Pathway A: OSA + Insomnia",
       "Pathway B: OSA + Obesity",

@@ -145,12 +145,10 @@ export default function HomePage() {
 
   // ── Video rotation ────────────────────────────────────────────────────────
   const HERO_VIDEOS = [
-    "/videos/hero-1.mp4",
-    "/videos/hero-2.mp4",
-    "/videos/hero-3.mp4",
-    "/videos/hero-4.mp4",
     "/videos/hero-5.mp4",
+    "/videos/hero-4.mp4",
     "/videos/hero-6.mp4",
+    "/videos/hero-2.mp4",
   ];
   const DISPLAY_MS = 4000;
   const FADE_MS = 600;
