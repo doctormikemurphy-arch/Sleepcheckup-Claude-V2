@@ -12,7 +12,7 @@ const included = [
   "Medical history screening (8 conditions)",
   "STOP-BANG sleep apnea risk score",
   "Insomnia Severity Index (ISI)",
-  "PLATO-11 treatment readiness profile",
+  "PLATO-11 Sleep Quality & Daytime Impact",
   "Top-Down Anatomy self-check (4 zones)",
   "Personalized pathway assignment",
   "Pathway-specific curated resources",

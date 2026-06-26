@@ -137,7 +137,7 @@ export default function HomePage() {
     "Complete pathway assignment (1 of 8 Murphy Method™ pathways)",
     "Full personalized PDF report",
     "Medical history & comorbidity analysis",
-    "PLATO-11 treatment readiness",
+    "PLATO-11 Sleep Quality & Daytime Impact",
     "Doctor visit prep sheet",
     "Specialist match for your pathway",
     "7-day refund policy",
@@ -403,6 +403,14 @@ export default function HomePage() {
               <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "#93C5FD" }}>
                 {DR_MURPHY.quoteAttribution}
               </p>
+              <a
+                href="https://stanfordhealthcare.org/doctors/m/michael-murphy.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "#93C5FD", textDecoration: "underline", textUnderlineOffset: "3px", marginTop: "20px", display: "inline-block" }}
+              >
+                View Dr. Murphy's Stanford Medicine Profile →
+              </a>
             </div>
           </div>
         </div>
@@ -521,7 +529,7 @@ export default function HomePage() {
                 className="card"
                 style={{ padding: "40px", minHeight: "420px", display: "flex", flexDirection: "column" }}
               >
-                <div className="eyebrow mb-4">STEP {String(i + 1).padStart(2, "0")}</div>
+                <div className="eyebrow mb-4">STEP {i + 1}</div>
                 <h3
                   style={{
                     fontFamily: "var(--font-serif)",
@@ -618,8 +626,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── 7. TESTIMONIALS ──────────────────────────────────────────────── */}
-      <section className="section-tinted" aria-label="Testimonials">
+      {/* ── 7. TESTIMONIALS — TEMPORARILY HIDDEN — restore when real testimonials feature is built ── */}
+      {/* <section className="section-tinted" aria-label="Testimonials">
         <div className="section-inner px-6">
           <div className="text-center mb-16">
             <div className="eyebrow mb-4">PATIENT EXPERIENCES</div>
@@ -669,7 +677,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── 8. PRICING + FAQ ─────────────────────────────────────────────── */}
       <section className="section" aria-label="Pricing and FAQ">

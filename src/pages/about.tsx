@@ -87,6 +87,16 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
+          <div style={{ marginTop: "32px" }}>
+            <a
+              href="https://stanfordhealthcare.org/doctors/m/michael-murphy.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--blue)", textDecoration: "underline", textUnderlineOffset: "3px" }}
+            >
+              View Dr. Murphy's Stanford Medicine Profile →
+            </a>
+          </div>
         </div>
       </section>
 
