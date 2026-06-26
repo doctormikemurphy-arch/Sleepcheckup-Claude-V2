@@ -27,7 +27,7 @@ export const DR_MURPHY = {
     { label: "Residency", value: "University of Washington — Otolaryngology" },
     { label: "Board Certification", value: "Otolaryngology–Head & Neck Surgery" },
     { label: "Board Certification", value: "Sleep Medicine" },
-    { label: "Practice", value: "Stanford Healthcare · Palo Alto, CA" },
+
     { label: "Experience", value: "20+ years treating snoring & sleep apnea" },
     { label: "Patient Rating", value: "4.9/5 · 303 verified ratings" },
   ],
