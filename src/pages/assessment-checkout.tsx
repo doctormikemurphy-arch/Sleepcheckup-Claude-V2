@@ -7,7 +7,7 @@ const FEATURES = [
   "Complete pathway assignment (1 of 8 Murphy Method™ pathways)",
   "Full personalized PDF report emailed instantly",
   "Medical history & comorbidity analysis",
-  "PLATO-11 treatment readiness",
+  "PLATO-11 Sleep Quality & Daytime Impact",
   "Specialist match for your pathway",
   "7-day satisfaction guarantee",
 ];
