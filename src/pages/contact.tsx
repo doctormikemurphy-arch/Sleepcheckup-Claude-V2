@@ -1,16 +1,38 @@
 import { useState } from "react";
-import { Send, Check } from "lucide-react";
+import { Send, Check, Loader2 } from "lucide-react";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) return;
-    setSubmitted(true);
+    setError(null);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), message: message.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error ?? "Something went wrong. Please try again.");
+      }
+
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message ?? "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -173,9 +195,28 @@ export default function ContactPage() {
                     onBlur={(e) => (e.target.style.borderColor = "var(--border-soft)")}
                   />
                 </div>
-                <button type="submit" className="btn-primary flex items-center justify-center gap-2 w-full">
-                  <Send className="w-4 h-4" />
-                  Send Message
+                {error && (
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "#DC2626", lineHeight: 1.5 }}>
+                    {error}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary flex items-center justify-center gap-2 w-full"
+                  style={{ opacity: loading ? 0.7 : 1 }}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Sending…
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Send Message
+                    </>
+                  )}
                 </button>
               </form>
             </div>
