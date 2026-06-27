@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
-  Printer, FileText, Download, RotateCcw, ArrowLeft, Target,
+  Printer, FileText, RotateCcw, ArrowLeft, Target,
   Lightbulb, Footprints, Activity, AlertCircle, Stethoscope, ChevronRight,
   Video, BookOpen, ShoppingBag, BookMarked, ExternalLink,
 } from "lucide-react";
@@ -293,35 +293,6 @@ export default function AssessmentResultsPage() {
     : profile.insomniaSeverity === "moderate" ? "#D97706"
     : profile.insomniaSeverity === "subthreshold" ? "#1D4ED8"
     : "#16A34A";
-
-  const handleExportJSON = () => {
-    const exportData = {
-      pathway, pathwayTitle: pathwayDef.title, assessmentDate,
-      scores: { stopBangScore: profile.stopBangScore, osaRisk: profile.osaRisk, isiScore: profile.isiScore, insomniaSeverity: profile.insomniaSeverity, bmiValue },
-      anatomy: profile.anatomy, palm: profile.palm,
-    };
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url;
-    a.download = `murphy-method-results-${new Date().toISOString().split("T")[0]}.json`;
-    a.click(); URL.revokeObjectURL(url);
-  };
-
-  const handleExportCSV = () => {
-    const rows = [
-      ["Field", "Value"],
-      ["Pathway", pathwayDef.title], ["Assessment Date", assessmentDate],
-      ["STOP-BANG Score", String(profile.stopBangScore)], ["OSA Risk", profile.osaRisk],
-      ["ISI Score", String(profile.isiScore)], ["Insomnia Severity", profile.insomniaSeverity],
-      ["BMI", bmiValue ? bmiValue.toFixed(1) : "N/A"],
-    ];
-    const csv = rows.map((r) => r.map((c) => `"${c}"`).join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url;
-    a.download = `murphy-method-results-${new Date().toISOString().split("T")[0]}.csv`;
-    a.click(); URL.revokeObjectURL(url);
-  };
 
   return (
     <div style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }}>
@@ -655,18 +626,7 @@ export default function AssessmentResultsPage() {
               <Printer className="w-4 h-4" />
               Print / Save as PDF
             </button>
-            <button onClick={handleExportJSON} className="btn-secondary flex items-center justify-center gap-2 flex-1" style={{ fontSize: "15px", minHeight: "48px" }}>
-              <Download className="w-4 h-4" />
-              Export JSON
-            </button>
-            <button onClick={handleExportCSV} className="btn-secondary flex items-center justify-center gap-2 flex-1" style={{ fontSize: "15px", minHeight: "48px" }}>
-              <Download className="w-4 h-4" />
-              Export CSV
-            </button>
           </div>
-          <p style={{ fontFamily: "var(--font-sans)", marginTop: "12px", fontSize: "13px", color: "var(--text-muted)" }}>
-            Email delivery is part of the full product — not available in this prototype.
-          </p>
         </div>
 
         {/* Start Over */}
