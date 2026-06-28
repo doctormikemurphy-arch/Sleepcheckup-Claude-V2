@@ -14,7 +14,7 @@ const anatomyZones = [
   { key: "nose" as const, label: "Nose & Nasal Airway", scoreKey: "noseScore" as const, positiveKey: "noseIsPositive" as const, responsesKey: "noseResponses" as const, maxScore: 5 },
   { key: "palate" as const, label: "Palate & Tonsils", scoreKey: "palateScore" as const, positiveKey: "palateIsPositive" as const, responsesKey: "palateResponses" as const, maxScore: 3 },
   { key: "mandible" as const, label: "Jaw & Tongue", scoreKey: "mandibleScore" as const, positiveKey: "mandibleIsPositive" as const, responsesKey: "mandibleResponses" as const, maxScore: 3 },
-  { key: "neck" as const, label: "Neck & Body", scoreKey: "neckScore" as const, positiveKey: "neckIsPositive" as const, responsesKey: "neckResponses" as const, maxScore: 3 },
+  { key: "neck" as const, label: "Neck", scoreKey: "neckScore" as const, positiveKey: "neckIsPositive" as const, responsesKey: "neckResponses" as const, maxScore: 3 },
 ];
 
 const riskBgColors = {
@@ -138,6 +138,11 @@ export default function ScreenerResults() {
           profile.anatomy?.mandibleIsPositive ? "mandible" : null,
           profile.anatomy?.neckIsPositive ? "neck" : null,
         ].filter(Boolean) as string[],
+        urgencyHeadline: urgency.headline,
+        urgencyMessage: urgency.message,
+        anatomy: profile.anatomy,
+        hasHighRisk,
+        hasMedRisk,
       }),
     }).catch(() => {/* non-fatal */});
   };
