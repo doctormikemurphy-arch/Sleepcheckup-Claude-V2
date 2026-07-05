@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { Printer, ArrowLeft, RotateCcw, Activity, AlertCircle, Stethoscope, ChevronRight, Lightbulb } from "lucide-react";
-import { loadState } from "@/lib/storage";
+import { Printer, ArrowLeft, RotateCcw, Activity, AlertCircle, Stethoscope, ChevronRight, Lightbulb, Download, Mail } from "lucide-react";
+import { loadState, getPaidSession } from "@/lib/storage";
 import { KEYS } from "@/lib/storage";
 import type { AssessmentState } from "@/lib/assessment-types";
 import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "@/lib/types";
@@ -183,12 +183,26 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
 export default function AssessmentReportPage() {
   const [data, setData] = useState<ReportData | null>(null);
   const [missing, setMissing] = useState(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [downloadClicked, setDownloadClicked] = useState(false);
+  const [acknowledgmentLogged, setAcknowledgmentLogged] = useState(false);
+  const acknowledged = checkboxChecked || downloadClicked;
 
   useEffect(() => {
     const result = loadReportData();
     if (!result) { setMissing(true); return; }
     setData(result);
   }, []);
+
+  useEffect(() => {
+    if (!data || acknowledged) return;
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [data, acknowledged]);
 
   if (missing || !data) {
     return (
@@ -213,6 +227,30 @@ export default function AssessmentReportPage() {
   const riskColors = riskBgColors[profile.osaRisk];
   const letter = PATHWAY_LETTERS[pathway] ?? "?";
   const pathwaySlug = letter.toLowerCase();
+  const paidSession = getPaidSession();
+  const customerEmail = paidSession?.email ?? null;
+
+  const logAcknowledgment = (method: "checkbox" | "download") => {
+    if (acknowledgmentLogged || !paidSession?.sessionId) return;
+    setAcknowledgmentLogged(true);
+    fetch("/api/log-acknowledgment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        stripeSessionId: paidSession.sessionId,
+        acknowledgedAt: new Date().toISOString(),
+        method,
+      }),
+    }).catch(() => {
+      // Best-effort logging only; failures shouldn't affect the customer's experience.
+    });
+  };
+
+  const handleDownloadOrPrint = () => {
+    setDownloadClicked(true);
+    logAcknowledgment("download");
+    window.print();
+  };
 
   const osaColor = profile.osaRisk === "high" ? "#DC2626" : profile.osaRisk === "intermediate" ? "#D97706" : "#16A34A";
   const isiColor = profile.insomniaSeverity === "severe" ? "#DC2626" : profile.insomniaSeverity === "moderate" ? "#D97706" : profile.insomniaSeverity === "subthreshold" ? "#1D4ED8" : "#16A34A";
@@ -220,31 +258,59 @@ export default function AssessmentReportPage() {
   return (
     <div style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }} className="print:bg-white">
 
-      {/* Sticky print bar */}
+      {/* Sticky save/print safeguard banner */}
       <div
-        className="print:hidden sticky top-0 z-40 border-b flex items-center justify-between gap-4 px-6 py-3"
+        className="print:hidden sticky top-0 z-40 border-b"
         style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-soft)" }}
       >
-        <Link
-          href="/assessment/results"
-          className="no-underline flex items-center gap-2"
-          style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)" }}
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Your Results
-        </Link>
-        <div className="flex items-center gap-3">
-          <p style={{ fontFamily: "var(--font-sans)", color: "var(--text-muted)", fontSize: "13px" }} className="hidden sm:block">
-            For best results: Save as PDF, then print the PDF.
-          </p>
-          <button
-            onClick={() => window.print()}
-            className="btn-primary flex items-center gap-2"
-            style={{ minHeight: "40px", fontSize: "14px", padding: "0 16px" }}
+        <div className="mx-auto flex flex-col gap-3 px-6 py-3" style={{ maxWidth: "960px" }}>
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <Link
+              href="/assessment/results"
+              className="no-underline flex items-center gap-2"
+              style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)" }}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Your Results
+            </Link>
+            <button
+              onClick={handleDownloadOrPrint}
+              className="btn-primary flex items-center gap-2"
+              style={{ minHeight: "52px", fontSize: "17px", fontWeight: 700, padding: "0 28px" }}
+            >
+              <Download className="w-5 h-5" />
+              Download / Print Your PDF Report
+            </button>
+          </div>
+          <div
+            className="flex flex-col gap-2.5"
+            style={{ borderRadius: "10px", border: "1px solid #FCD34D", backgroundColor: "#FFFBEB", padding: "12px 16px" }}
           >
-            <Printer className="w-4 h-4" />
-            Print / Save as PDF
-          </button>
+            <div className="flex items-start gap-2.5">
+              <Mail className="w-4 h-4 flex-shrink-0" style={{ color: "#B45309", marginTop: "2px" }} />
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "#92400E", lineHeight: 1.55 }}>
+                <strong>Save your report now</strong> — this page won't be available again once you leave.
+                Download or print your PDF above.
+                {customerEmail
+                  ? <> We've also emailed a copy to <strong>{customerEmail}</strong>.</>
+                  : <> We've also emailed a copy to the address you provided at checkout.</>}
+              </p>
+            </div>
+            <label className="flex items-center gap-2 cursor-pointer" style={{ paddingLeft: "26px" }}>
+              <input
+                type="checkbox"
+                checked={checkboxChecked}
+                onChange={(e) => {
+                  setCheckboxChecked(e.target.checked);
+                  if (e.target.checked) logAcknowledgment("checkbox");
+                }}
+                style={{ width: "16px", height: "16px", flexShrink: 0 }}
+              />
+              <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#92400E" }}>
+                I've downloaded or printed my report.
+              </span>
+            </label>
+          </div>
         </div>
       </div>
 
@@ -869,7 +935,7 @@ export default function AssessmentReportPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-              <button onClick={() => window.print()} className="btn-primary flex items-center gap-2">
+              <button onClick={handleDownloadOrPrint} className="btn-primary flex items-center gap-2">
                 <Printer className="w-4 h-4" />
                 Print Results
               </button>
@@ -880,7 +946,9 @@ export default function AssessmentReportPage() {
             </div>
           </div>
           <p style={{ fontFamily: "var(--font-sans)", marginTop: "12px", fontSize: "13px", color: "var(--text-muted)" }}>
-            Email delivery is part of the full product — not available in this prototype.
+            {customerEmail
+              ? <>A copy of this report has already been emailed to <strong>{customerEmail}</strong>.</>
+              : "A copy of this report has already been emailed to the address you provided at checkout."}
           </p>
         </div>
 
