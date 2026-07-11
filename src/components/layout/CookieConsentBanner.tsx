@@ -35,7 +35,7 @@ export function CookieConsentBanner() {
         }}
       >
         <p style={{ fontSize: "14px", lineHeight: "1.6", color: "var(--text-ink-soft)", margin: 0 }}>
-          We use essential cookies to run this site and analytics cookies to understand usage. See our{" "}
+          We use essential cookies to run this site. See our{" "}
           <Link href="/privacy" className="no-underline" style={{ color: "var(--blue)", fontWeight: 600 }}>
             Privacy Policy
           </Link>{" "}
