@@ -13,6 +13,10 @@ export function setConsent(value: Exclude<ConsentState, null>) {
   window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: value }));
 }
 
+export function clearConsent() {
+  window.localStorage.removeItem(STORAGE_KEY);
+}
+
 export function onConsentChange(callback: (value: ConsentState) => void) {
   const handler = (e: Event) => callback((e as CustomEvent).detail);
   window.addEventListener(EVENT_NAME, handler);
