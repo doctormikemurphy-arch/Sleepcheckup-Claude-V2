@@ -17,7 +17,7 @@ export default function PrivacyPage() {
             Privacy <em>Policy</em>
           </h1>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)" }}>
-            Last updated: January 1, 2025 · Sleep Check Up, Inc.
+            Last updated: July 11, 2026 · Sleep Check Up, Inc.
           </p>
         </div>
       </section>
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
               <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "18px", color: "var(--text-ink)", marginBottom: "12px" }}>
                 7. Contact
               </h2>
-              <p>Questions about this policy? Email us at privacy@sleepcheckup.com or write to Sleep Check Up, Inc., Palo Alto, CA.</p>
+              <p>Questions about this policy? Email us at privacy@sleepcheckup.com.</p>
             </section>
           </div>
         </div>
