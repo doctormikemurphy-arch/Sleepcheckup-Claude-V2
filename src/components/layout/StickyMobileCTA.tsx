@@ -9,7 +9,7 @@ export function StickyMobileCTA() {
 
   return (
     <div
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pt-3"
+      className="md:hidden px-4 pb-4 pt-3"
       style={{
         background: "linear-gradient(to top, rgba(246,248,251,1) 60%, rgba(246,248,251,0))",
       }}
