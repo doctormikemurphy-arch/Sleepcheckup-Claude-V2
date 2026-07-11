@@ -1,6 +1,7 @@
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { StickyMobileCTA } from "./StickyMobileCTA";
+import { CookieConsentBanner } from "./CookieConsentBanner";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -24,7 +25,10 @@ export function Layout({
 
       {!hideFooter && <Footer />}
 
-      <StickyMobileCTA />
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col">
+        <CookieConsentBanner />
+        <StickyMobileCTA />
+      </div>
     </div>
   );
 }

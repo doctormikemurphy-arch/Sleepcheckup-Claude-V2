@@ -40,7 +40,7 @@ export default function PrivacyPage() {
                 1. Information We Collect
               </h2>
               <p>SleepCheckup.com collects information you provide when completing the free screener or full assessment, including your responses to health questionnaires. If you purchase the full assessment, we collect your email address and payment information (processed by our third-party payment provider — we do not store full card numbers).</p>
-              <p style={{ marginTop: "12px" }}>We also collect standard server logs and analytics data (page views, session duration, browser type) to improve the service.</p>
+              <p style={{ marginTop: "12px" }}>Our hosting provider automatically logs standard technical information (such as IP address, timestamp, and page requested) as part of normal web server operation. We do not currently use a dedicated analytics tool to track page views, session duration, or similar behavioral metrics.</p>
             </section>
 
             <section>
@@ -66,9 +66,10 @@ export default function PrivacyPage() {
 
             <section>
               <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "18px", color: "var(--text-ink)", marginBottom: "12px" }}>
-                4. Cookies
+                4. Cookies & Tracking Technologies
               </h2>
-              <p>We use essential cookies to maintain your session and analytics cookies (via a privacy-first analytics provider) to understand aggregate usage. We do not use advertising cookies or cross-site tracking cookies.</p>
+              <p>This site uses essential, session-based cookies to operate properly — for example, to keep you signed in through our authentication provider (Clerk) and to preserve your assessment progress as you complete it. We do not currently use any third-party analytics, advertising, or cross-site tracking cookies.</p>
+              <p style={{ marginTop: "12px" }}>If that changes in the future, we will update this policy accordingly. You can accept or decline non-essential cookies at any time using the cookie banner at the bottom of the site.</p>
             </section>
 
             <section>

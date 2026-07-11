@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import logoImg from "@/assets/images/logo.png";
+import { clearConsent } from "@/lib/cookie-consent";
 
 const QUICK_LINKS = [
   { label: "Home", href: "/" },
@@ -11,11 +12,17 @@ const QUICK_LINKS = [
 
 const LEGAL_LINKS = [
   { label: "Privacy Policy", href: "/privacy" },
+  { label: "Cookie Preferences", href: null },
   { label: "Terms of Use", href: "/terms" },
   { label: "Medical Disclaimer", href: "/disclaimer" },
 ];
 
 export function Footer() {
+  const handleCookiePreferences = () => {
+    clearConsent();
+    window.location.reload();
+  };
+
   return (
     <footer style={{ backgroundColor: "var(--bg-dark)" }} data-print-hide>
       <div
@@ -60,19 +67,34 @@ export function Footer() {
           <div>
             <div className="eyebrow-muted mb-5">Legal</div>
             <div className="space-y-3 mb-8">
-              {LEGAL_LINKS.map(({ label, href }) => (
-                <div key={href}>
-                  <Link
-                    href={href}
-                    className="no-underline transition-colors"
-                    style={{ color: "var(--text-on-dark-soft)", fontSize: "15px" }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-on-dark)"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-on-dark-soft)"; }}
-                  >
-                    {label}
-                  </Link>
-                </div>
-              ))}
+              {LEGAL_LINKS.map(({ label, href }) =>
+                href ? (
+                  <div key={label}>
+                    <Link
+                      href={href}
+                      className="no-underline transition-colors"
+                      style={{ color: "var(--text-on-dark-soft)", fontSize: "15px" }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-on-dark)"; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-on-dark-soft)"; }}
+                    >
+                      {label}
+                    </Link>
+                  </div>
+                ) : (
+                  <div key={label}>
+                    <button
+                      type="button"
+                      onClick={handleCookiePreferences}
+                      className="no-underline transition-colors border-0 bg-transparent cursor-pointer p-0 text-left"
+                      style={{ color: "var(--text-on-dark-soft)", fontSize: "15px", fontFamily: "inherit" }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-on-dark)"; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-on-dark-soft)"; }}
+                    >
+                      {label}
+                    </button>
+                  </div>
+                )
+              )}
             </div>
             <p style={{ fontSize: "13px", lineHeight: "1.65", color: "var(--text-on-dark-soft)", maxWidth: "280px" }}>
               Murphy Method™ is a trademark of Sleep Check Up, Inc. This tool is for educational purposes only and does not constitute medical advice or diagnosis.
