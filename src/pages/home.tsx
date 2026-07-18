@@ -589,7 +589,7 @@ export default function HomePage() {
                   marginBottom: "32px",
                 }}
               >
-                Your $79 report is a personalized, professionally designed PDF that translates your full assessment into something you can read, understand, and hand to any doctor.
+                Your $20 report is a personalized, professionally designed PDF that translates your full assessment into something you can read, understand, and hand to any doctor.
               </p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "40px" }}>
@@ -747,7 +747,7 @@ export default function HomePage() {
                     color: "var(--text-ink)",
                   }}
                 >
-                  $79
+                  $20
                 </span>
                 <span style={{ fontFamily: "var(--font-sans)", fontSize: "18px", color: "var(--text-muted)" }}>
                   /one-time
@@ -777,7 +777,7 @@ export default function HomePage() {
               </div>
 
               <Link href="/assessment/info" className="no-underline block">
-                <button className="btn-primary w-full">Get My Full Report — $79</button>
+                <button className="btn-primary w-full">Get My Full Report — $20</button>
               </Link>
 
               <p className="text-center mt-4">

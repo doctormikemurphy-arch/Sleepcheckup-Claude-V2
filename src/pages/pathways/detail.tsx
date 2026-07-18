@@ -318,7 +318,7 @@ export default function PathwayDetailPage() {
                   <button className="btn-secondary">Start Free Screener</button>
                 </Link>
                 <Link href="/assessment/info" className="no-underline">
-                  <button className="btn-primary">Get My Full Report — $79</button>
+                  <button className="btn-primary">Get My Full Report — $20</button>
                 </Link>
               </div>
             </div>
@@ -352,7 +352,7 @@ export default function PathwayDetailPage() {
             </Link>
             <Link href="/assessment/info" className="no-underline">
               <button className="btn-cream">
-                Get My Full Report — $79
+                Get My Full Report — $20
               </button>
             </Link>
           </div>

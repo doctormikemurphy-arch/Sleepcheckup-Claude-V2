@@ -252,12 +252,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               <p style="margin:4px 0 0;font-size:13px;color:#6B7280;line-height:1.6;font-family:sans-serif;">${s.description}</p>
             </div>`).join("")}
 
-            <!-- $79 UPSELL -->
+            <!-- $20 UPSELL -->
             <div style="background:#0F172A;border-radius:10px;padding:28px;margin-top:32px;margin-bottom:24px;text-align:center;">
               <p style="margin:0 0 8px;color:#60A5FA;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;font-family:sans-serif;">READY TO GO DEEPER?</p>
               <h3 style="margin:0 0 12px;color:#ffffff;font-size:18px;font-weight:700;font-family:sans-serif;">Get Your Full Personalized Report</h3>
               <p style="margin:0 0 20px;color:#9CA3AF;font-size:14px;line-height:1.6;font-family:sans-serif;">The full Murphy Method™ assessment identifies exactly which of 8 pathways applies to you — and gives you a complete report to bring to your doctor.</p>
-              <a href="https://sleepcheckup.com/assessment/info" style="display:inline-block;background:#2563EB;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 32px;border-radius:8px;font-family:sans-serif;">Get My Full Report — $79</a>
+              <a href="https://sleepcheckup.com/assessment/info" style="display:inline-block;background:#2563EB;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 32px;border-radius:8px;font-family:sans-serif;">Get My Full Report — $20</a>
               <p style="margin:12px 0 0;color:#6B7280;font-size:12px;font-family:sans-serif;">One-time payment. No subscription. Delivered instantly.</p>
             </div>
 

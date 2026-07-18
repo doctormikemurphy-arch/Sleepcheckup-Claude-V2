@@ -410,7 +410,7 @@ export default function HowItWorksPage() {
                 ))}
               </ul>
               <Link href="/assessment/info" className="no-underline">
-                <button className="btn-primary w-full" style={{ marginTop: "24px" }}>Get My Full Report — $79 →</button>
+                <button className="btn-primary w-full" style={{ marginTop: "24px" }}>Get My Full Report — $20 →</button>
               </Link>
             </div>
           </div>
@@ -582,7 +582,7 @@ export default function HowItWorksPage() {
 
           <div className="text-center mt-12">
             <Link href="/assessment/info" className="no-underline">
-              <button className="btn-primary">Discover My Pathway — $79</button>
+              <button className="btn-primary">Discover My Pathway — $20</button>
             </Link>
           </div>
         </div>
