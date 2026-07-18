@@ -754,8 +754,12 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", marginBottom: "32px" }}>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", marginBottom: "8px" }}>
                 No subscription · Emailed instantly
+              </p>
+
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontStyle: "italic", color: "var(--text-muted)", marginBottom: "32px" }}>
+                For the cost of a copay for a visit with your doctor.
               </p>
 
               <hr style={{ borderTop: "1px solid var(--border-soft)", marginBottom: "32px" }} />
