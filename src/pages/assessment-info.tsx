@@ -52,6 +52,17 @@ export default function AssessmentInfoPage() {
           >
             A comprehensive educational evaluation of your sleep breathing — personalized to your unique situation.
           </p>
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "18px",
+              fontWeight: 600,
+              color: "var(--blue)",
+              marginTop: "12px",
+            }}
+          >
+            For the cost of a copay for a visit with your doctor.
+          </p>
         </div>
       </section>
 

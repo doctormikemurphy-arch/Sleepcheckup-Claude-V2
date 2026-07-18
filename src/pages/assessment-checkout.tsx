@@ -90,6 +90,9 @@ export default function AssessmentCheckoutPage() {
             <span style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "17px", color: "var(--text-ink)" }}>Total</span>
             <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "20px", color: "var(--text-ink)" }}>$20</span>
           </div>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", fontWeight: 600, color: "var(--blue)", textAlign: "center", marginTop: "16px" }}>
+            For the cost of a copay for a visit with your doctor.
+          </p>
         </div>
 
         <form onSubmit={handleCheckout}>
