@@ -81,7 +81,7 @@ const LEAN_PHASES = [
   {
     id: "p1", phase: "Phase 1", title: "Validate the Offer", subtitle: "Problem–Solution Fit",
     color: "#2563EB", bg: "#EFF6FF", border: "#BFDBFE",
-    question: "Will people pay $79 for a clinical pathway report they can't get anywhere else?",
+    question: "Will people pay $20 for a clinical pathway report they can't get anywhere else?",
     decision: "Move to Phase 2 when: 10 paying customers reached AND at least one says the report was worth more than they paid.",
     experiments: [
       { key: "p1-e1", label: "Build the free screener + paid report (the MVP)", note: "Completed — the product exists." },
@@ -95,19 +95,19 @@ const LEAN_PHASES = [
   {
     id: "p2", phase: "Phase 2", title: "Validate the Price", subtitle: "Willingness to Pay",
     color: "#16A34A", bg: "#F0FDF4", border: "#BBF7D0",
-    question: "Is $79 the optimal price — or should it be $59 or $99?",
-    decision: "Set price at whichever point maximizes revenue per visitor. If $99 converts at 80% the rate of $79, $99 wins.",
+    question: "Is $20 the optimal price — or should it be $59 or $99?",
+    decision: "Set price at whichever point maximizes revenue per visitor. If $99 converts at 80% the rate of $20, $99 wins.",
     experiments: [
-      { key: "p2-e1", label: "Run 2-week A/B test: $79 vs $99 (50 visitors each)", note: "Use a simple URL parameter or date-based split. Measure revenue per visitor, not just conversion rate." },
-      { key: "p2-e2", label: "Add one survey question at the payment screen: 'Is $XX a fair price for this?'", note: "Yes / A little high / Too high. If >20% say 'too high' at $79, reconsider. If <5% at $99, raise it." },
+      { key: "p2-e1", label: "Run 2-week A/B test: $20 vs $99 (50 visitors each)", note: "Use a simple URL parameter or date-based split. Measure revenue per visitor, not just conversion rate." },
+      { key: "p2-e2", label: "Add one survey question at the payment screen: 'Is $XX a fair price for this?'", note: "Yes / A little high / Too high. If >20% say 'too high' at $20, reconsider. If <5% at $99, raise it." },
       { key: "p2-e3", label: "Offer 5 users a 'pay after you read it' trial — does seeing the report first improve conversion?", note: "If yes, add a 'preview first page free' feature. If no, the offer alone is strong enough." },
-      { key: "p2-e4", label: "Test adding a $129 'Consultation Bundle' option (report + 30-min Zoom with Dr. Murphy)", note: "Even if nobody buys it, it makes $79 feel like the obvious value choice." },
+      { key: "p2-e4", label: "Test adding a $129 'Consultation Bundle' option (report + 30-min Zoom with Dr. Murphy)", note: "Even if nobody buys it, it makes $20 feel like the obvious value choice." },
     ],
   },
   {
     id: "p3", phase: "Phase 3", title: "Validate the Channel", subtitle: "Customer Acquisition",
     color: "#EA580C", bg: "#FFF7ED", border: "#FED7AA",
-    question: "Which channel brings paying customers at a cost well under $79?",
+    question: "Which channel brings paying customers at a cost well under $20?",
     decision: "If any channel achieves cost per acquisition < $30, invest more. If none does after $300 total spend, focus on organic and referral only.",
     experiments: [
       { key: "p3-e1", label: "Run $100 Facebook/Instagram ad to 'snoring partner' audience — measure cost per screener completion", note: "Target audience: spouses of snorers, 35–65. Creative: 'Your partner stops breathing at night. Here's what that means.'" },
@@ -1102,7 +1102,7 @@ export default function AdminPage() {
                     <div className="rounded-md p-4" style={{ backgroundColor: "#FFF7ED", border: "1px solid #FED7AA" }}>
                       <p className="text-sm font-bold mb-3" style={{ color: "#EA580C" }}>Signs to Consider Pivoting</p>
                       <ul className="space-y-2">
-                        {["90 days pass with fewer than 10 paying customers at any price", "Screener completion rate stays below 40% despite copy changes", "NPS comes back below 20 from your first 10 customers", "Every channel has CPA > $79 (losing money on every customer)", "Customers say 'I don't know what to do with this' after reading the report"].map(item => (
+                        {["90 days pass with fewer than 10 paying customers at any price", "Screener completion rate stays below 40% despite copy changes", "NPS comes back below 20 from your first 10 customers", "Every channel has CPA > $20 (losing money on every customer)", "Customers say 'I don't know what to do with this' after reading the report"].map(item => (
                           <li key={item} className="flex gap-2 text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
                             <span className="font-bold mt-0.5" style={{ color: "#EA580C" }}>→</span>{item}
                           </li>

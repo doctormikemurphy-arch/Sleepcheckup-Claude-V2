@@ -38,7 +38,7 @@ export default function AssessmentInfoPage() {
               marginBottom: "24px",
             }}
           >
-            What you get for <em>$79</em>
+            What you get for <em>$20</em>
           </h1>
           <p
             style={{

@@ -132,7 +132,7 @@ export const HOME = {
       {
         num: "2",
         title: "Complete the Full Assessment",
-        sub: "15–20 minutes · $79 one-time",
+        sub: "15–20 minutes · $20 one-time",
         body: "Go deeper with the complete Murphy Method™ protocol — medical history, anatomy, treatment readiness, and clinical scoring. Designed by a Stanford specialist.",
       },
       {
@@ -165,7 +165,7 @@ export const HOME = {
     paid: {
       label: "Full Assessment",
       badge: "RECOMMENDED",
-      price: "$79",
+      price: "$20",
       duration: "one-time · no subscription",
       features: [
         "Everything in Free Screening, plus:",
@@ -179,7 +179,7 @@ export const HOME = {
         "Emailed to you instantly on completion",
         "My Portal — save results, track retakes & access live pathway resources (free)",
       ],
-      ctaButton: "Get My Full Report — $79 →",
+      ctaButton: "Get My Full Report — $20 →",
     },
   },
 
@@ -202,7 +202,7 @@ export const HOME = {
     },
     {
       quote:
-        "The doctor prep sheet was worth $79 on its own. My ENT said it was the most thorough patient summary she had ever received before an appointment.",
+        "The doctor prep sheet was worth $20 on its own. My ENT said it was the most thorough patient summary she had ever received before an appointment.",
       date: "December 2024",
     },
   ],
@@ -292,7 +292,7 @@ export const HOW_IT_WORKS = {
       ctaButton: "Start Free Screener →",
     },
     paid: {
-      badge: "$79 one-time · 15–20 min",
+      badge: "$20 one-time · 15–20 min",
       title: "Full Assessment",
       body: "The full assessment goes deeper across all six clinical dimensions. Your screener responses carry forward — no need to repeat them. This is where the pathway assignment happens and where your personalized PDF report is generated.",
       features: [
@@ -302,7 +302,7 @@ export const HOW_IT_WORKS = {
         "PLATO-11 Sleep Quality & Daytime Impact",
         "Full personalized PDF report — emailed instantly",
       ],
-      ctaButton: "Get My Full Report — $79 →",
+      ctaButton: "Get My Full Report — $20 →",
     },
   },
 
@@ -340,7 +340,7 @@ export const HOW_IT_WORKS = {
     headline: "8 Pathways. One That's Yours.",
     body: "The full assessment sorts you into one of 8 clinically distinct pathways. Each pathway has different causes, different treatment options, and a different roadmap. Knowing yours changes everything.",
     footerText: "The full assessment tells you which pathway is yours, what it means, and what to do about it.",
-    ctaButton: "Discover My Pathway — $79",
+    ctaButton: "Discover My Pathway — $20",
     pathways: [
       "Pathway A: OSA + Insomnia",
       "Pathway B: OSA + Obesity",
@@ -356,7 +356,7 @@ export const HOW_IT_WORKS = {
   reportSection: {
     headline: "Inside the Report",
     subheadline:
-      "Your $79 report is a personalized, professionally designed PDF that translates your full assessment into something you can read, understand, and hand to any doctor. Most patients arrive at sleep appointments with no information — yours arrives with a complete picture.",
+      "Your $20 report is a personalized, professionally designed PDF that translates your full assessment into something you can read, understand, and hand to any doctor. Most patients arrive at sleep appointments with no information — yours arrives with a complete picture.",
     rows: [
       { title: "Cover Page", body: "Assigned Pathway · Patient Name · Assessment Date" },
       { title: "Your Results", body: "Step 1: How Is the Breathing at Night? — Medical History · BMI · Sleep Apnea Risk (STOP-BANG) · Insomnia Severity (ISI) · Sleep Quality & Daytime Impact (PLATO-11)\nStep 2: Where Can the Airway Narrow? — Nose · Palate & Tonsils · Mandible & Tongue · Neck\nStep 3: Understand the Overall Approach and how the PALM Classification helps — PALM Classification (Airway Narrowing · Arousal Threshold · Loop Gain · Muscle Responsiveness)" },
@@ -469,7 +469,7 @@ export const FOOTER = {
       links: [
         { label: "Free Screener", href: "/screener" },
         { label: "How It Works", href: "/how-it-works" },
-        { label: "Full Assessment — $79", href: "/screener" },
+        { label: "Full Assessment — $20", href: "/screener" },
       ],
     },
     company: {

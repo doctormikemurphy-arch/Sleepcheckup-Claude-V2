@@ -670,7 +670,7 @@ export default function ScreenerResults() {
 
           <Link href="/assessment/checkout">
             <button className="btn-primary w-full" style={{ fontSize: "18px", gap: "8px" }}>
-              Get My Full Report — $79
+              Get My Full Report — $20
               <ArrowRight className="w-5 h-5" />
             </button>
           </Link>
