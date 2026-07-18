@@ -758,7 +758,7 @@ export default function HomePage() {
                 No subscription · Emailed instantly
               </p>
 
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontStyle: "italic", color: "var(--text-muted)", marginBottom: "32px" }}>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", fontWeight: 600, color: "var(--blue)", marginBottom: "32px" }}>
                 For the cost of a copay for a visit with your doctor.
               </p>
 

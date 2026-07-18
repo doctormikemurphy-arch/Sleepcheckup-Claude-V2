@@ -55,9 +55,9 @@ export default function AssessmentInfoPage() {
           <p
             style={{
               fontFamily: "var(--font-sans)",
-              fontSize: "15px",
-              fontStyle: "italic",
-              color: "var(--text-muted)",
+              fontSize: "18px",
+              fontWeight: 600,
+              color: "var(--blue)",
               marginTop: "12px",
             }}
           >
