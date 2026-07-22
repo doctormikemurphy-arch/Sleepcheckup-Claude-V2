@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { X } from "lucide-react";
 import { useEffect } from "react";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { SignedIn } from "@clerk/clerk-react";
 
 const clerkEnabled = !!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 import logoImg from "@/assets/images/logo.png";
@@ -89,23 +89,12 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
 
           <div className="pt-6 flex items-center gap-4">
             {clerkEnabled ? (
-              <>
-                <SignedOut>
-                  <Link href="/sign-in" className="no-underline" style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>
-                    Sign in
-                  </Link>
-                </SignedOut>
-                <SignedIn>
-                  <Link href="/portal" className="no-underline" style={{ fontSize: "15px", fontWeight: 500, color: "var(--blue)", fontFamily: "var(--font-sans)" }}>
-                    My Portal
-                  </Link>
-                </SignedIn>
-              </>
-            ) : (
-              <Link href="/sign-in" className="no-underline" style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>
-                Sign in
-              </Link>
-            )}
+              <SignedIn>
+                <Link href="/portal" className="no-underline" style={{ fontSize: "15px", fontWeight: 500, color: "var(--blue)", fontFamily: "var(--font-sans)" }}>
+                  My Portal
+                </Link>
+              </SignedIn>
+            ) : null}
             {import.meta.env.DEV && (
               <Link
                 href="/admin"
