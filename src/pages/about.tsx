@@ -24,7 +24,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                 }}
               >
-                <img src={drMurphyPhoto} alt="Dr. Michael Murphy" className="w-full h-full object-cover" />
+                <img src={drMurphyPhoto} alt="Dr. Michael Murphy" className="w-full h-full object-cover object-top" />
               </div>
             </div>
 

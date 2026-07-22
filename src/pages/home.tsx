@@ -306,7 +306,7 @@ export default function HomePage() {
             </p>
 
             <Link href="/screener" className="no-underline">
-              <button className="btn-cream">
+              <button className="btn-primary">
                 {hero.ctaButton}
               </button>
             </Link>
@@ -361,7 +361,7 @@ export default function HomePage() {
                   flexShrink: 0,
                 }}
               >
-                <img src={drMurphyPhoto} alt="Dr. Michael Murphy" className="w-full h-full object-cover" />
+                <img src={drMurphyPhoto} alt="Dr. Michael Murphy" className="w-full h-full object-cover object-top" />
               </div>
             </div>
 

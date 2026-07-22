@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Menu } from "lucide-react";
 import { useState } from "react";
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { SignedIn, UserButton } from "@clerk/clerk-react";
 import logoImg from "@/assets/images/logo.png";
 import { MobileDrawer } from "./MobileDrawer";
 
@@ -97,16 +97,6 @@ export function Header() {
             )}
             {clerkEnabled ? (
               <>
-                <SignedOut>
-                  <Link href="/sign-in" className="no-underline">
-                    <button
-                      className="border-0 bg-transparent cursor-pointer"
-                      style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
-                    >
-                      Sign in
-                    </button>
-                  </Link>
-                </SignedOut>
                 <SignedIn>
                   <Link
                     href="/portal"
@@ -118,16 +108,7 @@ export function Header() {
                   <UserButton afterSignOutUrl="/" />
                 </SignedIn>
               </>
-            ) : (
-              <Link href="/sign-in" className="no-underline">
-                <button
-                  className="border-0 bg-transparent cursor-pointer"
-                  style={{ fontSize: "15px", fontWeight: 500, color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
-                >
-                  Sign in
-                </button>
-              </Link>
-            )}
+            ) : null}
             <Link href="/screener" className="no-underline">
               <button
                 className="btn-primary"
