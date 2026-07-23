@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "wouter";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { StickyMobileCTA } from "./StickyMobileCTA";
@@ -15,6 +17,14 @@ export function Layout({
   hideHeader = false,
   hideFooter = false,
 }: LayoutProps) {
+  const [location] = useLocation();
+
+  // Land at the top of each new page instead of preserving scroll position
+  // from the page the person navigated away from.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--bg-page)" }}>
       {!hideHeader && <Header />}
