@@ -378,7 +378,7 @@ export default function HomePage() {
                   marginBottom: "8px",
                 }}
               >
-                Michael <em>Murphy</em>, MD, MPH
+                Michael <span style={{ fontStyle: "italic", color: "white" }}>Murphy</span>, MD, MPH
               </h2>
               <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "#93C5FD", marginBottom: "32px" }}>
                 {DR_MURPHY.tagline}
