@@ -138,7 +138,7 @@ export default function AssessmentInfoPage() {
         <div style={{ maxWidth: "540px", margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
           <Link href="/assessment/checkout" className="no-underline block mb-4">
             <button className="btn-primary w-full" style={{ fontSize: "18px", gap: "8px" }}>
-              Continue to checkout →
+              Continue to checkout (prototype) →
               <ArrowRight className="w-5 h-5" />
             </button>
           </Link>

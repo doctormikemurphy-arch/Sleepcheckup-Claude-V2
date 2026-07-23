@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Printer, FileText, RotateCcw, ArrowLeft, Target,
-  Activity, AlertCircle, Stethoscope, ChevronRight, Check, ExternalLink,
+  Lightbulb, Footprints, Activity, AlertCircle, Stethoscope, ChevronRight,
+  Video, BookOpen, ShoppingBag, BookMarked, ExternalLink,
 } from "lucide-react";
 import { PATHWAY_CONTENT_SEED } from "@/lib/admin-seed-data";
 import { loadState, clearState, getPaidSession, KEYS } from "@/lib/storage";
 import { PATHWAY_CONTENT } from "@/lib/pathway-content";
-import type { PathwayContent } from "@/lib/pathway-content";
 import type { AssessmentState } from "@/lib/assessment-types";
 import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "@/lib/types";
 import {
@@ -91,132 +91,125 @@ function loadResultsData(): ResultsData | null {
   }
 }
 
-function ContentEyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "12px" }}>
-      {children}
-    </p>
-  );
-}
+const RESOURCE_TYPE_CONFIG: Record<string, { label: string; sectionTitle: string; icon: typeof Video }> = {
+  video:      { label: "Video", sectionTitle: "Video Courses", icon: Video },
+  article:    { label: "Article", sectionTitle: "Written Content", icon: FileText },
+  book:       { label: "Book", sectionTitle: "Recommended Reading", icon: BookMarked },
+  product:    { label: "Product", sectionTitle: "Recommended Products", icon: ShoppingBag },
+  specialist: { label: "Specialist", sectionTitle: "Find A Specialist", icon: Stethoscope },
+};
+const RESOURCE_TYPE_ORDER = ["video", "article", "book", "product", "specialist"];
 
-function CheckItem({ text }: { text: string }) {
-  return (
-    <div className="flex items-start gap-3">
-      <div className="flex-shrink-0 flex items-center justify-center rounded-full" style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "2px" }}>
-        <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
-      </div>
-      <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{text}</p>
-    </div>
-  );
-}
-
-function DotItem({ text }: { text: string }) {
-  return (
-    <div className="flex items-start gap-3">
-      <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px", flexShrink: 0 }} />
-      <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{text}</p>
-    </div>
-  );
-}
-
-/** Inlined pathway detail content (previously only reachable via the "Learn more about your pathway" link). */
-function PathwayResultsContent({ content }: { content: PathwayContent }) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-      <div>
-        <ContentEyebrow>What Your Results Suggest</ContentEyebrow>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {content.whatResultsSuggest.map((item, i) => <CheckItem key={i} text={item} />)}
-        </div>
-      </div>
-
-      <div>
-        <ContentEyebrow>Why This Matters For Your Health</ContentEyebrow>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "16px" }}>
-          {content.whyItMatters.intro}
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {content.whyItMatters.points.map((p, i) => <DotItem key={i} text={p} />)}
-        </div>
-      </div>
-
-      <div>
-        <ContentEyebrow>What Usually Works Best</ContentEyebrow>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "16px" }}>
-          {content.whatWorksBest.intro}
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {content.whatWorksBest.options.map((opt, i) => <CheckItem key={i} text={opt} />)}
-        </div>
-      </div>
-
-      <div>
-        <ContentEyebrow>Recommended Next Steps</ContentEyebrow>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "16px" }}>
-          {content.nextSteps.intro}
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          {content.nextSteps.steps.map((step, i) => (
-            <div key={i} className="flex items-start gap-4">
-              <div className="flex-shrink-0 flex items-center justify-center rounded-full text-white font-bold" style={{ width: "28px", height: "28px", backgroundColor: "var(--blue)", fontFamily: "var(--font-sans)", fontSize: "13px", marginTop: "1px" }}>
-                {i + 1}
-              </div>
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{step}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/** Find A Specialist — the one resource type kept on the results page (rest of the pathway resource library is hidden here). */
-function FindASpecialistSection({ pathwayId }: { pathwayId: string }) {
-  const items = PATHWAY_CONTENT_SEED.filter((r) => r.pathwayId === pathwayId && r.contentType === "specialist");
+function PathwayResources({ pathwayId }: { pathwayId: string }) {
+  const items = PATHWAY_CONTENT_SEED.filter((r) => r.pathwayId === pathwayId);
   if (items.length === 0) return null;
+
+  const grouped: Record<string, typeof items> = {};
+  for (const item of items) {
+    if (!grouped[item.contentType]) grouped[item.contentType] = [];
+    grouped[item.contentType].push(item);
+  }
 
   return (
     <div className="card mb-6" style={{ padding: "32px" }}>
-      <div className="flex items-center gap-2 mb-3">
-        <div className="flex items-center justify-center flex-shrink-0" style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "var(--blue-soft)" }}>
-          <Stethoscope className="w-4 h-4" style={{ color: "var(--blue)" }} />
-        </div>
-        <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "14px", color: "var(--text-ink)" }}>Find A Specialist</p>
+      <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "4px" }}>
+        Your Pathway Resources
       </div>
-      <div className="grid sm:grid-cols-2 gap-3">
-        {items.map((item) => (
-          <a
-            key={item.id}
-            href={item.url ?? "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="no-underline block rounded-xl border overflow-hidden transition-shadow hover:shadow-md"
-            style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}
-          >
-            {item.imageUrl && (
-              <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", backgroundColor: "#F1F5F9" }}>
-                <img
-                  src={item.imageUrl}
-                  alt=""
-                  aria-hidden="true"
-                  style={{ width: "100%", height: "100%", objectFit: "contain", padding: "12px" }}
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                />
+      <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", marginBottom: "24px", lineHeight: 1.55 }}>
+        Curated by Dr. Murphy — matched to your assigned pathway.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
+        {RESOURCE_TYPE_ORDER.map((type) => {
+          const group = grouped[type];
+          if (!group || group.length === 0) return null;
+          const config = RESOURCE_TYPE_CONFIG[type];
+          const Icon = config.icon;
+          return (
+            <div key={type}>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center justify-center flex-shrink-0" style={{ width: "28px", height: "28px", borderRadius: "8px", backgroundColor: "var(--blue-soft)" }}>
+                  <Icon className="w-4 h-4" style={{ color: "var(--blue)" }} />
+                </div>
+                <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "14px", color: "var(--text-ink)" }}>{config.sectionTitle}</p>
               </div>
-            )}
-            <div style={{ padding: "14px 16px" }}>
-              <p style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "14px", color: "var(--text-ink)", marginBottom: "4px", lineHeight: 1.4 }}>{item.title}</p>
-              {item.description && (
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5, marginBottom: "10px" }}>{item.description}</p>
-              )}
-              <span className="inline-flex items-center gap-1" style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 600, color: "var(--blue)" }}>
-                Find Providers
-                <ExternalLink className="w-3 h-3" />
-              </span>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {group.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.url ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="no-underline block rounded-xl border overflow-hidden transition-shadow hover:shadow-md"
+                    style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}
+                  >
+                    {item.imageUrl && (
+                      <div style={{ width: "100%", aspectRatio: type === "book" ? "3/2" : "16/9", overflow: "hidden", backgroundColor: "#F1F5F9" }}>
+                        <img
+                          src={item.imageUrl}
+                          alt=""
+                          aria-hidden="true"
+                          style={{ width: "100%", height: "100%", objectFit: type === "specialist" || type === "book" ? "contain" : "cover", padding: type === "specialist" || type === "book" ? "12px" : "0" }}
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                        />
+                      </div>
+                    )}
+                    <div style={{ padding: "14px 16px" }}>
+                      <p style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "14px", color: "var(--text-ink)", marginBottom: "4px", lineHeight: 1.4 }}>{item.title}</p>
+                      {item.description && (
+                        <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5, marginBottom: "10px" }}>{item.description}</p>
+                      )}
+                      <span className="inline-flex items-center gap-1" style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 600, color: "var(--blue)" }}>
+                        {type === "video" ? "Watch" : type === "specialist" ? "Find Providers" : type === "product" ? "View" : "Read More"}
+                        <ExternalLink className="w-3 h-3" />
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
-          </a>
-        ))}
+          );
+        })}
       </div>
+    </div>
+  );
+}
+
+function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }) {
+  const raw = pathwayDef.educationalSummary || "";
+  const paragraphs = raw.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+  const keyConceptPara = paragraphs.find((p) => p.startsWith("Key Concept:"));
+  const nextStepPara = paragraphs.find((p) => p.startsWith("Your Next Step:"));
+  const mainParagraphs = paragraphs.filter((p) => !p.startsWith("Key Concept:") && !p.startsWith("Your Next Step:"));
+  const stripPrefix = (text: string, prefix: string) =>
+    text.startsWith(prefix) ? text.slice(prefix.length).trim() : text;
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      {mainParagraphs.map((para, i) => (
+        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.75 }}>{para}</p>
+      ))}
+      {keyConceptPara && (
+        <div className="flex items-start gap-3" style={{ borderRadius: "12px", backgroundColor: "#EFF6FF", border: "1px solid #BFDBFE", padding: "16px" }}>
+          <div className="flex items-center justify-center flex-shrink-0" style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: "#DBEAFE", marginTop: "2px" }}>
+            <Lightbulb className="w-4 h-4" style={{ color: "var(--blue)" }} />
+          </div>
+          <div>
+            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>Key Concept</p>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{stripPrefix(keyConceptPara, "Key Concept:")}</p>
+          </div>
+        </div>
+      )}
+      {nextStepPara && (
+        <div className="flex items-start gap-3" style={{ borderRadius: "12px", backgroundColor: "#F0FDF4", border: "1px solid #86EFAC", padding: "16px" }}>
+          <div className="flex items-center justify-center flex-shrink-0" style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: "#DCFCE7", marginTop: "2px" }}>
+            <Footprints className="w-4 h-4" style={{ color: "#15803D" }} />
+          </div>
+          <div>
+            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "#15803D", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>Your Next Step</p>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{stripPrefix(nextStepPara, "Your Next Step:")}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -291,7 +284,8 @@ export default function AssessmentResultsPage() {
   }
 
   const { profile, pathway, pathwayDef, assessmentDate, bmiValue } = data;
-  const pathwayContent = PATHWAY_CONTENT[pathway];
+  const letter = PATHWAY_LETTERS[pathway] ?? "?";
+  const pathwaySlug = letter.toLowerCase();
   const riskColors = riskBgColors[profile.osaRisk];
   const bmiCat = getBmiCategory(bmiValue);
 
@@ -325,32 +319,6 @@ export default function AssessmentResultsPage() {
           </h1>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)" }}>{assessmentDate}</p>
         </div>
-
-        {/* Pathway assignment */}
-        <div className="card mb-6" style={{ padding: "32px" }}>
-          <div className="flex items-start gap-4">
-            <div className="flex items-center justify-center flex-shrink-0" style={{ width: "56px", height: "56px", borderRadius: "50%", backgroundColor: "#DBEAFE", border: "2px solid #BFDBFE" }}>
-              <Target className="w-6 h-6" style={{ color: "var(--blue)" }} />
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px" }}>
-                Your Assigned Pathway
-              </div>
-              <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "clamp(18px, 2.5vw, 26px)", color: "var(--text-ink)", lineHeight: 1.2, marginBottom: "8px" }}>
-                {pathwayDef.title}
-              </h2>
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "#1E40AF", lineHeight: 1.55, fontStyle: "italic" }}>
-                "{pathwayDef.shortDescription}"
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {pathwayContent && (
-          <div className="card mb-6" style={{ padding: "32px" }}>
-            <PathwayResultsContent content={pathwayContent} />
-          </div>
-        )}
 
         {/* Action buttons */}
         <div className="flex flex-col sm:flex-row gap-3 mb-5">
@@ -596,8 +564,53 @@ export default function AssessmentResultsPage() {
           </div>
         </section>
 
-        {/* Find A Specialist */}
-        <FindASpecialistSection pathwayId={pathway} />
+        {/* ── STEP 4: YOUR PATHWAY ── */}
+        <div className="flex items-center gap-3 pb-3 mb-6" style={{ borderBottom: "2px solid #0F172A" }}>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "#0F172A" }}>
+            <span className="text-white font-bold" style={{ fontSize: "13px" }}>4</span>
+          </div>
+          <div className="flex-1">
+            <p className="font-bold text-ink" style={{ fontSize: "17px" }}>Step 4: Your Results</p>
+            <p className="text-ink-muted" style={{ fontSize: "14px" }}>Your assigned Murphy Method™ pathway</p>
+          </div>
+          <Target className="w-5 h-5 flex-shrink-0" style={{ color: "#0F172A" }} />
+        </div>
+
+        {/* Pathway card */}
+        <div className="card mb-6" style={{ padding: "32px" }}>
+          <div className="flex items-start gap-4">
+            <div className="flex items-center justify-center flex-shrink-0" style={{ width: "56px", height: "56px", borderRadius: "50%", backgroundColor: "#DBEAFE", border: "2px solid #BFDBFE" }}>
+              <Target className="w-6 h-6" style={{ color: "var(--blue)" }} />
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px" }}>
+                Your Assigned Pathway
+              </div>
+              <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "clamp(18px, 2.5vw, 26px)", color: "var(--text-ink)", lineHeight: 1.2, marginBottom: "8px" }}>
+                {pathwayDef.title}
+              </h2>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "#1E40AF", lineHeight: 1.55, fontStyle: "italic" }}>
+                "{pathwayDef.shortDescription}"
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Pathway educational summary */}
+        <div className="card mb-4" style={{ padding: "32px" }}>
+          <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
+            About Your Pathway
+          </div>
+          <PathwaySummarySection pathwayDef={pathwayDef} />
+          <div style={{ marginTop: "24px" }}>
+            <Link href={`/pathways/${pathwaySlug}?from=results`} className="no-underline" style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "15px", color: "var(--blue)", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              Learn more about your pathway →
+            </Link>
+          </div>
+        </div>
+
+        {/* ── YOUR PATHWAY RESOURCES ── */}
+        <PathwayResources pathwayId={pathway} />
 
         {/* Export */}
         <div className="card mb-6" style={{ padding: "32px" }}>
