@@ -23,6 +23,7 @@ export const DR_MURPHY = {
   stanfordLinkText: "View Full Profile at Stanford Healthcare",
   credentials: [
     { label: "Medical School", value: "St. Louis University School of Medicine — MD" },
+    { label: "Honor Society", value: "Alpha Omega Alpha — St. Louis University School of Medicine" },
     { label: "Public Health", value: "Masters in Public Health (MPH) — University of Washington" },
     { label: "Residency", value: "University of Washington — Otolaryngology" },
     { label: "Board Certification", value: "Otolaryngology–Head & Neck Surgery" },
@@ -358,7 +359,7 @@ export const HOW_IT_WORKS = {
       "Your $20 report is a personalized, professionally designed PDF that translates your full assessment into something you can read, understand, and hand to any doctor. Most patients arrive at sleep appointments with no information — yours arrives with a complete picture.",
     rows: [
       { title: "Cover Page", body: "Assigned Pathway · Patient Name · Assessment Date" },
-      { title: "Your Results", body: "Step 1: How Is the Breathing at Night? — Medical History · BMI · Sleep Apnea Risk (STOP-BANG) · Insomnia Severity (ISI) · Sleep Quality & Daytime Impact (PLATO-11)\nStep 2: Where Can the Airway Narrow? — Nose · Palate & Tonsils · Mandible & Tongue · Neck\nStep 3: Understand the Overall Approach and how the PALM Classification helps — PALM Classification (Airway Narrowing · Arousal Threshold · Loop Gain · Muscle Responsiveness)" },
+      { title: "Your Results", body: "Step 1: How Is the Breathing at Night? — A full picture of your sleep quality, breathing risk, and daytime impact, built from validated clinical screening measures.\nStep 2: Where Can the Airway Narrow? — A structured review of every anatomical region that can contribute to snoring or sleep apnea.\nStep 3: Understanding Your Overall Pattern — How your results fit together into one complete risk and treatment picture, explained in plain language." },
       { title: "Your Murphy Method™ Assigned Pathway", body: "Key Concept · Pathway Educational Summary" },
       { title: "Your Personalized Guide", body: "What Your Results Suggest · Why This Matters for Your Health · What Usually Works Best" },
       { title: "Your Murphy Method™ Next Steps", body: "Recommended Next Steps · Find a Specialist (pathway-specific specialist directory)" },
