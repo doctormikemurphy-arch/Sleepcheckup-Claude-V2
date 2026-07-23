@@ -29,6 +29,8 @@ const stopBangMeaning = {
   high: "A score of 5–8 indicates a high probability of moderate-to-severe obstructive sleep apnea. Clinical evaluation is strongly recommended.",
 };
 
+const SHOW_RESOURCE_LIBRARY = false;
+
 const specialists = [
   {
     id: "sleep-center",
@@ -209,6 +211,47 @@ export default function ScreenerResults() {
           </div>
         </div>
 
+        {/* Email capture — top */}
+        {!emailSaved ? (
+          <div
+            className="rounded-xl border-2 p-5 mb-8"
+            style={{ borderColor: "#BFDBFE", backgroundColor: "#EFF6FF" }}
+          >
+            <div className="flex items-start gap-3 mb-3">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "#1D4ED8" }}>
+                <Mail className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <p className="font-semibold text-ink" style={{ fontSize: "15px" }}>Email me these results</p>
+                <p className="text-ink-muted" style={{ fontSize: "14px" }}>Get a copy in your inbox — no spam, unsubscribe any time.</p>
+              </div>
+            </div>
+            <form onSubmit={handleEmailSave} className="flex gap-2">
+              <input
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="flex-1 rounded-lg border px-3"
+                style={{ borderColor: "#93C5FD", fontSize: "16px", minHeight: "44px", outline: "none" }}
+              />
+              <button
+                type="submit"
+                className="font-semibold text-white rounded-lg px-4"
+                style={{ backgroundColor: "#1D4ED8", minHeight: "44px", fontSize: "15px" }}
+              >
+                Send
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 rounded-lg border px-4 py-3 mb-8" style={{ borderColor: "#86EFAC", backgroundColor: "#F0FDF4" }}>
+            <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#15803D" }} />
+            <p style={{ fontSize: "15px", color: "#15803D" }}>Results saved — check your inbox.</p>
+          </div>
+        )}
+
         {/* STEP 1: STOP-BANG */}
         <section className="mb-8">
           <div className="flex items-center gap-3 pb-3 mb-4" style={{ borderBottom: "2px solid #1D4ED8" }}>
@@ -270,47 +313,6 @@ export default function ScreenerResults() {
             </p>
           </div>
         </section>
-
-        {/* Email capture — top */}
-        {!emailSaved ? (
-          <div
-            className="rounded-xl border-2 p-5 mb-8"
-            style={{ borderColor: "#BFDBFE", backgroundColor: "#EFF6FF" }}
-          >
-            <div className="flex items-start gap-3 mb-3">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "#1D4ED8" }}>
-                <Mail className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <p className="font-semibold text-ink" style={{ fontSize: "15px" }}>Email me these results</p>
-                <p className="text-ink-muted" style={{ fontSize: "14px" }}>Get a copy in your inbox — no spam, unsubscribe any time.</p>
-              </div>
-            </div>
-            <form onSubmit={handleEmailSave} className="flex gap-2">
-              <input
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="flex-1 rounded-lg border px-3"
-                style={{ borderColor: "#93C5FD", fontSize: "16px", minHeight: "44px", outline: "none" }}
-              />
-              <button
-                type="submit"
-                className="font-semibold text-white rounded-lg px-4"
-                style={{ backgroundColor: "#1D4ED8", minHeight: "44px", fontSize: "15px" }}
-              >
-                Send
-              </button>
-            </form>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2 rounded-lg border px-4 py-3 mb-8" style={{ borderColor: "#86EFAC", backgroundColor: "#F0FDF4" }}>
-            <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#15803D" }} />
-            <p style={{ fontSize: "15px", color: "#15803D" }}>Results saved — check your inbox.</p>
-          </div>
-        )}
 
         {/* STEP 2: Airway Zones */}
         <section className="mb-8">
@@ -532,73 +534,74 @@ export default function ScreenerResults() {
           </div>
         </section>
 
-        {/* Resource Library CTA */}
-        <div className="rounded-xl border p-5 mb-8" style={{ borderColor: "#E2E8F0", backgroundColor: "#F8FAFC" }}>
-          {/* Header row */}
-          <div className="flex items-start gap-3 mb-4">
-            <div
-              className="flex items-center justify-center rounded-lg flex-shrink-0"
-              style={{ width: "40px", height: "40px", backgroundColor: "#DCFCE7" }}
-            >
-              <Gift className="w-5 h-5" style={{ color: "#15803D" }} />
-            </div>
-            <div>
-              <p className="font-bold text-ink" style={{ fontSize: "17px" }}>Get Dr. Murphy's Free Resource Library</p>
-              <p className="text-ink-muted" style={{ fontSize: "15px", lineHeight: 1.6 }}>
-                Enter your email to access curated articles, product reviews, recommended books, and specialist-finder tools — organized by sleep condition. New resources added regularly.
-              </p>
-            </div>
-          </div>
-
-          {/* Feature pills */}
-          <div className="flex flex-wrap gap-x-6 gap-y-2 mb-4">
-            {[
-              { Icon: BookOpen, label: "Sleep health articles & guides" },
-              { Icon: CheckCircle2, label: "Vetted product recommendations" },
-              { Icon: Stethoscope, label: "Find the right specialist" },
-            ].map(({ Icon, label }) => (
-              <div key={label} className="flex items-center gap-1.5" style={{ fontSize: "14px", color: "#15803D" }}>
-                <Icon className="w-4 h-4 flex-shrink-0" />
-                <span>{label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Email form */}
-          {librarySubmitted ? (
-            <div className="flex items-center gap-2 rounded-lg border px-4 py-3" style={{ borderColor: "#86EFAC", backgroundColor: "#F0FDF4" }}>
-              <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#15803D" }} />
-              <p style={{ fontSize: "15px", color: "#15803D" }}>You're in — check your inbox for access.</p>
-            </div>
-          ) : (
-            <>
-              <form
-                onSubmit={(e) => { e.preventDefault(); if (libraryEmail.trim()) setLibrarySubmitted(true); }}
-                className="flex gap-2"
+        {SHOW_RESOURCE_LIBRARY && (
+          <div className="rounded-xl border p-5 mb-8" style={{ borderColor: "#E2E8F0", backgroundColor: "#F8FAFC" }}>
+            {/* Header row */}
+            <div className="flex items-start gap-3 mb-4">
+              <div
+                className="flex items-center justify-center rounded-lg flex-shrink-0"
+                style={{ width: "40px", height: "40px", backgroundColor: "#DCFCE7" }}
               >
-                <div className="flex items-center flex-1 rounded-lg border px-3 gap-2" style={{ borderColor: "#D1D5DB", backgroundColor: "#fff" }}>
-                  <Mail className="w-4 h-4 flex-shrink-0" style={{ color: "#9CA3AF" }} />
-                  <input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={libraryEmail}
-                    onChange={(e) => setLibraryEmail(e.target.value)}
-                    required
-                    style={{ flex: 1, border: "none", outline: "none", fontSize: "16px", minHeight: "44px", backgroundColor: "transparent", fontFamily: "var(--font-sans)" }}
-                  />
+                <Gift className="w-5 h-5" style={{ color: "#15803D" }} />
+              </div>
+              <div>
+                <p className="font-bold text-ink" style={{ fontSize: "17px" }}>Get Dr. Murphy's Free Resource Library</p>
+                <p className="text-ink-muted" style={{ fontSize: "15px", lineHeight: 1.6 }}>
+                  Enter your email to access curated articles, product reviews, recommended books, and specialist-finder tools — organized by sleep condition. New resources added regularly.
+                </p>
+              </div>
+            </div>
+
+            {/* Feature pills */}
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mb-4">
+              {[
+                { Icon: BookOpen, label: "Sleep health articles & guides" },
+                { Icon: CheckCircle2, label: "Vetted product recommendations" },
+                { Icon: Stethoscope, label: "Find the right specialist" },
+              ].map(({ Icon, label }) => (
+                <div key={label} className="flex items-center gap-1.5" style={{ fontSize: "14px", color: "#15803D" }}>
+                  <Icon className="w-4 h-4 flex-shrink-0" />
+                  <span>{label}</span>
                 </div>
-                <button
-                  type="submit"
-                  className="font-semibold rounded-lg px-5 flex-shrink-0"
-                  style={{ backgroundColor: "#0F172A", color: "#fff", minHeight: "44px", fontSize: "15px", border: "none", cursor: "pointer" }}
+              ))}
+            </div>
+
+            {/* Email form */}
+            {librarySubmitted ? (
+              <div className="flex items-center gap-2 rounded-lg border px-4 py-3" style={{ borderColor: "#86EFAC", backgroundColor: "#F0FDF4" }}>
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#15803D" }} />
+                <p style={{ fontSize: "15px", color: "#15803D" }}>You're in — check your inbox for access.</p>
+              </div>
+            ) : (
+              <>
+                <form
+                  onSubmit={(e) => { e.preventDefault(); if (libraryEmail.trim()) setLibrarySubmitted(true); }}
+                  className="flex gap-2"
                 >
-                  Get Free Access
-                </button>
-              </form>
-              <p className="mt-2" style={{ fontSize: "13px", color: "#9CA3AF" }}>No spam. Unsubscribe any time.</p>
-            </>
-          )}
-        </div>
+                  <div className="flex items-center flex-1 rounded-lg border px-3 gap-2" style={{ borderColor: "#D1D5DB", backgroundColor: "#fff" }}>
+                    <Mail className="w-4 h-4 flex-shrink-0" style={{ color: "#9CA3AF" }} />
+                    <input
+                      type="email"
+                      placeholder="your@email.com"
+                      value={libraryEmail}
+                      onChange={(e) => setLibraryEmail(e.target.value)}
+                      required
+                      style={{ flex: 1, border: "none", outline: "none", fontSize: "16px", minHeight: "44px", backgroundColor: "transparent", fontFamily: "var(--font-sans)" }}
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="font-semibold rounded-lg px-5 flex-shrink-0"
+                    style={{ backgroundColor: "#0F172A", color: "#fff", minHeight: "44px", fontSize: "15px", border: "none", cursor: "pointer" }}
+                  >
+                    Get Free Access
+                  </button>
+                </form>
+                <p className="mt-2" style={{ fontSize: "13px", color: "#9CA3AF" }}>No spam. Unsubscribe any time.</p>
+              </>
+            )}
+          </div>
+        )}
 
         {/* Print */}
         <div className="rounded-xl border p-4 flex flex-col sm:flex-row sm:items-center gap-3 mb-8" style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}>
@@ -639,7 +642,7 @@ export default function ScreenerResults() {
           </h3>
           <div className="mb-5">
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>
-              Most people with sleep problems are never told <strong style={{ color: "var(--text-ink)" }}>which specific treatment path applies to their anatomy</strong>. Based on your questionnaire and 4-zone anatomy profile results, you fall into 1 of 8 distinct treatment pathways — a framework developed exclusively by Dr. Murphy that doesn't exist anywhere else. Your full report tells you exactly which one you are, what it means, and what to do next.
+              Most people with sleep problems are never told <strong style={{ color: "var(--text-ink)" }}>which specific treatment path applies to their anatomy</strong>. Your full Murphy Method assessment determines which of 8 distinct treatment pathways fits your profile — a framework developed exclusively by Dr. Murphy that doesn't exist anywhere else. Your full report tells you exactly which one you are, what it means, and what to do next.
             </p>
           </div>
 
@@ -652,7 +655,6 @@ export default function ScreenerResults() {
               "Which tests to request at your appointment",
               "Doctor visit prep sheet you can print and bring",
               "Specialist referral guide matched to your pathway",
-              "My Portal — save results, track retakes & access live pathway resources",
             ].map((item) => (
               <div key={item} className="flex items-start gap-2 text-ink-muted" style={{ fontSize: "14px" }}>
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: "#1D4ED8" }} />
