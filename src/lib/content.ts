@@ -15,7 +15,7 @@ export const DR_MURPHY = {
   longBio2:
     "After years of watching patients arrive unprepared to their appointments — not knowing what kind of sleep problem they had, what questions to ask, or what treatment paths existed — Dr. Murphy developed The Murphy Method™ to change that. It's the same framework he uses with his own patients, distilled into a structured assessment that anyone can complete in under 20 minutes.",
   quote:
-    "I have used The Murphy Method™ every day for years to help my patients with snoring and sleep apnea. I built this so you get the benefit of an office visit with me — without the visit. The same questions I ask every patient. The same framework. The same clarity.",
+    "I have used The Murphy Method™ every day for years to help patients understand their snoring and sleep apnea. I built this tool to walk you through the same approach so you arrive at your next doctor's visit informed and ready.",
   quoteAttribution: "— Michael Murphy, MD, MPH",
   reportQuote:
     "\"If a patient came to their appointment with this report, they would be the most prepared patient I've ever seen.\"",
@@ -410,10 +410,10 @@ export const ABOUT = {
   originStory: {
     headline: "Why I Built This",
     paragraphs: [
-      "After 20 years in practice, I noticed a consistent pattern: patients were arriving to their appointments completely unprepared. They didn't know what kind of sleep problem they had, what questions to ask, or what treatment paths existed. A 15-minute appointment was being spent on the basics instead of on a real plan.",
-      "I developed The Murphy Method™ to change that. The methodology sorts patients into one of 8 distinct pathways based on their anatomy, symptoms, and risk profile — so that by the time they sit down with a specialist, they already understand their situation and can have a real, informed conversation about treatment.",
-      "What surprised me was how much difference it made — not just for complex cases, but for every kind of patient. The ones who came in with a clear picture of their situation got better diagnoses, moved through treatment faster, and had far better outcomes.",
-      "This tool exists to give every patient that same advantage — regardless of whether they've ever seen a specialist, regardless of whether they can afford multiple appointments to figure out the basics.",
+      "If you snore or think you might have sleep apnea, you've probably felt this: confusion about what's actually wrong, uncertainty about what to even ask your doctor, and a rushed appointment that ends without a real plan. You deserve better than that.",
+      "After 20 years treating patients with snoring and sleep apnea, I developed a clear, comprehensive system to fix that. I use it with my own patients every day, and it works whether the case is simple or complicated. By the end of each visit, they understand exactly what's going on — and thank me for finally making it make sense.",
+      "The problem is, I can only help the patients I see in my office. I'm committed to reaching far more people than that. My original plan was to write a book, but this site does more: it gives you that same clarity, it's more practical, and I can update it the moment the science on sleep apnea evolves.",
+      "My goal is for you to leave here an educated, confident partner in your own care — ready to work with your healthcare provider toward a real solution. It's my privilege to help guide you there.",
     ],
   },
 
