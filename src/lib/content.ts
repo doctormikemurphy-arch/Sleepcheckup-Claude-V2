@@ -23,7 +23,7 @@ export const DR_MURPHY = {
   stanfordLinkText: "View Full Profile at Stanford Healthcare",
   credentials: [
     { label: "Medical School", value: "St. Louis University School of Medicine — MD" },
-    { label: "Public Health", value: "Masters in Public Health (MPH)" },
+    { label: "Public Health", value: "Masters in Public Health (MPH) — University of Washington" },
     { label: "Residency", value: "University of Washington — Otolaryngology" },
     { label: "Board Certification", value: "Otolaryngology–Head & Neck Surgery" },
     { label: "Board Certification", value: "Sleep Medicine" },
@@ -282,10 +282,9 @@ export const HOW_IT_WORKS = {
     free: {
       badge: "Free · 3 minutes",
       title: "Free Screener",
-      body: "The free screener covers three validated screening tools: STOP-BANG (obstructive sleep apnea risk), the Insomnia Severity Index, and an airway zone self-check. No account required. You'll see your risk score immediately, along with which anatomical zones are flagged.",
+      body: "The free screener covers two validated screening tools: STOP-BANG (obstructive sleep apnea risk) and an airway zone self-check. No account required. You'll see your risk score immediately, along with which anatomical zones are flagged.",
       features: [
         "STOP-BANG sleep apnea risk score",
-        "Insomnia severity screening",
         "Airway zone self-assessment",
         "Instant risk level (Low / Moderate / High)",
       ],
