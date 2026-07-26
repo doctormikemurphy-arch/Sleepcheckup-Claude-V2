@@ -335,6 +335,11 @@ export default function AssessmentResultsPage() {
           whyItMattersPts: pc?.whyItMatters?.points ?? [],
           whatWorksBestOpts: pc?.whatWorksBest?.options ?? [],
           nextStepsSteps: pc?.nextSteps?.steps ?? [],
+          specialists: (PATHWAY_SPECIALISTS[pw] ?? ["sleep"]).map((key) => ({
+            title: SPECIALIST_RESOURCES[key].title,
+            description: SPECIALIST_RESOURCES[key].description,
+            url: SPECIALIST_RESOURCES[key].url,
+          })),
         }),
       }).catch(() => {/* non-fatal */});
     }
