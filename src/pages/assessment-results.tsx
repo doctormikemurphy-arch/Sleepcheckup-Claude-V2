@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Printer, FileText, RotateCcw, ArrowLeft, Target,
-  Lightbulb, Footprints, Activity, AlertCircle, Stethoscope, ChevronRight,
+  Lightbulb, Footprints, Activity, AlertCircle, Stethoscope, ChevronRight, Check,
   Video, BookOpen, ShoppingBag, BookMarked, ExternalLink,
 } from "lucide-react";
 import { PATHWAY_CONTENT_SEED } from "@/lib/admin-seed-data";
@@ -20,6 +20,73 @@ import { assignMurphyPathway, getPathwayDefinition } from "@/lib/pathways";
 const PATHWAY_LETTERS: Record<string, string> = {
   A_insomnia: "A", B_obesity: "B", C_nasal: "C", D_mandible: "D",
   E_multilevel: "E", F_physiology: "F", G_low_risk: "G", H_complex: "H",
+};
+
+// Kept identical to assessment-report.tsx's own copy so the "Find A Specialist" section
+// stays in sync between the one-time PDF report and this persistent results page.
+const SPECIALIST_RESOURCES = {
+  sleep: {
+    title: "Sleep Medicine Specialist",
+    description: "American Academy of Sleep Medicine",
+    url: "https://sleepeducation.org/sleep-center/",
+    logoUrl: "https://sleepeducation.org/wp-content/uploads/2023/10/AASM_logo_h_RT_rgb-300x89.png",
+    abbr: "AASM",
+  },
+  behavioral: {
+    title: "Society of Behavioral Sleep Medicine – Find a Provider",
+    description: "Find a behavioral sleep medicine specialist trained in CBT-I for insomnia treatment.",
+    url: "https://www.behavioralsleep.org",
+    logoUrl: "https://www.behavioralsleep.org/images/2021/graphics/SBSMlogo70H.png",
+    abbr: "SBSM",
+  },
+  ent: {
+    title: "Ear, Nose & Throat (ENT) Specialist",
+    description: "American Academy of Otolaryngology - Head & Neck Surgery",
+    url: "https://www.enthealth.org/find-ent/",
+    logoUrl: "https://www.entnet.org/wp-content/uploads/2020/07/AAO-HNS_logo.png",
+    abbr: "AAO",
+  },
+  dental: {
+    title: "Dental Sleep Medicine Specialist",
+    description: "American Academy of Dental Sleep Medicine",
+    url: "https://aadsm.org/find_an_aadsm_qualilfied_denti.php",
+    logoUrl: "https://aadsm.org/images/main-logo.png",
+    abbr: "AADSM",
+  },
+  allergy: {
+    title: "Find an Allergy Specialist",
+    description: "American Academy of Allergy, Asthma & Immunology",
+    url: "https://allergist.aaaai.org/find/",
+    logoUrl: "/images/aaaai-thumbnail.png",
+    abbr: "AAAAI",
+  },
+  endocrinology: {
+    title: "Endocrinology Specialist",
+    description: "American Association of Clinical Endocrinology",
+    url: "https://www.aace.com/find-an-endo",
+    logoUrl: "https://www.aace.com/images/wwwaacecom.jpg",
+    abbr: "AACE",
+  },
+  bariatric: {
+    title: "Bariatric Surgery Specialist",
+    description: "American Society for Metabolism & Bariatric Surgery",
+    url: "https://asmbs.org/patients/find-a-provider/",
+    logoUrl: "https://asmbs.org/wp-content/uploads/2023/06/asmbs_logo.svg",
+    abbr: "ASMBS",
+  },
+} as const;
+
+type SpecialistKey = keyof typeof SPECIALIST_RESOURCES;
+
+const PATHWAY_SPECIALISTS: Record<string, SpecialistKey[]> = {
+  A_insomnia:   ["sleep", "behavioral", "ent", "dental", "allergy"],
+  B_obesity:    ["sleep", "endocrinology", "bariatric", "ent", "allergy", "dental"],
+  C_nasal:      ["ent", "allergy", "sleep"],
+  D_mandible:   ["ent", "dental", "allergy", "sleep"],
+  E_multilevel: ["ent", "dental", "allergy", "sleep"],
+  F_physiology: ["sleep", "allergy"],
+  G_low_risk:   ["ent", "dental", "allergy"],
+  H_complex:    ["sleep", "ent", "allergy"],
 };
 
 const anatomyZones = [
@@ -284,8 +351,7 @@ export default function AssessmentResultsPage() {
   }
 
   const { profile, pathway, pathwayDef, assessmentDate, bmiValue } = data;
-  const letter = PATHWAY_LETTERS[pathway] ?? "?";
-  const pathwaySlug = letter.toLowerCase();
+  const pathwayContent = PATHWAY_CONTENT[pathway];
   const riskColors = riskBgColors[profile.osaRisk];
   const bmiCat = getBmiCategory(bmiValue);
 
@@ -318,6 +384,26 @@ export default function AssessmentResultsPage() {
             Review your personalized <em>Murphy Method™</em> pathway
           </h1>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)" }}>{assessmentDate}</p>
+        </div>
+
+        {/* Pathway card (repeated at top — also appears again below near Step 4) */}
+        <div className="card mb-6" style={{ padding: "32px" }}>
+          <div className="flex items-start gap-4">
+            <div className="flex items-center justify-center flex-shrink-0" style={{ width: "56px", height: "56px", borderRadius: "50%", backgroundColor: "#DBEAFE", border: "2px solid #BFDBFE" }}>
+              <Target className="w-6 h-6" style={{ color: "var(--blue)" }} />
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px" }}>
+                Your Assigned Pathway
+              </div>
+              <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "clamp(18px, 2.5vw, 26px)", color: "var(--text-ink)", lineHeight: 1.2, marginBottom: "8px" }}>
+                {pathwayDef.title}
+              </h2>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "#1E40AF", lineHeight: 1.55, fontStyle: "italic" }}>
+                "{pathwayDef.shortDescription}"
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Action buttons */}
@@ -602,15 +688,128 @@ export default function AssessmentResultsPage() {
             About Your Pathway
           </div>
           <PathwaySummarySection pathwayDef={pathwayDef} />
-          <div style={{ marginTop: "24px" }}>
-            <Link href={`/pathways/${pathwaySlug}?from=results`} className="no-underline" style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "15px", color: "var(--blue)", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-              Learn more about your pathway →
-            </Link>
+        </div>
+
+        {/* What Your Results Suggest (mirrors the PDF report / email content) */}
+        {pathwayContent && (
+          <div className="card mb-4" style={{ padding: "32px" }}>
+            <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
+              What Your Results Suggest
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {pathwayContent.whatResultsSuggest.map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="flex-shrink-0 flex items-center justify-center rounded-full" style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "2px" }}>
+                    <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
+                  </div>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Why This Matters (mirrors the PDF report / email content) */}
+        {pathwayContent && (
+          <div className="card mb-4" style={{ padding: "32px" }}>
+            <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
+              Why This Matters
+            </div>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
+              {pathwayContent.whyItMatters.intro}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {pathwayContent.whyItMatters.points.map((p, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#475569", marginTop: "8px" }} />
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65 }}>{p}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* What Usually Works Best (mirrors the PDF report / email content) */}
+        {pathwayContent && (
+          <div className="card mb-4" style={{ padding: "32px" }}>
+            <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
+              What Usually Works Best
+            </div>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
+              {pathwayContent.whatWorksBest.intro}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {pathwayContent.whatWorksBest.options.map((o, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#16A34A", marginTop: "8px" }} />
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{o}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Recommended Next Steps (mirrors the PDF report / email content) */}
+        {pathwayContent && (
+          <div className="card mb-4" style={{ padding: "32px" }}>
+            <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
+              Recommended Next Steps
+            </div>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
+              {pathwayContent.nextSteps.intro}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {pathwayContent.nextSteps.steps.map((step, i) => (
+                <div key={i} className="flex items-start gap-4" style={{ borderRadius: "12px", padding: "16px", backgroundColor: "var(--bg-page)" }}>
+                  <div className="flex items-center justify-center flex-shrink-0" style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#DBEAFE" }}>
+                    <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "13px", color: "var(--blue)" }}>{i + 1}</span>
+                  </div>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Find A Specialist (same data source as the PDF report, so the two stay in sync) */}
+        <div className="card mb-4" style={{ padding: "32px" }}>
+          <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
+            Find A Specialist
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {(PATHWAY_SPECIALISTS[pathway] ?? ["sleep"]).map((key) => {
+              const s = SPECIALIST_RESOURCES[key];
+              return (
+                <div key={key} style={{ borderRadius: "12px", border: "1px solid var(--border-soft)", backgroundColor: "#fff", padding: "16px", display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                  <div style={{ width: "80px", height: "52px", flexShrink: 0, borderRadius: "8px", backgroundColor: "#F8FAFC", border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", overflow: "hidden" }}>
+                    <img
+                      src={s.logoUrl}
+                      alt={s.abbr}
+                      style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
+                      onError={(e) => {
+                        const img = e.currentTarget as HTMLImageElement;
+                        img.style.display = "none";
+                        const span = document.createElement("span");
+                        span.textContent = s.abbr;
+                        span.style.cssText = "font-family:var(--font-sans);font-weight:700;font-size:10px;color:#475569;text-align:center;line-height:1.3";
+                        img.parentElement?.appendChild(span);
+                      }}
+                    />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "14px", color: "var(--text-ink)", marginBottom: "4px", lineHeight: 1.4 }}>{s.title}</p>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5, marginBottom: "6px" }}>{s.description}</p>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--blue)", wordBreak: "break-all" }}>{s.url}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* ── YOUR PATHWAY RESOURCES ── */}
-        <PathwayResources pathwayId={pathway} />
+        {/* Your Pathway Resources (video/article/book/product library) is intentionally hidden here —
+            planned to become a separate, monetized/gated section. The component below is left in
+            place, unused, for that future work; only the "Find A Specialist" piece stays on this page. */}
 
         {/* Export */}
         <div className="card mb-6" style={{ padding: "32px" }}>
