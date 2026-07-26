@@ -17,6 +17,7 @@ function getRiskLabel(risk: string) {
 
 interface Zone { label: string; score: number; max: number; isPositive: boolean; answers: string[]; }
 interface Palm { letter: string; name: string; score: number; isPositive: boolean; questions: string[]; }
+interface Specialist { title: string; description: string; url: string; }
 
 const scoreRow = (label: string, value: string, color: string) =>
   `<tr>
@@ -32,6 +33,15 @@ const bullet = (text: string) =>
       <div style="width:6px;height:6px;border-radius:50%;background:#2563EB;margin-top:5px;"></div>
     </td>
     <td style="padding:5px 0 5px 10px;color:#4B5563;font-size:14px;line-height:1.6;">${text}</td>
+  </tr>`;
+
+const specialistRow = (s: Specialist) =>
+  `<tr>
+    <td style="padding:12px;border-bottom:1px solid #F3F4F6;">
+      <p style="margin:0 0 2px;color:#0F172A;font-size:14px;font-weight:700;">${s.title}</p>
+      <p style="margin:0 0 4px;color:#6B7280;font-size:13px;line-height:1.5;">${s.description}</p>
+      <a href="${s.url}" style="color:#2563EB;font-size:12px;word-break:break-all;">${s.url}</a>
+    </td>
   </tr>`;
 
 const numberedStep = (n: number, text: string) =>
@@ -77,6 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     whyItMattersPts = [] as string[],
     whatWorksBestOpts = [] as string[],
     nextStepsSteps = [] as string[],
+    specialists = [] as Specialist[],
   } = body;
 
   if (!email || !pathwayName) {
@@ -234,6 +245,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:20px;">
         <table cellpadding="0" cellspacing="0" width="100%">${nextStepsSteps.map((t, i) => numberedStep(i + 1, t)).join("")}</table>
       </div>
+    </td>
+  </tr>` : ""}
+  ${specialists.length > 0 ? `
+  <tr>
+    <td style="padding:28px 36px 0;">
+      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">FIND A SPECIALIST</p>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;">
+        ${specialists.map(specialistRow).join("")}
+      </table>
     </td>
   </tr>` : ""}
   <tr>
