@@ -5,6 +5,7 @@ import { ProgressTopBar } from "@/components/layout/ProgressTopBar";
 import { TOTAL_ASSESSMENT_STEPS, ASSESSMENT_STEP_NAMES } from "@/lib/assessment-types";
 import { ZONE_QUESTIONS } from "@/lib/questionnaires";
 import { isPaid, setPaidSession } from "@/lib/storage";
+import { SHOW_PLATO } from "@/lib/feature-flags";
 import { Step1Welcome } from "./Step1Welcome";
 import { Step2MedicalHistory } from "./Step2MedicalHistory";
 import { Step3Bmi } from "./Step3Bmi";
@@ -77,6 +78,12 @@ export default function AssessmentPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
 
+  // Defensive: a session saved before PLATO was hidden may resume mid-step-6.
+  useEffect(() => {
+    if (!SHOW_PLATO && step === 6) goNext();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
+
   const noseConfig = ZONE_QUESTIONS.find((z) => z.zone === "nose")!;
   const palateConfig = ZONE_QUESTIONS.find((z) => z.zone === "palate")!;
   const mandibleConfig = ZONE_QUESTIONS.find((z) => z.zone === "mandible")!;
@@ -84,6 +91,9 @@ export default function AssessmentPage() {
 
   const showBack = step > 1;
   const stepName = ASSESSMENT_STEP_NAMES[step] ?? "";
+  // Continuous, gap-free numbering for the progress bar when PLATO (step 6) is hidden.
+  const displayTotalSteps = SHOW_PLATO ? TOTAL_ASSESSMENT_STEPS : TOTAL_ASSESSMENT_STEPS - 1;
+  const displayStep = !SHOW_PLATO && step > 6 ? step - 1 : step;
 
   const handleFinish = () => {
     computeAndFinish();
@@ -93,8 +103,8 @@ export default function AssessmentPage() {
   return (
     <div style={{ paddingTop: "56px", minHeight: "100vh", backgroundColor: "var(--bg-page)" }}>
       <ProgressTopBar
-        step={step}
-        totalSteps={TOTAL_ASSESSMENT_STEPS}
+        step={displayStep}
+        totalSteps={displayTotalSteps}
         stepName={stepName}
         onBack={showBack ? goBack : undefined}
         onExit={() => navigate("/")}
@@ -177,7 +187,7 @@ export default function AssessmentPage() {
         />
       )}
 
-      {step === 6 && (
+      {step === 6 && SHOW_PLATO && (
         <Step6Plato
           answers={plato}
           onChange={setPlato}

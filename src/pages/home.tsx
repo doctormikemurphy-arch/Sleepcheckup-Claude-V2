@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { HOME, DR_MURPHY } from "@/lib/content";
 import drMurphyPhoto from "@/assets/images/Murphy-14_1765142967232.jpg";
+import { SHOW_PLATO } from "@/lib/feature-flags";
 
 const { hero, stats, problem, steps, pricing, testimonials, faqs } = HOME;
 
@@ -49,8 +50,8 @@ function ReportMockup() {
           <p style={{ color: "var(--text-ink)", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "12px" }}>
             Your Results
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", marginBottom: "8px" }}>
-            {["Sleep Apnea Risk", "Insomnia Severity", "Sleep Quality"].map((label) => (
+          <div style={{ display: "grid", gridTemplateColumns: SHOW_PLATO ? "repeat(3, 1fr)" : "repeat(2, 1fr)", gap: "8px", marginBottom: "8px" }}>
+            {(SHOW_PLATO ? ["Sleep Apnea Risk", "Insomnia Severity", "Sleep Quality"] : ["Sleep Apnea Risk", "Insomnia Severity"]).map((label) => (
               <div key={label} style={{ border: "1px solid var(--border-soft)", borderRadius: "10px", padding: "10px", textAlign: "center" }}>
                 <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: "#DBEAFE", margin: "0 auto 6px" }} />
                 <p style={{ color: "var(--blue)", fontSize: "9px", fontWeight: 600, fontFamily: "var(--font-sans)" }}>{label}</p>
@@ -137,7 +138,7 @@ export default function HomePage() {
     "Complete pathway assignment (1 of 8 Murphy Method™ pathways)",
     "Full personalized PDF report",
     "Medical history & comorbidity analysis",
-    "PLATO-11 Sleep Quality & Daytime Impact",
+    ...(SHOW_PLATO ? ["PLATO-11 Sleep Quality & Daytime Impact"] : []),
     "Doctor visit prep sheet",
     "Specialist match for your pathway",
     "7-day refund policy",

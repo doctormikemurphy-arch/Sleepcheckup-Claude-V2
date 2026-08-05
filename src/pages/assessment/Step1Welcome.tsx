@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AlertTriangle, ChevronDown } from "lucide-react";
+import { SHOW_PLATO } from "@/lib/feature-flags";
 
 interface Step1WelcomeProps {
   onStart: () => void;
@@ -7,7 +8,7 @@ interface Step1WelcomeProps {
 }
 
 const methodSteps = [
-  { title: "How Is the Breathing at Night?", description: "Medical history, BMI, STOP-BANG, ISI, and PLATO-11 questionnaires." },
+  { title: "How Is the Breathing at Night?", description: SHOW_PLATO ? "Medical history, BMI, STOP-BANG, ISI, and PLATO-11 questionnaires." : "Medical history, BMI, STOP-BANG, and ISI questionnaires." },
   { title: "Where Can the Airway Narrow?", description: "Identify areas of your airway that may affect breathing during sleep." },
   { title: "What Can Help?", description: "PALM classification and a full overview of treatment options." },
   { title: "Your Results", description: "Personalized pathway assignment with curated resources, printable for your doctor." },

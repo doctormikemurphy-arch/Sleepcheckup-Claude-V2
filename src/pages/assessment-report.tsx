@@ -13,6 +13,7 @@ import {
 import { assignMurphyPathway, getPathwayDefinition } from "@/lib/pathways";
 import { PATHWAY_CONTENT } from "@/lib/pathway-content";
 import { PALM_QUESTIONS } from "@/lib/questionnaires";
+import { SHOW_PLATO } from "@/lib/feature-flags";
 
 const PATHWAY_LETTERS: Record<string, string> = {
   A_insomnia: "A", B_obesity: "B", C_nasal: "C", D_mandible: "D",
@@ -400,7 +401,7 @@ export default function AssessmentReportPage() {
             </div>
             <div className="flex-1">
               <p className="font-bold text-ink" style={{ fontSize: "17px" }}>Step 1: How Is the Breathing at Night?</p>
-              <p className="text-ink-muted" style={{ fontSize: "14px" }}>Medical History, BMI, Sleep Apnea Risk, Insomnia Severity & Sleep Quality</p>
+              <p className="text-ink-muted" style={{ fontSize: "14px" }}>{SHOW_PLATO ? "Medical History, BMI, Sleep Apnea Risk, Insomnia Severity & Sleep Quality" : "Medical History, BMI, Sleep Apnea Risk & Insomnia Severity"}</p>
             </div>
             <Activity className="w-5 h-5 flex-shrink-0" style={{ color: "#1D4ED8" }} />
           </div>
@@ -490,6 +491,7 @@ export default function AssessmentReportPage() {
           </div>
 
           {/* PLATO */}
+          {SHOW_PLATO && (
           <div className="rounded-xl border p-5 mb-10" style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}>
             <p className="font-bold mb-1" style={{ fontSize: "14px", color: "#1E40AF" }}>Sleep Quality & Daytime Impact</p>
             <p className="text-ink-muted mb-1" style={{ fontSize: "14px" }}>PLATO-11</p>
@@ -510,6 +512,7 @@ export default function AssessmentReportPage() {
               ))}
             </div>
           </div>
+          )}
 
           {/* ── STEP 2: Where Can the Airway Narrow? ── */}
           <div className="flex items-center gap-3 pb-3 mb-5" style={{ borderBottom: "2px solid #15803D" }}>

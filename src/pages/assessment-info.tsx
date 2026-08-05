@@ -1,8 +1,9 @@
 import { Link } from "wouter";
 import { Check, AlertTriangle, ArrowRight } from "lucide-react";
+import { SHOW_PLATO } from "@/lib/feature-flags";
 
 const assessmentSections = [
-  { title: "How Is the Breathing at Night?", description: "Medical history, BMI, STOP-BANG, ISI, and PLATO-11 questionnaires." },
+  { title: "How Is the Breathing at Night?", description: SHOW_PLATO ? "Medical history, BMI, STOP-BANG, ISI, and PLATO-11 questionnaires." : "Medical history, BMI, STOP-BANG, and ISI questionnaires." },
   { title: "Where Can the Airway Narrow?", description: "Identify areas of your airway that may affect breathing during sleep." },
   { title: "What Can Help?", description: "PALM classification and a full overview of treatment options." },
   { title: "Your Results", description: "Personalized pathway assignment with curated resources, printable for your doctor." },
@@ -12,7 +13,7 @@ const included = [
   "Medical history screening (8 conditions)",
   "STOP-BANG sleep apnea risk score",
   "Insomnia Severity Index (ISI)",
-  "PLATO-11 Sleep Quality & Daytime Impact",
+  ...(SHOW_PLATO ? ["PLATO-11 Sleep Quality & Daytime Impact"] : []),
   "Top-Down Anatomy self-check (4 zones)",
   "Personalized pathway assignment",
   "Pathway-specific curated resources",

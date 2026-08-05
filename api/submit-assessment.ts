@@ -83,6 +83,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     medicalHistoryScore = 0,
     medicalHistoryConditions = [] as string[],
     platoTotal = 0,
+    showPlato = true,
     whatResultsSuggest = [] as string[],
     whyItMattersPts = [] as string[],
     whatWorksBestOpts = [] as string[],
@@ -174,7 +175,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ${scoreRow("STOP-BANG Score", `${stopBangScore}/8 — ${riskLabel} OSA Risk`, riskColor)}
         ${scoreRow("Insomnia Severity Index (ISI)", `${isiScore}/28 — ${isiLabel}`, isiColor)}
         ${scoreRow("Body Mass Index (BMI)", bmiValue ? `${Number(bmiValue).toFixed(1)} kg/m² — ${bmiLabel}` : "Not calculated", bmiColor)}
-        ${scoreRow("PLATO-11 Total", `${platoTotal}/44`, "#374151")}
+        ${showPlato ? scoreRow("PLATO-11 Total", `${platoTotal}/44`, "#374151") : ""}
         ${scoreRow("Airway Anatomy Findings", `${anatomyTotal} finding${anatomyTotal !== 1 ? "s" : ""} across 4 zones`, anatomyTotal > 0 ? "#D97706" : "#16A34A")}
         ${scoreRow("Medical History Conditions", medicalHistoryScore > 0 ? medicalHistoryConditions.join(", ") : "None reported", medicalHistoryScore > 0 ? "#D97706" : "#16A34A")}
       </table>

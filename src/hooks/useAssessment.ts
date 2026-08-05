@@ -11,6 +11,9 @@ import {
 } from "@/lib/scoring";
 import { assignMurphyPathway } from "@/lib/pathways";
 import { KEYS, saveState, loadState, clearState, loadState as loadScreenerState } from "@/lib/storage";
+import { SHOW_PLATO } from "@/lib/feature-flags";
+
+const PLATO_STEP = 6;
 
 const initialMedicalHistory: MedicalHistoryAnswers = {
   heartDisease: null, highBloodPressure: null, diabetes: null,
@@ -143,15 +146,19 @@ export function useAssessment() {
   }, [state]);
 
   const goNext = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      step: Math.min(prev.step + 1, TOTAL_ASSESSMENT_STEPS),
-      resumedFromSaved: false,
-    }));
+    setState((prev) => {
+      let next = prev.step + 1;
+      if (!SHOW_PLATO && next === PLATO_STEP) next += 1;
+      return { ...prev, step: Math.min(next, TOTAL_ASSESSMENT_STEPS), resumedFromSaved: false };
+    });
   }, []);
 
   const goBack = useCallback(() => {
-    setState((prev) => ({ ...prev, step: Math.max(prev.step - 1, 1), resumedFromSaved: false }));
+    setState((prev) => {
+      let back = prev.step - 1;
+      if (!SHOW_PLATO && back === PLATO_STEP) back -= 1;
+      return { ...prev, step: Math.max(back, 1), resumedFromSaved: false };
+    });
   }, []);
 
   const setMedicalHistory = useCallback((answers: MedicalHistoryAnswers) => {
@@ -232,6 +239,7 @@ export function useAssessment() {
       case 4: return Object.values(state.stopBang).every((v) => v !== null);
       case 5: return Object.values(state.isi).every((v) => v !== null);
       case 6: {
+        if (!SHOW_PLATO) return true;
         const p = state.plato;
         return [p.q1,p.q2,p.q3,p.q4,p.q5,p.q6,p.q7,p.q8,p.q9,p.q10].every((v) => v !== null);
       }
