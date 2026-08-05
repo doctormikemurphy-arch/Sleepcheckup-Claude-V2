@@ -401,7 +401,7 @@ export default function AssessmentReportPage() {
             </div>
             <div className="flex-1">
               <p className="font-bold text-ink" style={{ fontSize: "17px" }}>Step 1: How Is the Breathing at Night?</p>
-              <p className="text-ink-muted" style={{ fontSize: "14px" }}>Medical History, BMI, Sleep Apnea Risk, Insomnia Severity & Sleep Quality</p>
+              <p className="text-ink-muted" style={{ fontSize: "14px" }}>{SHOW_PLATO ? "Medical History, BMI, Sleep Apnea Risk, Insomnia Severity & Sleep Quality" : "Medical History, BMI, Sleep Apnea Risk & Insomnia Severity"}</p>
             </div>
             <Activity className="w-5 h-5 flex-shrink-0" style={{ color: "#1D4ED8" }} />
           </div>
