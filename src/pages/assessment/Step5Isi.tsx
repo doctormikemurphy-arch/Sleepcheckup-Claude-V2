@@ -2,6 +2,7 @@ import { OptionCards } from "@/components/forms/OptionCards";
 import { ISI_QUESTIONS } from "@/lib/questionnaires";
 import type { IsiAnswers } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { SHOW_PLATO } from "@/lib/feature-flags";
 
 interface Step5IsiProps {
   answers: IsiAnswers;
@@ -65,7 +66,7 @@ export function Step5Isi({ answers, onChange, onNext, onBack, isComplete }: Step
           cursor: isComplete ? "pointer" : "not-allowed",
         }}
       >
-        {isComplete ? "Continue to PLATO-11 →" : `Answer all 7 questions to continue (${answeredCount}/7)`}
+        {isComplete ? (SHOW_PLATO ? "Continue to PLATO-11 →" : "Continue →") : `Answer all 7 questions to continue (${answeredCount}/7)`}
       </button>
       {onBack && (
         <button onClick={onBack} style={{ display: "block", margin: "12px auto 0", fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>

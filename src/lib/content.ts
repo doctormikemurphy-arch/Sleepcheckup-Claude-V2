@@ -3,6 +3,8 @@
 // Edit text anywhere in this file — pages pull their copy from here.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { SHOW_PLATO } from "./feature-flags";
+
 // ── SHARED / REUSED ACROSS PAGES ─────────────────────────────────────────────
 
 export const DR_MURPHY = {
@@ -299,7 +301,7 @@ export const HOW_IT_WORKS = {
         "All free screener content, plus:",
         "Complete pathway assignment (1 of 8)",
         "Medical history & comorbidity analysis",
-        "PLATO-11 Sleep Quality & Daytime Impact",
+        ...(SHOW_PLATO ? ["PLATO-11 Sleep Quality & Daytime Impact"] : []),
         "Full personalized PDF report — emailed instantly",
       ],
       ctaButton: "Get My Full Report — $20 →",
@@ -325,10 +327,10 @@ export const HOW_IT_WORKS = {
         title: "Insomnia Screening",
         body: "Sleep apnea and insomnia frequently co-exist. Treating one without the other leads to poor outcomes. This section identifies overlap.",
       },
-      {
+      ...(SHOW_PLATO ? [{
         title: "PLATO-11 Sleep Quality & Daytime Impact",
         body: "Measures how your sleep quality and daytime functioning are affected — fatigue, alertness, and overall impact on daily life.",
-      },
+      }] : []),
       {
         title: "Airway Zone Assessment",
         body: "Maps which of the 4 anatomical zones of your airway are most likely contributing to your symptoms.",
@@ -422,7 +424,9 @@ export const ABOUT = {
     headline: "About The Murphy Method™",
     paragraphs: [
       "The Murphy Method™ is a clinical framework that categorizes sleep apnea and snoring into 8 distinct pathways based on anatomy, symptoms, medical history, and physiological risk factors. Each pathway corresponds to a specific clinical picture — with targeted treatment options, specialist recommendations, and tailored doctor questions.",
-      "The methodology draws on validated clinical instruments including the STOP-BANG questionnaire, the Insomnia Severity Index (ISI), the PLATO-11 Sleep Quality & Daytime Impact scale, and the PALM classification — the same tools used by sleep medicine physicians in clinical practice worldwide.",
+      SHOW_PLATO
+        ? "The methodology draws on validated clinical instruments including the STOP-BANG questionnaire, the Insomnia Severity Index (ISI), the PLATO-11 Sleep Quality & Daytime Impact scale, and the PALM classification — the same tools used by sleep medicine physicians in clinical practice worldwide."
+        : "The methodology draws on validated clinical instruments including the STOP-BANG questionnaire, the Insomnia Severity Index (ISI), and the PALM classification — the same tools used by sleep medicine physicians in clinical practice worldwide.",
       "Murphy Method™ is a trademark of Sleep Check Up, Inc. This assessment is designed for educational and preparation purposes only — it is not a substitute for a clinical evaluation by a qualified healthcare provider.",
     ],
   },

@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { Check, ArrowRight, Loader2 } from "lucide-react";
 import { getScreenerEmail } from "@/lib/storage";
+import { SHOW_PLATO } from "@/lib/feature-flags";
 
 const FEATURES = [
   "Complete pathway assignment (1 of 8 Murphy Method™ pathways)",
   "Full personalized PDF report emailed instantly",
   "Medical history & comorbidity analysis",
-  "PLATO-11 Sleep Quality & Daytime Impact",
+  ...(SHOW_PLATO ? ["PLATO-11 Sleep Quality & Daytime Impact"] : []),
   "Specialist match for your pathway",
   "7-day satisfaction guarantee",
 ];

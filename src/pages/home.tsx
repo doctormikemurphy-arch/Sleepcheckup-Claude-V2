@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { HOME, DR_MURPHY } from "@/lib/content";
 import drMurphyPhoto from "@/assets/images/Murphy-14_1765142967232.jpg";
+import { SHOW_PLATO } from "@/lib/feature-flags";
 
 const { hero, stats, problem, steps, pricing, testimonials, faqs } = HOME;
 
@@ -137,7 +138,7 @@ export default function HomePage() {
     "Complete pathway assignment (1 of 8 Murphy Method™ pathways)",
     "Full personalized PDF report",
     "Medical history & comorbidity analysis",
-    "PLATO-11 Sleep Quality & Daytime Impact",
+    ...(SHOW_PLATO ? ["PLATO-11 Sleep Quality & Daytime Impact"] : []),
     "Doctor visit prep sheet",
     "Specialist match for your pathway",
     "7-day refund policy",
