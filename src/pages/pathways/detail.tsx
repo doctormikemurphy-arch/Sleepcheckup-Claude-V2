@@ -17,12 +17,12 @@ const LETTER_TO_KEY: Record<string, string> = {
 const ITALIC_KEYWORDS: Record<string, string> = {
   a: "Insomnia",
   b: "Obesity",
-  c: "Obstruction",
-  d: "Obstruction",
-  e: "Obstruction",
-  f: "Physiology",
+  c: "Nasal Problem",
+  d: "Blockage",
+  e: "Blockage",
+  f: "Breathing Control",
   g: "Snoring",
-  h: "OSA",
+  h: "Multiple Factors",
 };
 
 export default function PathwayDetailPage() {
@@ -61,7 +61,7 @@ export default function PathwayDetailPage() {
       <section
         className="section-dark"
         style={{ padding: "96px 24px" }}
-        aria-label={`Pathway ${content.pathwayLetter}`}
+        aria-label={content.title}
       >
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
           <div className="flex items-center justify-between mb-12">
@@ -81,22 +81,6 @@ export default function PathwayDetailPage() {
           </div>
 
           <div className="text-center">
-            <div
-              className="flex-shrink-0 flex items-center justify-center text-white mx-auto mb-6"
-              style={{
-                width: "80px",
-                height: "80px",
-                backgroundColor: "white",
-                borderRadius: "20px",
-                fontFamily: "var(--font-sans)",
-                fontSize: "40px",
-                fontWeight: 600,
-                color: "var(--bg-dark)",
-              }}
-            >
-              {content.pathwayLetter}
-            </div>
-
             <h1
               style={{
                 fontFamily: "var(--font-serif)",

@@ -34,21 +34,7 @@ export default function PathwaysPage() {
               const letter = pathway.id.split("_")[0];
               return (
                 <Link key={pathway.id} href={`/pathways/${letter.toLowerCase()}`} className="no-underline">
-                  <div className="card flex items-start gap-4 cursor-pointer" style={{ padding: "24px" }}>
-                    <div
-                      className="flex-shrink-0 flex items-center justify-center text-white"
-                      style={{
-                        width: "44px",
-                        height: "44px",
-                        borderRadius: "12px",
-                        backgroundColor: "var(--blue)",
-                        fontFamily: "var(--font-sans)",
-                        fontWeight: 700,
-                        fontSize: "18px",
-                      }}
-                    >
-                      {letter}
-                    </div>
+                  <div className="card cursor-pointer" style={{ padding: "24px" }}>
                     <div style={{ minWidth: 0 }}>
                       <p
                         style={{

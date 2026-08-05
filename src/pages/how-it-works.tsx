@@ -13,12 +13,12 @@ export default function HowItWorksPage() {
   const pathwayNames = [
     "Sleep Apnea with Insomnia",
     "Sleep Apnea with Obesity",
-    "Nasal Obstruction",
-    "Jaw & Tongue Obstruction",
-    "Multi-Level Obstruction",
-    "Sleep Physiology Problem",
-    "Low Risk / Simple Snoring",
-    "Complex / Multi-Factor OSA",
+    "Sleep Apnea with a Nasal Problem",
+    "Sleep Apnea with Jaw & Tongue Blockage",
+    "Sleep Apnea with Multi-Level Blockage",
+    "Sleep Apnea with a Breathing Control Problem",
+    "Low Risk Sleep Apnea or Snoring",
+    "Sleep Apnea with Multiple Factors",
   ];
 
   const pathwayLetters = ["A", "B", "C", "D", "E", "F", "G", "H"];
@@ -545,23 +545,7 @@ export default function HowItWorksPage() {
                   className="card"
                   style={{ padding: "28px", minHeight: "140px", cursor: "pointer" }}
                 >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className="flex-shrink-0 flex items-center justify-center"
-                      style={{
-                        width: "48px",
-                        height: "48px",
-                        backgroundColor: "var(--blue-soft)",
-                        color: "var(--blue)",
-                        borderRadius: "12px",
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "24px",
-                        fontWeight: 600,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {letter}
-                    </div>
+                  <div className="flex items-center h-full">
                     <p
                       style={{
                         fontFamily: "var(--font-serif)",

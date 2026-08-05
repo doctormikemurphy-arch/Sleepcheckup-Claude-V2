@@ -68,7 +68,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     email,
     firstName,
     pathwayName,
-    pathwayLetter,
     pathwayDescription,
     stopBangScore = 0,
     osaRisk = "low",
@@ -156,7 +155,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   <tr>
     <td style="padding:28px 36px 0;">
       <div style="background:#EFF6FF;border:2px solid #2563EB;border-radius:10px;padding:24px;text-align:center;">
-        <p style="margin:0 0 4px;color:#2563EB;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">YOUR MURPHY METHOD ASSIGNED PATHWAY${pathwayLetter ? ` — PATHWAY ${pathwayLetter}` : ""}</p>
+        <p style="margin:0 0 4px;color:#2563EB;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">YOUR MURPHY METHOD ASSIGNED PATHWAY</p>
         <h2 style="margin:8px 0 10px;color:#0F172A;font-size:22px;font-weight:800;line-height:1.2;">${pathwayName}</h2>
         <p style="margin:0;color:#1D4ED8;font-size:14px;line-height:1.6;font-style:italic;">${pathwayDescription}</p>
       </div>
