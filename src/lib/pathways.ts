@@ -3,7 +3,7 @@ import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "./types
 export const MURPHY_PATHWAYS: PathwayDefinition[] = [
   {
     id: "A_insomnia",
-    title: "Pathway A: Sleep Apnea with Insomnia",
+    title: "Sleep Apnea with Insomnia",
     shortDescription: "Addressing your insomnia is a key to successful treatment of your sleep apnea.",
     educationalSummary: `Your assessment shows that difficulty falling asleep, staying asleep, or waking too early is a significant concern for you. This is called **Insomnia**, and it can make other sleep problems like sleep apnea feel worse and harder to treat. You are not alone – **30 to 40% of sleep apnea patients have insomnia symptoms**.
 
@@ -20,7 +20,7 @@ Your Next Step: The next step is to see a doctor to discuss the results of this 
   },
   {
     id: "B_obesity",
-    title: "Pathway B: Sleep Apnea with Obesity",
+    title: "Sleep Apnea with Obesity",
     shortDescription: "Because of the clear relationship between obesity and sleep apnea, treating obesity has a big positive effect. Usually non surgery options like CPAP or an oral appliance are tried first.",
     educationalSummary: `Your assessment indicates that you have a **Body-Mass Index (BMI)** of 30 kg/m² or higher. Body Mass Index is a simple number doctors use to compare a person's weight to their height to see if their body weight is in a healthy range. Obesity means having more body weight than is healthy for your height, which can make it harder for the body to work well. __Obesity is defined as having a body mass index (BMI) of 30 kg/m² or higher__, which indicates an excessive amount of body fat associated with increased risk of medical conditions such as cardiovascular disease, type 2 diabetes and sleep apnea.
 
@@ -35,7 +35,7 @@ Your Next Step: The next step is to see a doctor to discuss the results of this 
   },
   {
     id: "C_nasal",
-    title: "Pathway C: Sleep Apnea with A Nasal Problem",
+    title: "Sleep Apnea with a Nasal Problem",
     shortDescription: "Fixing your nasal problem is essential for the successful treatment of sleep apnea.",
     educationalSummary: `Your assessment shows that you have a problem breathing through your nose at night. When the nose is blocked, the body switches to mouth breathing when we sleep. Mouth breathing causes the jaw and tongue to fall back, making the throat space smaller. This can cause snoring or sleep apnea or make these conditions worse. This Your Results summary includes an Anatomy Level Assessment section above listing your positive answers for the nose (and the likely cause of the problem).
 
@@ -48,7 +48,7 @@ Your Next Step: The next step is to see a doctor to discuss the results of this 
   },
   {
     id: "D_mandible",
-    title: "Pathway D: Sleep Apnea with Mandible & Tongue Obstruction",
+    title: "Sleep Apnea with Jaw & Tongue Blockage",
     shortDescription: "Your jaw and tongue position is likely the main cause of your sleep apnea. An oral appliance or surgery are good treatment options to consider.",
     educationalSummary: `The results of your assessment show that the main problem with your sleep apnea may be the position of your mandible & tongue when you sleep. I tell my patients that your mandible (lower jaw) is a bony box that your tongue must fit inside. If the lower jaw is positioned back or narrow the tongue is pushed back making the space in your throat to breathe smaller causing sleep apnea.
 
@@ -61,7 +61,7 @@ Your Next Step: The next step is to see a doctor to discuss the results of this 
   },
   {
     id: "E_multilevel",
-    title: "Pathway E: Sleep Apnea with Multiple Level Obstruction",
+    title: "Sleep Apnea with Multi-Level Blockage",
     shortDescription: "Many people with sleep apnea have blockage at more than one level of their airway.",
     educationalSummary: `Your self-assessment indicates that more than one area of your airway—such as a combination of nose, palate & tonsil, mandible & tongue, or neck factors—may be involved in your sleep breathing challenges. If you have a problem with the palate & tonsil level, this is a common pathway. This is a very common situation. It is rare that a person with sleep apnea has a problem with only one of the four levels of the airway when they sleep. **Your sleep apnea is coming from multiple places.**
 
@@ -74,7 +74,7 @@ Your Next Step: The next step is to see a doctor to discuss the results of this 
   },
   {
     id: "F_physiology",
-    title: "Pathway F: Sleep Apnea with Physiology Problem",
+    title: "Sleep Apnea with a Breathing Control Problem",
     shortDescription: "You may have a problem with the way your body works at night, not with the structure of your airway.",
     educationalSummary: `Your assessment shows that the main problem with your breathing when you sleep is not the structure of your airway (anatomy) but the way your body works (physiology). This is the situation for about 20% of people with sleep apnea.
 
@@ -89,7 +89,7 @@ Your Next Step: The next step is to see a doctor to discuss the results of this 
   },
   {
     id: "G_low_risk",
-    title: "Pathway G: Low Risk Sleep Apnea or Snoring",
+    title: "Low Risk Sleep Apnea or Snoring",
     shortDescription: "Your assessment indicates that you are at low risk for sleep apnea and may just be snoring. THIS DOES NOT MEAN THAT YOU DO NOT HAVE SLEEP APNEA. You still need to be evaluated for sleep apnea.",
     educationalSummary: `Your assessment shows that you are at low risk for sleep apnea and that the main problem with your breathing while you sleep may be snoring. Do not feel bad or discouraged because you are not alone! About 25% of adults snore regularly, meaning they snore most nights. This translates to about 64 million adults snoring regularly in the U.S (given an adult population of ~255 million). WOW.
 
@@ -116,7 +116,7 @@ Your Next Step: The next step is to see a doctor to discuss the results of this 
   },
   {
     id: "H_complex",
-    title: "Pathway H: Sleep Apnea with Other Factors",
+    title: "Sleep Apnea with Multiple Factors",
     shortDescription: "Not everyone fits into a nice, clean path. This is not a bad thing. Proceed with evaluation and the same Murphy Method™ principles will direct you to the correct treatment.",
     educationalSummary: `The results of your assessment do not place you in one of the other pathways. This is not unusual. The other pathways are just common scenarios for people with snoring or sleep apnea. For example, you could have sleep apnea with blockage only at the level of your palate & tonsils (this is not as common as the other pathways but still happens). This situation is easily treated.
 

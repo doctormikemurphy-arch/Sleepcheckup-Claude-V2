@@ -24,7 +24,7 @@ export interface PathwayContent {
 export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
   A_insomnia: {
     pathwayLetter: "A",
-    title: "Pathway A: Sleep Apnea with Insomnia (COMISA)",
+    title: "Sleep Apnea with Insomnia",
     subtitle: "Addressing your insomnia is a key to successful treatment of your sleep apnea",
     whatResultsSuggest: [
       "Your screening indicates an elevated risk for obstructive sleep apnea.",
@@ -69,7 +69,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
 
   B_obesity: {
     pathwayLetter: "B",
-    title: "Pathway B: Sleep Apnea with Obesity",
+    title: "Sleep Apnea with Obesity",
     subtitle: "Obesity and sleep apnea go hand in hand. Treating your body weight/obesity can have a big impact on your sleep apnea. Usually non surgery treatments like CPAP are tried first.",
     whatResultsSuggest: [
       "Your screening indicates an elevated risk for obstructive sleep apnea.",
@@ -113,7 +113,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
 
   C_nasal: {
     pathwayLetter: "C",
-    title: "Pathway C: Sleep Apnea with A Nasal Problem",
+    title: "Sleep Apnea with a Nasal Problem",
     subtitle: "An open nasal airway is essential for successful treatment of your sleep apnea",
     whatResultsSuggest: [
       "Your screening indicates an elevated risk for obstructive sleep apnea.",
@@ -157,7 +157,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
 
   D_mandible: {
     pathwayLetter: "D",
-    title: "Pathway D: Sleep Apnea with Mandible & Tongue Obstruction",
+    title: "Sleep Apnea with Jaw & Tongue Blockage",
     subtitle: "Your jaw and tongue positioning may be contributing to airway blockage during sleep.",
     whatResultsSuggest: [
       "Your screening indicates an elevated risk for obstructive sleep apnea.",
@@ -201,7 +201,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
 
   E_multilevel: {
     pathwayLetter: "E",
-    title: "Pathway E: Sleep Apnea with Multi-Level Obstruction",
+    title: "Sleep Apnea with Multi-Level Blockage",
     subtitle: "Multiple areas of your airway may be contributing to breathing difficulties during sleep.",
     whatResultsSuggest: [
       "Your screening indicates an elevated risk for obstructive sleep apnea.",
@@ -245,7 +245,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
 
   F_physiology: {
     pathwayLetter: "F",
-    title: "Pathway F: Sleep Apnea with Physiology Problem",
+    title: "Sleep Apnea with a Breathing Control Problem",
     subtitle: "Your sleep breathing may involve subtle body signals beyond just airway blockage.",
     whatResultsSuggest: [
       "Your screening indicates an elevated risk for obstructive sleep apnea.",
@@ -289,7 +289,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
 
   G_low_risk: {
     pathwayLetter: "G",
-    title: "Pathway G: Low Risk Sleep Apnea / Snoring",
+    title: "Low Risk Sleep Apnea or Snoring",
     subtitle: "Simple lifestyle changes may help reduce snoring and improve your sleep.",
     whatResultsSuggest: [
       "Your screening indicates a lower risk for obstructive sleep apnea compared to other pathways.",
@@ -333,7 +333,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
 
   H_complex: {
     pathwayLetter: "H",
-    title: "Pathway H: Sleep Apnea with Complex / Mixed Factors",
+    title: "Sleep Apnea with Multiple Factors",
     subtitle: "Your situation may benefit from a more in-depth, personalized evaluation.",
     whatResultsSuggest: [
       "Your screening indicates a combination of factors that don't fit neatly into a single category.",

@@ -48,14 +48,14 @@ interface SiteCopyData {
 
 const PATHWAY_OPTIONS = [
   { value: "general", label: "General Resources (Free Screening)" },
-  { value: "A_insomnia", label: "Pathway A: Sleep Apnea with Insomnia" },
-  { value: "B_obesity", label: "Pathway B: Sleep Apnea with Obesity" },
-  { value: "C_nasal", label: "Pathway C: Nasal Obstruction" },
-  { value: "D_mandible", label: "Pathway D: Mandible & Tongue" },
-  { value: "E_multilevel", label: "Pathway E: Multi-Level Obstruction" },
-  { value: "F_physiology", label: "Pathway F: Physiology-Focused" },
-  { value: "G_low_risk", label: "Pathway G: Low Risk" },
-  { value: "H_complex", label: "Pathway H: Complex / Multi-Factorial" },
+  { value: "A_insomnia", label: "A — Sleep Apnea with Insomnia" },
+  { value: "B_obesity", label: "B — Sleep Apnea with Obesity" },
+  { value: "C_nasal", label: "C — Sleep Apnea with a Nasal Problem" },
+  { value: "D_mandible", label: "D — Sleep Apnea with Jaw & Tongue Blockage" },
+  { value: "E_multilevel", label: "E — Sleep Apnea with Multi-Level Blockage" },
+  { value: "F_physiology", label: "F — Sleep Apnea with a Breathing Control Problem" },
+  { value: "G_low_risk", label: "G — Low Risk Sleep Apnea or Snoring" },
+  { value: "H_complex", label: "H — Sleep Apnea with Multiple Factors" },
 ];
 
 const CONTENT_TYPES = [
