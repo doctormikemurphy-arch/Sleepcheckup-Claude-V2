@@ -208,7 +208,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   <tr>
     <td style="padding:28px 36px 0;">
       <p style="margin:0 0 4px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">PALM CLASSIFICATION</p>
-      <p style="margin:0 0 12px;color:#9CA3AF;font-size:12px;font-style:italic;">Underlying factors that may contribute to your sleep apnea</p>
+      <p style="margin:0 0 12px;color:#9CA3AF;font-size:12px;font-style:italic;">Sleep apnea is not just a blocked airway. These four factors can each play a part. Share this with your doctor &mdash; treatments for them are still being developed.</p>
       <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;">
         <tr style="background:#F9FAFB;">
           <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;text-align:center;width:32px;"></td>

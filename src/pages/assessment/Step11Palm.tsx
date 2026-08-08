@@ -33,13 +33,37 @@ export function Step11Palm({ answers, onChange, onFinish, onBack, isComplete }: 
     <div className="mx-auto px-4 py-10" style={{ maxWidth: "900px" }} id="main-content">
       <h2 className="font-bold mb-4" style={{ fontSize: "22px", color: "#B91C1C" }}>The PALM Classification Screening</h2>
       <p className="text-ink-soft mb-4" style={{ fontSize: "16px", lineHeight: 1.7 }}>
-        In addition to having a primary problem with the structure (called anatomy) of their airway, <strong>70%</strong> of patients with obstructive sleep apnea also have a problem with how their body works (called physiology). About <strong>20%</strong> of patients with obstructive sleep apnea have physiology as the main problem.
+        Most people think sleep apnea is just a blocked airway. That is only part of the story.
       </p>
       <p className="text-ink-soft mb-4" style={{ fontSize: "16px", lineHeight: 1.7 }}>
-        The <strong>PALM classification</strong> helps explain why sleep apnea happens by looking at four things: how narrow the airway is <strong>(P)</strong>, how easily the brain wakes up <strong>(A)</strong>, how steady the breathing control is <strong>(L)</strong>, and how strong the breathing muscles are during sleep <strong>(M)</strong>, so treatment can be better matched to the person. The ALM part of the PALM Classification organizes the physiology problems for patients with obstructive sleep apnea.
+        A blocked airway is the main cause for most people. But three other things can also cause sleep apnea. They have to do with how your body controls breathing and sleep. About <strong>7 out of 10</strong> people with sleep apnea have a blocked airway <strong>plus</strong> one of these three. For about <strong>2 out of 10</strong> people, one of these three is the main cause.
+      </p>
+      <p className="text-ink-soft mb-3" style={{ fontSize: "16px", lineHeight: 1.7 }}>
+        The <strong>PALM Classification</strong> is how doctors sort out all four causes:
+      </p>
+      <ul className="mb-4 space-y-2 pl-1">
+        {[
+          { letter: "P", text: "how easily your airway closes when you sleep" },
+          { letter: "A", text: "how easily you wake up" },
+          { letter: "L", text: "how steady your body keeps your breathing" },
+          { letter: "M", text: "how well the muscles that hold your airway open keep working during sleep" },
+        ].map((item) => (
+          <li key={item.letter} className="flex items-start gap-3 text-ink-soft" style={{ fontSize: "16px", lineHeight: 1.7 }}>
+            <span
+              className="flex items-center justify-center flex-shrink-0 font-bold rounded-md"
+              style={{ width: "26px", height: "26px", marginTop: "2px", backgroundColor: "#1D4ED8", color: "#fff", fontSize: "13px" }}
+            >
+              {item.letter}
+            </span>
+            <span>{item.text}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="text-ink-soft mb-4" style={{ fontSize: "16px", lineHeight: 1.7 }}>
+        Doctors know these four causes are real. They have been studied for years. But treatments for the last three are still being worked out. New ones are coming. Knowing your pattern now means your doctor can use it as soon as those treatments arrive.
       </p>
       <p className="text-ink-soft mb-8" style={{ fontSize: "16px", lineHeight: 1.7 }}>
-        Answer the questions below. A section is flagged positive if you answer "Yes" to 2 or more questions.
+        Answer the questions below. If you answer "Yes" to 2 or more questions in a group, that group is flagged.
       </p>
 
       <div className="space-y-8 mb-10">

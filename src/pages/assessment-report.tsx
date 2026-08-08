@@ -50,10 +50,10 @@ const anatomyZones = [
 ];
 
 const palmLetters = [
-  { key: "pcrit" as const, letter: "P", name: "Airway Narrowing (Pcrit)" },
-  { key: "arousal" as const, letter: "A", name: "Arousal Threshold" },
-  { key: "loopGain" as const, letter: "L", name: "Loop Gain" },
-  { key: "muscle" as const, letter: "M", name: "Muscle Responsiveness" },
+  { key: "pcrit" as const, letter: "P", name: "Airway Narrowing (Pcrit)", plain: "How easily your airway closes when you sleep" },
+  { key: "arousal" as const, letter: "A", name: "Arousal Threshold", plain: "How easily you wake up during the night" },
+  { key: "loopGain" as const, letter: "L", name: "Loop Gain", plain: "How steady your body keeps your breathing" },
+  { key: "muscle" as const, letter: "M", name: "Muscle Responsiveness", plain: "How well the muscles that hold your airway open keep working during sleep" },
 ];
 
 const SPECIALIST_RESOURCES = {
@@ -581,8 +581,14 @@ export default function AssessmentReportPage() {
           {/* PALM results */}
           <div className="rounded-xl border p-5 mb-4" style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}>
             <p className="font-bold mb-3" style={{ fontSize: "15px", color: "#991B1B" }}>PALM Classification Screening</p>
+            <p className="text-ink-muted mb-3" style={{ fontSize: "14px", lineHeight: 1.65 }}>
+              Sleep apnea is not just a blocked airway. Three other things can play a part. How easily you wake up. How steady your body keeps your breathing. How well your airway muscles keep working during sleep. The PALM Classification checks all four.
+            </p>
+            <p className="text-ink-muted mb-3" style={{ fontSize: "14px", lineHeight: 1.65 }}>
+              If you answered "Yes" to 2 or more questions in a group, that group is marked <strong>Flagged</strong> below. Flagged means this factor may be part of your sleep apnea. <strong>Clear</strong> means it probably is not.
+            </p>
             <p className="text-ink-muted mb-4" style={{ fontSize: "14px", lineHeight: 1.65 }}>
-              A section is flagged positive if you answered "Yes" to 2 or more questions. Flagged sections indicate physiological factors that may influence your treatment options.
+              Treatments for these three factors are still being developed. Share this page with your doctor. As new treatments arrive, your doctor will already know your pattern.
             </p>
             <div className="grid sm:grid-cols-2 gap-3">
               {palmLetters.map((p) => {
@@ -599,6 +605,7 @@ export default function AssessmentReportPage() {
                         {isPositive ? "Flagged" : "Clear"}
                       </span>
                     </div>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "var(--text-muted)", lineHeight: 1.5, marginTop: "2px" }}>{p.plain}</p>
                     {isPositive && section?.positiveQuestions?.length > 0 && (
                       <ul className="pl-2 mt-1 space-y-0.5">
                         {section.positiveQuestions.map((q: string, i: number) => (
