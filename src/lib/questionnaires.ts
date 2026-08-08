@@ -390,7 +390,7 @@ export const PALM_QUESTIONS: PalmSectionConfig[] = [
     section: "pcrit",
     sectionName: "Airway Narrowing (Pcrit)",
     sectionLetter: "P",
-    description: "Your airway may be narrow or soft in certain areas, which makes it easier to block off when you sleep",
+    description: "How easily your airway closes when you sleep. A narrow or soft airway blocks off more easily.",
     questions: [
       {
         id: "pcrit1",
@@ -414,7 +414,7 @@ export const PALM_QUESTIONS: PalmSectionConfig[] = [
     section: "arousal",
     sectionName: "Arousal Threshold",
     sectionLetter: "A",
-    description: "How easily the brain wakes up during sleep. People with a low arousal threshold wake up too easily.",
+    description: "How easily you wake up during the night. Some people wake up too easily, which breaks up their sleep.",
     questions: [
       {
         id: "arousal1",
@@ -438,7 +438,7 @@ export const PALM_QUESTIONS: PalmSectionConfig[] = [
     section: "loopGain",
     sectionName: "Loop Gain",
     sectionLetter: "L",
-    description: "How steady the breathing control is. High loop gain means the breathing control system is over-reactive, causing unstable breathing.",
+    description: "How steady your body keeps your breathing. Some people react too much to small changes, so their breathing swings up and down.",
     questions: [
       {
         id: "loopGain1",
@@ -467,7 +467,7 @@ export const PALM_QUESTIONS: PalmSectionConfig[] = [
     section: "muscle",
     sectionName: "Muscle Responsiveness",
     sectionLetter: "M",
-    description: "How strong the breathing muscles are during sleep. Poor muscle compensation means the throat muscles don't respond well to keep the airway open.",
+    description: "How well the muscles that hold your airway open keep working during sleep. Sometimes they stop responding well.",
     questions: [
       {
         id: "muscle1",

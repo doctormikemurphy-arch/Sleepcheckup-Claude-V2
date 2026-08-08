@@ -130,9 +130,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       </td>
       <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6;color:#374151;font-size:14px;font-weight:500;">${p.name}</td>
       <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6;text-align:center;">
-        <span style="background:${statusBg};color:${statusColor};font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;">${p.isPositive ? "Positive" : "Negative"}</span>
+        <span style="background:${statusBg};color:${statusColor};font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;">${p.isPositive ? "Flagged" : "Clear"}</span>
       </td>
-      <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6;color:#6B7280;font-size:12px;">${p.questions.length > 0 ? p.questions.join("; ") : "No positive findings"}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6;color:#6B7280;font-size:12px;">${p.isPositive && p.questions.length > 0 ? p.questions.join("; ") : "&mdash;"}</td>
     </tr>`;
   };
 
@@ -214,7 +214,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;text-align:center;width:32px;"></td>
           <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;">Factor</td>
           <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;text-align:center;">Result</td>
-          <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;">Positive Findings</td>
+          <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;">What You Reported</td>
         </tr>
         ${palmResults.map(palmRow).join("")}
       </table>
