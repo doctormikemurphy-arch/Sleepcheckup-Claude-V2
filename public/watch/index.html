@@ -1,0 +1,721 @@
+<!doctype html>
+<!--
+  ============================================================================
+  /watch  —  Wearable sleep apnea alert landing page
+  ============================================================================
+
+  STATUS: DRAFT — ONE ITEM LEFT BEFORE LAUNCH
+
+  This page carries a <meta name="robots" content="noindex"> tag as a safety
+  net so it cannot be indexed if it deploys before review is complete.
+
+  REVIEW LOG — updated 2026-09-26
+    1. Patient story — REMOVED pending written permission. The drafted text
+         is preserved in the project doc "watch-page-copy.md". Drop it back
+         in once permission is obtained; it is the strongest section.
+    2. Insurance wording — REWRITTEN to remove unverified assertions. The
+         page now explains that coverage follows a provider's order, and
+         tells the reader to ask their own plan before buying anything.
+         No specific coverage promise is made.
+    3. Cost range — VERIFIED. Updated from "$150-$300" to "$150-$500",
+         which matches published 2026 direct-to-consumer pricing.
+    4. "Negative result" claim — VERIFIED AND STRENGTHENED. Now quotes the
+         AASM Clinical Practice Guideline for Diagnostic Testing for Adult
+         OSA (Kapur VK et al.), STRONG recommendation: "if a single home
+         sleep apnea test is negative, inconclusive or technically
+         inadequate, polysomnography be performed for the diagnosis of OSA."
+         Guideline is cited and linked on the page.
+    5. Bio, photo, credentials — DONE.
+         Stanford affiliation RESOLVED per Dr. Murphy: approved outside
+         activity in his contract; Stanford MEDICINE (employer) not
+         Stanford University; no logo, no borrowed color scheme; and the
+         same claim plus profile link already appear on the live /about
+         page. An explicit independence disclaimer has been added to the
+         bio card to foreclose any implication of endorsement.
+    6. Primary button — RESOLVED. Goes to the EXISTING free screener
+         (/screener), per Dr. Murphy. No new screener is being built. The
+         free screener already carries STOP-BANG plus the anatomy/zone
+         questions, so it needs no changes for this audience.
+
+  REMAINING BLOCKER: item 5 (Stanford), and Dr. Murphy's own read of the
+  clinical wording in the "Why not just buy the test?" section.
+
+  ASSETS (copies - all originals untouched):
+    /watch/dr-murphy.jpg - from src/assets/images/Murphy-14_*.jpg
+                           9 MB / 3762x5132  ->  59 KB / 640x873
+    /watch/logo.png      - from src/assets/images/logo.png
+                           1 MB / 1254x1254  ->  7.6 KB / 96x96
+
+  The header here is a hand-coded copy of src/components/layout/Header.tsx
+  (floating pill, same colors, same nav, same CTA). If that component ever
+  changes, this page will NOT follow automatically - update it by hand.
+
+  THEN: delete the noindex meta tag below.
+
+  This file is self-contained static HTML. It imports nothing from the React
+  app, alters no existing route, and touches no protected code.
+  ============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+
+<!-- ***** REMOVE THIS LINE WHEN APPROVED FOR LAUNCH ***** -->
+<meta name="robots" content="noindex" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apple Watch Sleep Apnea Notification — What To Do Next | SleepCheckUp</title>
+<meta name="description" content="Your watch flagged possible sleep apnea. Before you buy a home test, find out where your problem is. A $20 physician-built assessment and a report your doctor can act on." />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="canonical" href="https://sleepcheckup.com/watch" />
+
+<meta property="og:title" content="Your watch found a signal. It can't tell you where the problem is." />
+<meta property="og:description" content="Before you buy a home sleep test, find out where your problem is. $20, and a report your doctor can act on." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://sleepcheckup.com/watch" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --primary:#1D4ED8; --primary-hover:#1E40AF;
+    --ink:#0F172A; --ink-muted:#475569; --ink-soft:#64748B;
+    --bg:#FFFFFF; --bg-soft:#F8FAFC; --bg-tint:#EFF6FF;
+    --border:#E2E8F0; --success:#15803D; --warning:#B45309; --danger:#B91C1C;
+    --r-sm:6px; --r-md:10px; --r-lg:16px;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:Fraunces,Georgia,serif; margin:0; color:var(--ink);}
+  p{margin:0 0 1.05em;}
+  p:last-child{margin-bottom:0;}
+  a{color:var(--primary);}
+
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
+  .section{padding:56px 0;}
+  @media(min-width:768px){ .section{padding:80px 0;} }
+  .soft{background:var(--bg-soft);}
+  .tint{background:var(--bg-tint);}
+  .rule{border:0; border-top:1px solid var(--border); margin:0;}
+
+  /* header — matches the site's floating pill nav */
+  .site-head{position:fixed; z-index:50; top:16px; left:16px; right:16px;}
+  .head-pill{
+    max-width:1100px; margin:0 auto; height:60px; padding:0 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    background:rgba(246,248,251,.88);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    border-radius:9999px; border:1px solid rgba(15,23,42,.08);
+    box-shadow:0 4px 24px rgba(15,23,42,.06);
+  }
+  .brand{display:flex; align-items:center; gap:8px; text-decoration:none; flex-shrink:0;}
+  .brand img{width:32px; height:32px; object-fit:contain; border-radius:8px; display:block;}
+  .brand span{font-size:15px; font-weight:600; color:var(--ink);}
+  .head-nav{display:none; align-items:center; gap:8px;}
+  @media(min-width:900px){ .head-nav{display:flex;} }
+  .head-nav a{
+    font-size:15px; font-weight:500; color:var(--ink-soft); text-decoration:none;
+    min-height:40px; display:inline-flex; align-items:center; padding:0 16px;
+  }
+  .head-nav a:hover{color:var(--ink);}
+  .head-cta{
+    background:var(--primary); color:#fff; text-decoration:none;
+    font-size:15px; font-weight:600; padding:10px 20px; border-radius:9999px;
+    white-space:nowrap; flex-shrink:0; transition:background .15s ease;
+  }
+  .head-cta:hover{background:var(--primary-hover);}
+
+  /* hero — extra top padding clears the fixed header */
+  .hero{background:var(--bg-tint); padding:112px 0 60px;}
+  @media(min-width:768px){ .hero{padding:148px 0 92px;} }
+  .eyebrow{
+    display:inline-block; font-size:13px; font-weight:600; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--primary); margin-bottom:18px;
+  }
+  .hero h1{font-size:34px; line-height:1.15; letter-spacing:-.01em;}
+  @media(min-width:768px){ .hero h1{font-size:44px;} }
+  .hero .lede{font-size:19px; color:var(--ink-muted); margin-top:22px;}
+  @media(min-width:768px){ .hero .lede{font-size:20px;} }
+
+  /* buttons */
+  .cta-row{margin-top:32px;}
+  .btn{
+    display:inline-block; background:var(--primary); color:#fff; text-decoration:none;
+    font-weight:600; font-size:17px; padding:15px 30px; border-radius:var(--r-md);
+    min-height:48px; line-height:1.2; transition:background .15s ease;
+  }
+  .btn:hover{background:var(--primary-hover);}
+  .btn-sub{display:block; margin-top:14px; font-size:15px; color:var(--ink-muted);}
+  .btn-sub a{font-weight:500;}
+
+  /* generic */
+  h2.sec{font-size:26px; line-height:1.25; margin-bottom:20px;}
+  @media(min-width:768px){ h2.sec{font-size:30px;} }
+  h3.sub{font-size:20px; line-height:1.35; margin:28px 0 10px;}
+  .muted{color:var(--ink-muted);}
+  .lead-in{font-size:19px; color:var(--ink-muted); margin-bottom:26px;}
+
+  ul.plain{margin:0 0 1.05em; padding-left:0; list-style:none;}
+  ul.plain li{position:relative; padding-left:30px; margin-bottom:13px;}
+  ul.plain li::before{
+    content:""; position:absolute; left:6px; top:.62em;
+    width:7px; height:7px; border-radius:50%; background:var(--primary);
+  }
+  ul.plain li strong{color:var(--ink);}
+
+  /* pull statement */
+  .statement{
+    border-left:4px solid var(--primary); background:#fff;
+    padding:22px 26px; border-radius:0 var(--r-md) var(--r-md) 0;
+    margin:30px 0; font-family:Fraunces,Georgia,serif;
+    font-size:21px; line-height:1.45; font-weight:600; color:var(--ink);
+  }
+  .soft .statement{background:#fff;}
+
+  /* steps */
+  .steps{margin-top:34px;}
+  .step{
+    display:flex; gap:20px; padding:24px 0; border-top:1px solid var(--border);
+  }
+  .step:last-child{border-bottom:1px solid var(--border);}
+  .step-n{
+    flex:0 0 40px; height:40px; border-radius:50%;
+    background:var(--primary); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:17px;
+  }
+  .step-body h3{font-size:20px; margin-bottom:6px;}
+  .step-body p{color:var(--ink-muted); margin:0;}
+
+  /* table */
+  .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:30px 0 18px;}
+  table{border-collapse:collapse; width:100%; min-width:580px; font-size:15px;}
+  caption{text-align:left; font-size:15px; color:var(--ink-soft); padding-bottom:12px;}
+  th,td{padding:14px 16px; text-align:left; vertical-align:top; border-bottom:1px solid var(--border);}
+  thead th{
+    background:var(--bg-tint); font-size:13px; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--ink); font-weight:700;
+    border-bottom:2px solid var(--border);
+  }
+  tbody th{font-weight:600; color:var(--ink); width:26%; background:var(--bg-soft);}
+  .soft tbody th{background:#fff;}
+  td.good{color:var(--ink);}
+  td.meh{color:var(--ink-muted);}
+
+  /* story */
+  .story{border-left:4px solid var(--warning); padding-left:26px;}
+  .story h2{margin-bottom:18px;}
+
+  /* three-up */
+  .whatyouget{margin-top:30px;}
+  .item{padding:24px 0; border-top:1px solid var(--border);}
+  .item:last-child{border-bottom:1px solid var(--border);}
+  .item h3{font-size:20px; margin-bottom:8px;}
+  .item p{color:var(--ink-muted); margin:0;}
+
+  /* bio */
+  .bio{
+    background:#fff; border:1px solid var(--border); border-radius:var(--r-lg);
+    padding:28px; margin-top:26px;
+    display:flex; flex-direction:column; gap:24px;
+  }
+  @media(min-width:640px){
+    .bio{flex-direction:row; gap:28px; align-items:flex-start;}
+    .bio-photo{flex:0 0 200px;}
+  }
+  .bio-photo img{
+    display:block; width:100%; max-width:220px; height:auto;
+    border-radius:var(--r-md); background:var(--bg-soft);
+  }
+  .bio-text{flex:1 1 auto; min-width:0;}
+  .stanford-link{font-size:15px; font-weight:500;}
+  .affiliation-note{
+    margin-top:18px; padding-top:16px; border-top:1px solid var(--border);
+    font-size:13px; line-height:1.55; color:var(--ink-soft);
+  }
+  .bio-name{font-family:Fraunces,Georgia,serif; font-size:22px; font-weight:700; margin-bottom:4px;}
+  .bio-cred{
+    font-size:15px; font-weight:600; color:var(--primary);
+    margin:0 0 16px; letter-spacing:.005em;
+  }
+  .placeholder{
+    background:#FEF3C7; border:1px dashed var(--warning); color:#78350F;
+    padding:14px 16px; border-radius:var(--r-sm); font-size:15px; margin-top:14px;
+  }
+
+  /* explore the site */
+  .explore{display:grid; gap:14px; margin-top:26px;}
+  @media(min-width:700px){ .explore{grid-template-columns:repeat(3,1fr);} }
+  .explore a{
+    display:block; text-decoration:none; background:#fff;
+    border:1px solid var(--border); border-radius:var(--r-md);
+    padding:20px 22px; transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .explore a:hover{border-color:var(--primary); box-shadow:0 4px 16px rgba(15,23,42,.06);}
+  .explore h3{font-size:17px; margin-bottom:6px; color:var(--primary);}
+  .explore p{font-size:15px; color:var(--ink-muted); margin:0;}
+
+  /* faq */
+  .faq{margin-top:26px;}
+  .qa{padding:22px 0; border-top:1px solid var(--border);}
+  .qa:last-child{border-bottom:1px solid var(--border);}
+  .qa h3{font-size:18px; line-height:1.4; margin-bottom:8px;}
+  .qa p{color:var(--ink-muted); margin:0;}
+
+  /* script box */
+  .script{
+    background:var(--bg-tint); border-radius:var(--r-md);
+    padding:20px 24px; margin:20px 0; font-size:17px; color:var(--ink);
+    border-left:4px solid var(--primary);
+  }
+
+  /* closing */
+  .closing{background:var(--bg-tint); text-align:center;}
+  .closing h2{font-size:28px; margin-bottom:16px;}
+  @media(min-width:768px){ .closing h2{font-size:34px;} }
+  .closing p{color:var(--ink-muted); max-width:520px; margin-left:auto; margin-right:auto;}
+
+  /* footer */
+  .site-foot{background:var(--ink); color:#CBD5E1; padding:40px 0; font-size:14px; line-height:1.6;}
+  .site-foot a{color:#93C5FD;}
+  .site-foot .disclaimer{margin-bottom:18px;}
+  .site-foot .links a{margin-right:18px; text-decoration:none;}
+</style>
+</head>
+
+<body>
+
+<header class="site-head">
+  <div class="head-pill">
+    <a class="brand" href="/" aria-label="SleepCheckup home">
+      <img src="/watch/logo.png" alt="" aria-hidden="true" width="96" height="96" />
+      <span>sleepcheckup.com</span>
+    </a>
+    <nav class="head-nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/how-it-works">How It Works</a>
+      <a href="/about">About Dr. Murphy</a>
+    </nav>
+    <a class="head-cta" href="/screener">Start Free Screening</a>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">For people who got a wearable alert</span>
+    <h1>Your watch found a signal.<br />It can't tell you where the problem is.</h1>
+    <p class="lede">
+      An Apple Watch or Galaxy Watch notification means your breathing did something
+      overnight worth paying attention to. It doesn't tell you <em>where</em> your airway
+      is narrowing. That's the answer that points to the approach most likely to help
+      you specifically.
+    </p>
+    <p class="lede" style="margin-top:14px;">
+      Before you spend money on a test, find out what you're actually dealing with.
+    </p>
+    <div class="cta-row">
+      <a class="btn" href="/screener">Start the free screening</a>
+      <span class="btn-sub">Takes a few minutes · No payment · <a href="/assessment/info">Or go straight to the full assessment ($20)</a></span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHAT YOUR WATCH TOLD YOU ══ -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="sec">What your watch told you, and what it didn't</h2>
+    <p class="muted">
+      Your watch tracked small signals overnight and found a pattern consistent with
+      disrupted breathing. That's real information, and it's why the feature exists.
+    </p>
+    <p class="muted">Here is what it did not do:</p>
+    <ul class="plain">
+      <li><strong>It did not diagnose sleep apnea.</strong> It isn't designed to, and it isn't cleared to.</li>
+      <li><strong>It did not look at your airway.</strong></li>
+      <li><strong>It did not tell you where the trouble is</strong> — Nose &amp; Nasal Airway, Palate &amp; Tonsils, Jaw &amp; Tongue, Neck, or some combination of them.</li>
+      <li><strong>It did not tell you what kind of sleep study you need,</strong> or who should order it.</li>
+    </ul>
+    <div class="statement">
+      Your watch told you <em>that</em> something is happening. It cannot tell you
+      <em>where</em> or <em>why</em>.
+    </div>
+    <p class="muted">That gap is why this page exists.</p>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══ PATIENT STORY — REMOVED PENDING WRITTEN PERMISSION ══
+
+     The 39-year-old patient's account was drafted and is preserved in the
+     project document "watch-page-copy.md". It was removed from the live page
+     because written permission has not been obtained. Drop it back in here
+     once it has. It is the most persuasive section of the page.
+     ══ -->
+
+<!-- ══ THREE STEPS ══ -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="sec">What to do instead</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">
+          <h3>Your watch found a signal</h3>
+          <p>You already have this. It's the reason you're here, and it's worth taking seriously.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">
+          <h3>Find out where your problem is</h3>
+          <p><strong>Start with the free screening.</strong> A few minutes, no payment. It gives
+             you two things your watch can't: your risk of having sleep apnea on a validated
+             clinical scale, and which of your four airway zones — nose to neck — are flagged.</p>
+          <p style="margin-top:10px;">If you want the whole picture, the $20 full assessment
+             matches you to one of eight paths and gives you a PDF report: a personalized
+             guide and next steps for you and your doctor. Sleep apnea doesn't have one
+             cause, so it doesn't have one fix.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">
+          <h3>Take the report to your provider</h3>
+          <p>They order the sleep study, so your insurance applies. You walk into that visit
+             already understanding your own situation. That makes you a partner in the plan,
+             not just a passenger.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══ COMPARISON ══ -->
+<section class="section soft">
+  <div class="wrap">
+    <h2 class="sec">Two paths from the same notification</h2>
+    <div class="table-scroll">
+      <table>
+        <caption>What each path costs you, and what it tells you.</caption>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Buying a test online</th>
+            <th scope="col">The Murphy Method™ Full Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">You pay</th>
+            <td class="meh">Commonly $150–$500, out of pocket</td>
+            <td class="good"><strong>$20</strong></td>
+          </tr>
+          <tr>
+            <th scope="row">The sleep study</th>
+            <td class="meh">You buy it</td>
+            <td class="good">Your provider orders it — insurance usually applies</td>
+          </tr>
+          <tr>
+            <th scope="row">What you learn</th>
+            <td class="meh">A number</td>
+            <td class="good">Which of 8 common patient situations is yours — and what to do next</td>
+          </tr>
+          <tr>
+            <th scope="row">Where it usually ends</th>
+            <td class="meh">A CPAP prescription</td>
+            <td class="good">Evaluation and treatment matched to your situation</td>
+          </tr>
+          <tr>
+            <th scope="row">Your doctor receives</th>
+            <td class="meh">A test result</td>
+            <td class="good">A full report with a Personalized Guide, Next Steps, and Specialist Resources</td>
+          </tr>
+          <tr>
+            <th scope="row">If the result is negative</th>
+            <td class="meh">You may stop looking — though guidelines call for a full in-lab study after a negative home test</td>
+            <td class="good">You're not left on your own. You and your doctor know one test wasn't enough — so a wrong answer doesn't become years of untreated sleep apnea</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHAT YOU GET ══ -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="sec">What you get for $20</h2>
+    <p class="lead-in">
+      The free screening shows you where to look. The full assessment explains what's
+      going on, and what to do about it.
+    </p>
+    <div class="whatyouget">
+      <div class="item">
+        <h3>Why it happens to you — not just that it happens</h3>
+        <p>A home sleep test gives you a number. The assessment works through 64 clinical
+           questions to get at the reason behind it: what is actually closing your airway
+           at night.</p>
+      </div>
+      <div class="item">
+        <h3>A map of your airway, nose to neck</h3>
+        <p>Four zones — Nose &amp; Nasal Airway, Palate &amp; Tonsils, Jaw &amp; Tongue, and
+           Neck — looked at one at a time, so you can see where yours narrows and how much
+           each one is adding.</p>
+      </div>
+      <div class="item">
+        <h3>How your body behaves while you sleep</h3>
+        <p>Sleep apnea isn't only about how your airway is built. It's also about how your
+           body reacts once you're asleep. The assessment looks at both, using the same
+           tools sleep medicine physicians use in practice.</p>
+      </div>
+      <div class="item">
+        <h3>Your situation, named</h3>
+        <p>Almost everyone who comes in with sleep apnea turns out to fit one of eight common
+           patient situations. Dr. Murphy built those eight from 20 years of treating these
+           patients. The assessment tells you which one is yours, and what to do about it, in
+           order. We call them pathways.</p>
+        <p style="margin-top:10px;">That matters more than it sounds. You are not a puzzle no
+           one has seen before. You're in a situation a doctor recognizes — and that means
+           there is already a known way forward.</p>
+      </div>
+      <div class="item">
+        <h3>Who to see, what to ask, and what to bring</h3>
+        <p>Not "see a doctor." The right kind of doctor for your situation, the questions
+           worth asking, and why each one matters — in a report that's yours to keep, with
+           your Personalized Guide, Next Steps, and Specialist Resources.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══ WHY NOT JUST BUY A TEST ══ -->
+<section class="section soft">
+  <div class="wrap">
+    <h2 class="sec">“Why not just buy the test?”</h2>
+    <p class="muted">You can. Plenty of people do. Three reasons to understand what you're
+       dealing with first.</p>
+
+    <h3 class="sub">Cost</h3>
+    <p class="muted">Insurance coverage generally follows a provider's order. When your
+       clinician orders a sleep study because it's medically necessary, most plans cover it.
+       A test you buy for yourself online usually isn't covered, and generally can't be
+       submitted for reimbursement afterward. Coverage varies, so ask your plan before you
+       buy anything.</p>
+
+    <h3 class="sub">Direction</h3>
+    <p class="muted">A home test gives you a number. It doesn't tell you where the obstruction
+       is, so on its own it can't tell you which treatment fits you. That's how people end up
+       on CPAP without ever being told there were other options. CPAP helps a great many
+       people — it just isn't the right answer for everyone.</p>
+
+    <h3 class="sub">A negative result is not the same as no problem</h3>
+    <p class="muted">This is the part most people don't know, and it's the reason buying a
+       test first can leave you worse off.</p>
+    <p class="muted">The American Academy of Sleep Medicine's clinical practice guideline makes
+       a <strong>strong recommendation</strong> on exactly this point: <em>“if a single home
+       sleep apnea test is negative, inconclusive or technically inadequate, polysomnography
+       be performed for the diagnosis of OSA.”</em> In other words, a negative home test is
+       not an all-clear — under the guideline it's an indication for a full in-lab study.</p>
+    <p class="muted">The same guideline recommends an in-lab study rather than a home test
+       from the outset for people with certain conditions — significant heart or lung disease,
+       neuromuscular weakness, chronic opioid use, a history of stroke, or severe insomnia.
+       A website that sells you a test cannot know whether you're one of them.</p>
+    <p class="muted">So the person who buys a home test, sees a reassuring number, and stops
+       looking has not been reassured. They've been left with an unfinished evaluation and no
+       one to tell them so.</p>
+
+    <div class="statement">
+      Knowing what you're looking for first isn't only cheaper. It's safer.
+    </div>
+
+    <p class="muted" style="font-size:15px; margin-top:20px;">
+      Source: Kapur VK, et al. <em>Clinical Practice Guideline for Diagnostic Testing for
+      Adult Obstructive Sleep Apnea.</em> American Academy of Sleep Medicine.
+      <a href="https://aasm.org/resources/clinicalguidelines/diagnostic-testing-osa.pdf"
+         rel="noopener">Read the guideline →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ══ CREDENTIALS ══ -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="sec">Who built this</h2>
+    <div class="bio">
+      <div class="bio-photo">
+        <img src="/watch/dr-murphy.jpg" alt="Dr. Michael Murphy, MD, MPH"
+             width="640" height="873" loading="lazy" />
+      </div>
+      <div class="bio-text">
+        <div class="bio-name">Michael Murphy, MD, MPH</div>
+        <p class="bio-cred">Dual board-certified ENT surgeon and Sleep Medicine physician</p>
+        <p class="muted">
+          Dr. Murphy is a dual board-certified ENT surgeon and Sleep Medicine physician with over
+          20 years of experience treating snoring and obstructive sleep apnea.
+          His rare combination of surgical and non-surgical expertise allows him to see the full
+          picture of sleep-disordered breathing — not just one treatment option — and to match each
+          patient to the approach most likely to help them specifically.
+        </p>
+        <p class="muted">
+          He built SleepCheckUp after seeing too many patients arrive at his office having
+          already spent money on tests that couldn't tell them where their problem was.
+        </p>
+        <p style="margin-top:16px;" class="stanford-link">
+          <a href="https://stanfordhealthcare.org/doctors/m/michael-murphy.html"
+             rel="noopener">View Dr. Murphy's Stanford Medicine profile →</a>
+        </p>
+        <p style="margin-top:8px;" class="stanford-link">
+          <a href="/about">More about Dr. Murphy →</a>
+        </p>
+        <p class="affiliation-note">
+          SleepCheckUp is an independent venture operated by Dr. Murphy. It is not affiliated
+          with, sponsored by, or endorsed by Stanford Medicine or Stanford University.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══ FAQ ══ -->
+<section class="section soft">
+  <div class="wrap">
+    <h2 class="sec">Common questions</h2>
+    <div class="faq">
+
+      <div class="qa">
+        <h3>Does an Apple Watch notification mean I have sleep apnea?</h3>
+        <p>No. The notification means your watch detected a pattern consistent with disrupted
+           breathing over time. It is not a diagnosis, and Apple is clear that it isn't intended
+           to be one. A diagnosis requires a sleep study interpreted by a clinician.</p>
+      </div>
+
+      <div class="qa">
+        <h3>What should I do first?</h3>
+        <p>Understand what you're dealing with before you spend money. Find out where your
+           problem is likely to be, then bring that to a provider who can order the right study.</p>
+      </div>
+
+      <div class="qa">
+        <h3>Should I buy a home sleep test online?</h3>
+        <p>Usually not as your first step. A study ordered by your provider is a covered benefit
+           under most insurance plans, while a test you buy online generally isn't — and a result
+           without context can't tell you which treatment fits you.</p>
+      </div>
+
+      <div class="qa">
+        <h3>Will my insurance cover a sleep study?</h3>
+        <p>In most plans, a sleep study ordered by your provider is a covered benefit. Coverage
+           varies, so confirm with your plan. A test you purchase directly usually cannot be
+           submitted for reimbursement afterward.</p>
+      </div>
+
+      <div class="qa">
+        <h3>What do I tell my doctor?</h3>
+        <p>Bring your assessment report and say:</p>
+        <div class="script">
+          “My watch flagged possible sleep apnea. I completed a structured assessment — here's
+          the report. I'd like you to order a sleep study, and I'd like to be evaluated for what
+          the assessment points to.”
+        </div>
+        <p>Most people don't realize they can ask.</p>
+      </div>
+
+      <div class="qa">
+        <h3>What if my sleep study comes back negative?</h3>
+        <p>A negative home sleep test is not always an all-clear. The American Academy of Sleep
+           Medicine strongly recommends that if a single home sleep apnea test is negative,
+           inconclusive, or technically inadequate, a full in-lab sleep study should be performed.
+           Knowing your anatomy and your pathway means you still have somewhere to go.</p>
+      </div>
+
+      <div class="qa">
+        <h3>Does this replace seeing a doctor?</h3>
+        <p>No, and it isn't meant to. It's designed to make that visit better — so the right
+           study gets ordered and the evaluation aims at the right place.</p>
+      </div>
+
+      <div class="qa">
+        <h3>I have a Samsung, Fitbit, or Oura. Does this apply to me?</h3>
+        <p>Yes. Several devices now flag possible sleep apnea. They share the same limitation:
+           they can tell you something is happening, not where or why.</p>
+      </div>
+
+      <div class="qa">
+        <h3>Why $20?</h3>
+        <p>It's priced to be the cheapest useful step, not a substitute for care. The aim is that
+           you spend less overall — not more.</p>
+      </div>
+
+      <div class="qa">
+        <h3>What do I actually receive?</h3>
+        <p>A report identifying where your problem most likely is, the Murphy Method™ pathway
+           that matches your pattern, and a PDF you keep and bring to your provider.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLOSING ══ -->
+<section class="section closing">
+  <div class="wrap">
+    <h2>Start where it makes sense to start</h2>
+    <p>Your watch did its job. It noticed something. The next step is finding out what.</p>
+    <div class="cta-row">
+      <a class="btn" href="/screener">Start the free screening</a>
+      <span class="btn-sub">No payment, no account. <a href="/assessment/info">Or go straight to the full assessment ($20)</a></span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="disclaimer">
+      SleepCheckUp provides structured health information and is not a diagnosis. It does not
+      interpret, confirm, or contradict the output of any wearable device, and it does not
+      replace evaluation by a qualified clinician. If you have urgent symptoms — chest pain,
+      severe daytime sleepiness affecting your driving, or gasping awake — contact your provider
+      promptly.
+    </p>
+    <p class="links">
+      <a href="/">Home</a><a href="/how-it-works">How it works</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/disclaimer">Disclaimer</a>
+    </p>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Does an Apple Watch notification mean I have sleep apnea?","acceptedAnswer":{"@type":"Answer","text":"No. The notification means your watch detected a pattern consistent with disrupted breathing over time. It is not a diagnosis, and Apple is clear that it isn't intended to be one. A diagnosis requires a sleep study interpreted by a clinician."}},
+    {"@type":"Question","name":"What should I do first after a watch sleep apnea alert?","acceptedAnswer":{"@type":"Answer","text":"Understand what you're dealing with before you spend money. Find out where your problem is likely to be, then bring that to a provider who can order the right study."}},
+    {"@type":"Question","name":"Should I buy a home sleep test online?","acceptedAnswer":{"@type":"Answer","text":"Usually not as your first step. A study ordered by your provider is a covered benefit under most insurance plans, while a test you buy online generally isn't — and a result without context can't tell you which treatment fits you."}},
+    {"@type":"Question","name":"Will my insurance cover a sleep study?","acceptedAnswer":{"@type":"Answer","text":"In most plans, a sleep study ordered by your provider is a covered benefit. Coverage varies, so confirm with your plan. A test you purchase directly usually cannot be submitted for reimbursement afterward."}},
+    {"@type":"Question","name":"What do I tell my doctor about a watch sleep apnea notification?","acceptedAnswer":{"@type":"Answer","text":"Bring your assessment report and say: My watch flagged possible sleep apnea. I completed a structured assessment — here's the report. I'd like you to order a sleep study, and I'd like to be evaluated for what the assessment points to."}},
+    {"@type":"Question","name":"What if my sleep study comes back negative?","acceptedAnswer":{"@type":"Answer","text":"A negative study doesn't always mean nothing is wrong — home tests can underestimate, and some people need a full in-lab study. Knowing your anatomy and your pathway means you still have somewhere to go."}},
+    {"@type":"Question","name":"Does an online sleep assessment replace seeing a doctor?","acceptedAnswer":{"@type":"Answer","text":"No, and it isn't meant to. It's designed to make that visit better — so the right study gets ordered and the evaluation aims at the right place."}},
+    {"@type":"Question","name":"I have a Samsung, Fitbit, or Oura. Does this apply to me?","acceptedAnswer":{"@type":"Answer","text":"Yes. Several devices now flag possible sleep apnea. They share the same limitation: they can tell you something is happening, not where or why."}}
+  ]
+}
+</script>
+
+</body>
+</html>

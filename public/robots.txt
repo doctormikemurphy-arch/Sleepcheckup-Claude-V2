@@ -1,0 +1,17 @@
+# sleepcheckup.com
+# Search engines and AI assistants are welcome. Crawling is how people
+# with a wearable sleep apnea alert find the guidance on this site.
+
+User-agent: *
+Allow: /
+
+# Private, personal, or post-purchase areas — not for indexing
+Disallow: /admin
+Disallow: /portal
+Disallow: /assessment/results
+Disallow: /assessment/report
+Disallow: /assessment/checkout
+Disallow: /sign-in
+Disallow: /sign-up
+
+Sitemap: https://sleepcheckup.com/sitemap.xml

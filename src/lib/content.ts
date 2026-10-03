@@ -13,7 +13,7 @@ export const DR_MURPHY = {
   shortBio:
     "Dr. Murphy is a dual board-certified ENT surgeon and Sleep Medicine physician with over 20 years of experience treating snoring and sleep apnea. His rare combination of surgical and non-surgical expertise allows him to see the full picture of sleep-disordered breathing — not just one treatment option.",
   longBio1:
-    "Dr. Murphy is a dual board-certified ENT surgeon and Sleep Medicine physician with over 20 years of experience treating snoring and obstructive sleep apnea at Stanford Medicine. His rare combination of surgical and non-surgical expertise allows him to see the full picture of sleep-disordered breathing — not just one treatment option — and to match each patient to the approach most likely to help them specifically.",
+    "Dr. Murphy is a dual board-certified ENT surgeon and Sleep Medicine physician with over 20 years of experience treating snoring and obstructive sleep apnea. His rare combination of surgical and non-surgical expertise allows him to see the full picture of sleep-disordered breathing — not just one treatment option — and to match each patient to the approach most likely to help them specifically.",
   longBio2:
     "After years of watching patients arrive unprepared to their appointments — not knowing what kind of sleep problem they had, what questions to ask, or what treatment paths existed — Dr. Murphy developed The Murphy Method™ to change that. It's the same framework he uses with his own patients, distilled into a structured assessment that anyone can complete in under 20 minutes.",
   quote:

@@ -129,8 +129,9 @@ export default function HomePage() {
     {
       icon: <Smartphone className="w-5 h-5" />,
       heading: '"My watch or wearable device has alerted me to possible sleep apnea."',
-      body: "Apple Watch and Samsung Galaxy can now detect irregular breathing events during sleep. But a notification is not a diagnosis — and it does not tell you what type, how serious, or which doctor to see. The Murphy Method™ turns that alert into a clear next step.",
+      body: "Apple Watch, Samsung Galaxy, Fitbit and Oura can now flag irregular breathing during sleep. But a notification is not a diagnosis — and it does not tell you what type, how serious, or which doctor to see. The Murphy Method™ turns that alert into a clear next step.",
       featured: false,
+      link: { href: "/watch", label: "What to do after a watch alert →" },
     },
   ];
 
@@ -450,7 +451,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {whoCards.map(({ icon, heading, body, featured }) => (
+            {whoCards.map(({ icon, heading, body, featured, link }) => (
               <div
                 key={heading}
                 className="card"
@@ -486,6 +487,22 @@ export default function HomePage() {
                 <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.6 }}>
                   {body}
                 </p>
+                {link && (
+                  <p style={{ marginTop: "14px" }}>
+                    <a
+                      href={link.href}
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        color: "var(--blue)",
+                        textDecoration: "none",
+                      }}
+                    >
+                      {link.label}
+                    </a>
+                  </p>
+                )}
               </div>
             ))}
           </div>
