@@ -1,60 +1,19 @@
 <!doctype html>
 <!--
-  ============================================================================
-  /watch  —  Wearable sleep apnea alert landing page
-  ============================================================================
+  /watch — landing page for people who received a wearable sleep apnea alert.
 
-  STATUS: DRAFT — ONE ITEM LEFT BEFORE LAUNCH
+  Self-contained static HTML. It imports nothing from the React app and
+  alters no existing route. Served ahead of the SPA by the /watch rewrite in
+  vercel.json, and in development by the serveStaticPages plugin in
+  vite.config.ts.
 
-  This page carries a <meta name="robots" content="noindex"> tag as a safety
-  net so it cannot be indexed if it deploys before review is complete.
+  Images in this folder are resized copies; the originals in src/assets are
+  untouched. The header is a hand-coded copy of
+  src/components/layout/Header.tsx — if that component changes, this page
+  does NOT follow automatically.
 
-  REVIEW LOG — updated 2026-09-26
-    1. Patient story — REMOVED pending written permission. The drafted text
-         is preserved in the project doc "watch-page-copy.md". Drop it back
-         in once permission is obtained; it is the strongest section.
-    2. Insurance wording — REWRITTEN to remove unverified assertions. The
-         page now explains that coverage follows a provider's order, and
-         tells the reader to ask their own plan before buying anything.
-         No specific coverage promise is made.
-    3. Cost range — VERIFIED. Updated from "$150-$300" to "$150-$500",
-         which matches published 2026 direct-to-consumer pricing.
-    4. "Negative result" claim — VERIFIED AND STRENGTHENED. Now quotes the
-         AASM Clinical Practice Guideline for Diagnostic Testing for Adult
-         OSA (Kapur VK et al.), STRONG recommendation: "if a single home
-         sleep apnea test is negative, inconclusive or technically
-         inadequate, polysomnography be performed for the diagnosis of OSA."
-         Guideline is cited and linked on the page.
-    5. Bio, photo, credentials — DONE.
-         Stanford affiliation RESOLVED per Dr. Murphy: approved outside
-         activity in his contract; Stanford MEDICINE (employer) not
-         Stanford University; no logo, no borrowed color scheme; and the
-         same claim plus profile link already appear on the live /about
-         page. An explicit independence disclaimer has been added to the
-         bio card to foreclose any implication of endorsement.
-    6. Primary button — RESOLVED. Goes to the EXISTING free screener
-         (/screener), per Dr. Murphy. No new screener is being built. The
-         free screener already carries STOP-BANG plus the anatomy/zone
-         questions, so it needs no changes for this audience.
-
-  REMAINING BLOCKER: item 5 (Stanford), and Dr. Murphy's own read of the
-  clinical wording in the "Why not just buy the test?" section.
-
-  ASSETS (copies - all originals untouched):
-    /watch/dr-murphy.jpg - from src/assets/images/Murphy-14_*.jpg
-                           9 MB / 3762x5132  ->  59 KB / 640x873
-    /watch/logo.png      - from src/assets/images/logo.png
-                           1 MB / 1254x1254  ->  7.6 KB / 96x96
-
-  The header here is a hand-coded copy of src/components/layout/Header.tsx
-  (floating pill, same colors, same nav, same CTA). If that component ever
-  changes, this page will NOT follow automatically - update it by hand.
-
-  THEN: delete the noindex meta tag below.
-
-  This file is self-contained static HTML. It imports nothing from the React
-  app, alters no existing route, and touches no protected code.
-  ============================================================================
+  Review status and outstanding items are tracked in the project document
+  "watch-page-copy.md", not here.
 -->
 <html lang="en">
 <head>
@@ -210,10 +169,6 @@
   td.good{color:var(--ink);}
   td.meh{color:var(--ink-muted);}
 
-  /* story */
-  .story{border-left:4px solid var(--warning); padding-left:26px;}
-  .story h2{margin-bottom:18px;}
-
   /* three-up */
   .whatyouget{margin-top:30px;}
   .item{padding:24px 0; border-top:1px solid var(--border);}
@@ -229,10 +184,11 @@
   }
   @media(min-width:640px){
     .bio{flex-direction:row; gap:28px; align-items:flex-start;}
-    .bio-photo{flex:0 0 200px;}
+    .bio-photo{flex:0 0 168px;}
   }
   .bio-photo img{
-    display:block; width:100%; max-width:220px; height:auto;
+    display:block; width:100%; max-width:200px; aspect-ratio:3/4;
+    object-fit:cover; object-position:top;
     border-radius:var(--r-md); background:var(--bg-soft);
   }
   .bio-text{flex:1 1 auto; min-width:0;}
@@ -246,23 +202,6 @@
     font-size:15px; font-weight:600; color:var(--primary);
     margin:0 0 16px; letter-spacing:.005em;
   }
-  .placeholder{
-    background:#FEF3C7; border:1px dashed var(--warning); color:#78350F;
-    padding:14px 16px; border-radius:var(--r-sm); font-size:15px; margin-top:14px;
-  }
-
-  /* explore the site */
-  .explore{display:grid; gap:14px; margin-top:26px;}
-  @media(min-width:700px){ .explore{grid-template-columns:repeat(3,1fr);} }
-  .explore a{
-    display:block; text-decoration:none; background:#fff;
-    border:1px solid var(--border); border-radius:var(--r-md);
-    padding:20px 22px; transition:border-color .15s ease, box-shadow .15s ease;
-  }
-  .explore a:hover{border-color:var(--primary); box-shadow:0 4px 16px rgba(15,23,42,.06);}
-  .explore h3{font-size:17px; margin-bottom:6px; color:var(--primary);}
-  .explore p{font-size:15px; color:var(--ink-muted); margin:0;}
-
   /* faq */
   .faq{margin-top:26px;}
   .qa{padding:22px 0; border-top:1px solid var(--border);}
@@ -413,7 +352,7 @@
           <tr>
             <th scope="col"></th>
             <th scope="col">Buying a test online</th>
-            <th scope="col">The Murphy Method™ Full Assessment</th>
+            <th scope="col">Assessment first</th>
           </tr>
         </thead>
         <tbody>
@@ -430,22 +369,22 @@
           <tr>
             <th scope="row">What you learn</th>
             <td class="meh">A number</td>
-            <td class="good">Which of 8 common patient situations is yours — and what to do next</td>
+            <td class="good">Where your problem is, and your specific pathway</td>
           </tr>
           <tr>
             <th scope="row">Where it usually ends</th>
             <td class="meh">A CPAP prescription</td>
-            <td class="good">Evaluation and treatment matched to your situation</td>
+            <td class="good">Treatment matched to your anatomy — nasal, oral, positional, surgical, or CPAP</td>
           </tr>
           <tr>
             <th scope="row">Your doctor receives</th>
             <td class="meh">A test result</td>
-            <td class="good">A full report with a Personalized Guide, Next Steps, and Specialist Resources</td>
+            <td class="good">A structured report they can act on</td>
           </tr>
           <tr>
             <th scope="row">If the result is negative</th>
             <td class="meh">You may stop looking — though guidelines call for a full in-lab study after a negative home test</td>
-            <td class="good">You're not left on your own. You and your doctor know one test wasn't enough — so a wrong answer doesn't become years of untreated sleep apnea</td>
+            <td class="good">You know what still needs evaluating, and who should do it</td>
           </tr>
         </tbody>
       </table>
@@ -458,43 +397,26 @@
   <div class="wrap">
     <h2 class="sec">What you get for $20</h2>
     <p class="lead-in">
-      The free screening shows you where to look. The full assessment explains what's
-      going on, and what to do about it.
+      The free screening tells you where you stand and points toward the likely zone.
+      The full assessment tells you what to do about it.
     </p>
     <div class="whatyouget">
       <div class="item">
-        <h3>Why it happens to you — not just that it happens</h3>
-        <p>A home sleep test gives you a number. The assessment works through 64 clinical
-           questions to get at the reason behind it: what is actually closing your airway
-           at night.</p>
+        <h3>Where your problem most likely is</h3>
+        <p>The assessment works through four anatomic zones along with your physiology, your
+           weight, your sleep pattern, and your insomnia burden — the same territory a
+           physician covers in a first consultation.</p>
       </div>
       <div class="item">
-        <h3>A map of your airway, nose to neck</h3>
-        <p>Four zones — Nose &amp; Nasal Airway, Palate &amp; Tonsils, Jaw &amp; Tongue, and
-           Neck — looked at one at a time, so you can see where yours narrows and how much
-           each one is adding.</p>
+        <h3>Your pathway</h3>
+        <p>There are eight Murphy Method™ pathways. Sleep apnea is not one condition with one
+           treatment, and which pathway you're on determines what should happen next. You get
+           yours, with the evaluation and treatment steps in order.</p>
       </div>
       <div class="item">
-        <h3>How your body behaves while you sleep</h3>
-        <p>Sleep apnea isn't only about how your airway is built. It's also about how your
-           body reacts once you're asleep. The assessment looks at both, using the same
-           tools sleep medicine physicians use in practice.</p>
-      </div>
-      <div class="item">
-        <h3>Your situation, named</h3>
-        <p>Almost everyone who comes in with sleep apnea turns out to fit one of eight common
-           patient situations. Dr. Murphy built those eight from 20 years of treating these
-           patients. The assessment tells you which one is yours, and what to do about it, in
-           order. We call them pathways.</p>
-        <p style="margin-top:10px;">That matters more than it sounds. You are not a puzzle no
-           one has seen before. You're in a situation a doctor recognizes — and that means
-           there is already a known way forward.</p>
-      </div>
-      <div class="item">
-        <h3>Who to see, what to ask, and what to bring</h3>
-        <p>Not "see a doctor." The right kind of doctor for your situation, the questions
-           worth asking, and why each one matters — in a report that's yours to keep, with
-           your Personalized Guide, Next Steps, and Specialist Resources.</p>
+        <h3>A report your provider can act on</h3>
+        <p>A PDF that's yours to keep, written to be handed across a desk — so the visit starts
+           from what's already known instead of from zero.</p>
       </div>
     </div>
   </div>
@@ -519,8 +441,7 @@
     <h3 class="sub">Direction</h3>
     <p class="muted">A home test gives you a number. It doesn't tell you where the obstruction
        is, so on its own it can't tell you which treatment fits you. That's how people end up
-       on CPAP without ever being told there were other options. CPAP helps a great many
-       people — it just isn't the right answer for everyone.</p>
+       with equipment aimed at the wrong problem.</p>
 
     <h3 class="sub">A negative result is not the same as no problem</h3>
     <p class="muted">This is the part most people don't know, and it's the reason buying a
@@ -565,7 +486,7 @@
         <p class="bio-cred">Dual board-certified ENT surgeon and Sleep Medicine physician</p>
         <p class="muted">
           Dr. Murphy is a dual board-certified ENT surgeon and Sleep Medicine physician with over
-          20 years of experience treating snoring and obstructive sleep apnea.
+          20 years of experience treating snoring and obstructive sleep apnea at Stanford Medicine.
           His rare combination of surgical and non-surgical expertise allows him to see the full
           picture of sleep-disordered breathing — not just one treatment option — and to match each
           patient to the approach most likely to help them specifically.
@@ -586,6 +507,31 @@
           with, sponsored by, or endorsed by Stanford Medicine or Stanford University.
         </p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPLORE THE MAIN SITE ══ -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="sec">There's more here than this page</h2>
+    <p class="lead-in">
+      This page is the starting point for one specific situation. The rest of SleepCheckUp
+      covers the whole picture.
+    </p>
+    <div class="explore">
+      <a href="/">
+        <h3>Start at the beginning →</h3>
+        <p>The main site, and what the Murphy Method™ is.</p>
+      </a>
+      <a href="/how-it-works">
+        <h3>How it works →</h3>
+        <p>What the screening and assessment actually do, step by step.</p>
+      </a>
+      <a href="/pathways">
+        <h3>The eight pathways →</h3>
+        <p>Why sleep apnea isn't one condition with one treatment.</p>
+      </a>
     </div>
   </div>
 </section>
@@ -710,7 +656,7 @@
     {"@type":"Question","name":"Should I buy a home sleep test online?","acceptedAnswer":{"@type":"Answer","text":"Usually not as your first step. A study ordered by your provider is a covered benefit under most insurance plans, while a test you buy online generally isn't — and a result without context can't tell you which treatment fits you."}},
     {"@type":"Question","name":"Will my insurance cover a sleep study?","acceptedAnswer":{"@type":"Answer","text":"In most plans, a sleep study ordered by your provider is a covered benefit. Coverage varies, so confirm with your plan. A test you purchase directly usually cannot be submitted for reimbursement afterward."}},
     {"@type":"Question","name":"What do I tell my doctor about a watch sleep apnea notification?","acceptedAnswer":{"@type":"Answer","text":"Bring your assessment report and say: My watch flagged possible sleep apnea. I completed a structured assessment — here's the report. I'd like you to order a sleep study, and I'd like to be evaluated for what the assessment points to."}},
-    {"@type":"Question","name":"What if my sleep study comes back negative?","acceptedAnswer":{"@type":"Answer","text":"A negative study doesn't always mean nothing is wrong — home tests can underestimate, and some people need a full in-lab study. Knowing your anatomy and your pathway means you still have somewhere to go."}},
+    {"@type":"Question","name":"What if my sleep study comes back negative?","acceptedAnswer":{"@type":"Answer","text":"A negative home sleep test is not always an all-clear. The American Academy of Sleep Medicine strongly recommends that if a single home sleep apnea test is negative, inconclusive, or technically inadequate, a full in-lab sleep study should be performed. Knowing your anatomy and your pathway means you still have somewhere to go."}},
     {"@type":"Question","name":"Does an online sleep assessment replace seeing a doctor?","acceptedAnswer":{"@type":"Answer","text":"No, and it isn't meant to. It's designed to make that visit better — so the right study gets ordered and the evaluation aims at the right place."}},
     {"@type":"Question","name":"I have a Samsung, Fitbit, or Oura. Does this apply to me?","acceptedAnswer":{"@type":"Answer","text":"Yes. Several devices now flag possible sleep apnea. They share the same limitation: they can tell you something is happening, not where or why."}}
   ]
