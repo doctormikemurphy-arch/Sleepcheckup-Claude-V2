@@ -99,8 +99,19 @@
     display:inline-block; font-size:13px; font-weight:600; letter-spacing:.06em;
     text-transform:uppercase; color:var(--primary); margin-bottom:18px;
   }
-  .hero h1{font-size:34px; line-height:1.15; letter-spacing:-.01em;}
-  @media(min-width:768px){ .hero h1{font-size:44px;} }
+  .hero h1{font-size:31px; line-height:1.15; letter-spacing:-.015em; max-width:16em;}
+  @media(min-width:768px){ .hero h1{font-size:42px;} }
+  .hero-sub{
+    font-weight:500; font-size:19px; line-height:1.5;
+    color:var(--ink); margin:18px 0 0; max-width:32em;
+  }
+  @media(min-width:768px){ .hero-sub{font-size:21px;} }
+  .hero-warn{
+    margin:26px 0 0; padding-left:16px;
+    border-left:3px solid var(--primary);
+    font-size:16px; line-height:1.6; color:var(--ink-muted); max-width:34em;
+  }
+  .hero-warn strong{color:var(--ink); font-weight:600;}
   .hero .lede{font-size:19px; color:var(--ink-muted); margin-top:22px;}
   @media(min-width:768px){ .hero .lede{font-size:20px;} }
 
@@ -168,6 +179,12 @@
   .soft tbody th{background:#fff;}
   td.good{color:var(--ink);}
   td.meh{color:var(--ink-muted);}
+  td.meh::before, td.good::before{
+    display:inline-block; width:1.1em; margin-right:8px;
+    font-weight:700; font-size:15px; line-height:1;
+  }
+  td.meh::before{content:"\2715"; color:var(--danger);}
+  td.good::before{content:"\2713"; color:var(--success);}
 
   /* three-up */
   .whatyouget{margin-top:30px;}
@@ -257,17 +274,18 @@
 <!-- ══ HERO ══ -->
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow">For people who got a wearable alert</span>
-    <h1>Your watch found a signal.<br />It can't tell you where the problem is.</h1>
-    <p class="lede">
-      An Apple Watch or Galaxy Watch notification means your breathing did something
-      overnight worth paying attention to. It doesn't tell you <em>where</em> your airway
-      is narrowing. That's the answer that points to the approach most likely to help
-      you specifically.
+    <span class="eyebrow">For people who got a watch notification</span>
+    <h1>Your watch sent you a sleep apnea notification. Now what should you do?</h1>
+    <p class="hero-sub">Let a double board-certified sleep medicine and ENT doctor
+       guide you to a solution.</p>
+    <p class="lede" style="font-size:17px; max-width:34em; margin-top:20px;">
+      An Apple Watch or Galaxy Watch notification means you may have a problem with your
+      breathing at night. That is worth listening to. Find out why it is happening and
+      where your breathing is being blocked.
     </p>
-    <p class="lede" style="margin-top:14px;">
-      Before you spend money on a test, find out what you're actually dealing with.
-    </p>
+    <p class="hero-warn"><strong>Most online sites will try to sell you a costly sleep
+       test often covered by your insurance</strong>, and then a CPAP machine for treatment.
+       Instead, get the personalized evaluation and treatment you need.</p>
     <div class="cta-row">
       <a class="btn" href="/screener">Start the free screening</a>
       <span class="btn-sub">Takes a few minutes · No payment · <a href="/assessment/info">Or go straight to the full assessment ($20)</a></span>
@@ -294,7 +312,6 @@
       Your watch told you <em>that</em> something is happening. It cannot tell you
       <em>where</em> or <em>why</em>.
     </div>
-    <p class="muted">That gap is why this page exists.</p>
   </div>
 </section>
 
@@ -316,7 +333,7 @@
       <div class="step">
         <div class="step-n">1</div>
         <div class="step-body">
-          <h3>Your watch found a signal</h3>
+          <h3>Your watch sent a notification</h3>
           <p>You already have this. It's the reason you're here, and it's worth taking seriously.</p>
         </div>
       </div>
@@ -328,9 +345,8 @@
              you two things your watch can't: your risk of having sleep apnea on a validated
              clinical scale, and which of your four airway zones — nose to neck — are flagged.</p>
           <p style="margin-top:10px;">If you want the whole picture, the $20 full assessment
-             matches you to one of eight paths and gives you a PDF report: a personalized
-             guide and next steps for you and your doctor. Sleep apnea doesn't have one
-             cause, so it doesn't have one fix.</p>
+             gives you a PDF report: a personalized guide and next steps for you and your
+             doctor. Sleep apnea doesn't have one cause, so it doesn't have one fix.</p>
         </div>
       </div>
       <div class="step">
@@ -438,9 +454,11 @@
       </div>
       <div class="item">
         <h3>Who to see, what to ask, and what to bring</h3>
-        <p>Not "see a doctor." The right kind of doctor for your situation, the questions
-           worth asking, and why each one matters — in a report that’s yours to keep, with
-           your Personalized Guide, Next Steps, and Specialist Resources.</p>
+        <p>When you buy a sleep study test online, most advice stops at "see a doctor."
+           Instead, the Murphy Method™ Full Assessment tells you which kind of doctor fits
+           your situation, the questions worth asking, and why each one matters.</p>
+        <p style="margin-top:10px;">In a report that’s yours to keep, you get a Personalized
+           Guide, Next Steps, and Specialist Resources.</p>
       </div>
     </div>
   </div>
@@ -483,10 +501,6 @@
     <p class="muted">So the person who buys a home test, sees a reassuring number, and stops
        looking has not been reassured. They've been left with an unfinished evaluation and no
        one to tell them so.</p>
-
-    <div class="statement">
-      Knowing what you're looking for first isn't only cheaper. It's safer.
-    </div>
 
     <p class="muted" style="font-size:15px; margin-top:20px;">
       Source: Kapur VK, et al. <em>Clinical Practice Guideline for Diagnostic Testing for
