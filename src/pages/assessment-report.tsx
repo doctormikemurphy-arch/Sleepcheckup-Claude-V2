@@ -81,7 +81,7 @@ const SPECIALIST_RESOURCES = {
   dental: {
     title: "Dental Sleep Medicine Specialist",
     description: "American Academy of Dental Sleep Medicine",
-    url: "https://aadsm.org/find_an_aadsm_qualilfied_denti.php",
+    url: "https://www.aadsm.org/find_an_aadsm_qualified_dentis.php",
     logoUrl: "https://aadsm.org/images/main-logo.png",
     abbr: "AADSM",
   },

@@ -53,7 +53,7 @@ const specialists = [
     logoUrl: "https://aadsm.org/images/main-logo.png",
     name: "American Academy of Dental Sleep Medicine",
     url: "aadsm.org",
-    href: "https://www.aadsm.org/find_an_aadsm_qualilfied_denti.php",
+    href: "https://www.aadsm.org/find_an_aadsm_qualified_dentis.php",
     description: "Find a dentist specializing in oral appliance therapy for the treatment of snoring and obstructive sleep apnea.",
   },
   {

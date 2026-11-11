@@ -47,7 +47,7 @@ const ZONE_CONFIG = [
 const SPECIALISTS = [
   { name: "American Academy of Sleep Medicine – Find a Sleep Center", href: "https://sleepeducation.org/sleep-center", url: "sleepeducation.org/sleep-center", description: "Locate an accredited sleep center near you staffed with sleep medicine specialists who can evaluate both insomnia and sleep apnea." },
   { name: "American Academy of Otolaryngology – Find an ENT", href: "https://www.enthealth.org/find-ent", url: "enthealth.org/find-ent", description: "Locate an Ear, Nose & Throat surgeon who specializes in diagnosing and treating nasal obstruction and airway issues." },
-  { name: "American Academy of Dental Sleep Medicine", href: "https://www.aadsm.org/find_an_aadsm_qualilfied_denti.php", url: "aadsm.org", description: "Find a dentist specializing in oral appliance therapy for the treatment of snoring and obstructive sleep apnea." },
+  { name: "American Academy of Dental Sleep Medicine", href: "https://www.aadsm.org/find_an_aadsm_qualified_dentis.php", url: "aadsm.org", description: "Find a dentist specializing in oral appliance therapy for the treatment of snoring and obstructive sleep apnea." },
   { name: "Society of Behavioral Sleep Medicine – Find a Provider", href: "https://www.behavioralsleep.org", url: "behavioralsleep.org", description: "Find a behavioral sleep medicine specialist trained in CBT-I for insomnia treatment." },
   { name: "American Association of Clinical Endocrinology – Find an Endocrinologist", href: "https://www.aace.com/find-an-endo", url: "aace.com/find-an-endo", description: "Find a clinical endocrinologist who specializes in metabolic conditions including obesity, a major contributor to obstructive sleep apnea." },
 ];
