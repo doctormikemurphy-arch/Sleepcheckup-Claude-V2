@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { X } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { SignedIn } from "@clerk/clerk-react";
 
 const clerkEnabled = !!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -21,7 +21,13 @@ const drawerLinks = [
 export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
   const [location] = useLocation();
 
-  useEffect(() => { onClose(); }, [location, onClose]);
+  const lastLocation = useRef(location);
+  useEffect(() => {
+    if (lastLocation.current !== location) {
+      lastLocation.current = location;
+      onClose();
+    }
+  }, [location, onClose]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
