@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { useAdminAuth } from "@/lib/use-admin-auth";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -204,20 +205,8 @@ function ConfirmDialog({ open, title, description, onConfirm, onCancel, loading 
 
 export default function AdminPage() {
   const { toast } = useToast();
-  const DEV = import.meta.env.DEV;
-
   // Auth
-  const [authState, setAuthState] = useState<"loading" | "authed" | "denied" | "unauthenticated">(
-    DEV ? "authed" : "loading"
-  );
-
-  useEffect(() => {
-    if (DEV) return;
-    fetch("/api/admin/check", { credentials: "include" })
-      .then(r => r.ok ? r.json() : null)
-      .then(data => setAuthState(data?.isAdmin ? "authed" : "denied"))
-      .catch(() => setAuthState("unauthenticated"));
-  }, [DEV]);
+  const authState = useAdminAuth();
 
   // Active tab
   const [tab, setTab] = useState<TabId>("resources");
@@ -521,6 +510,13 @@ export default function AdminPage() {
               <h1 className="text-2xl font-bold" style={{ color: "var(--text-ink)" }}>Admin Panel</h1>
               <p className="text-sm" style={{ color: "var(--text-muted)" }}>Manage pathway resources, testimonials, subscribers, and analytics.</p>
             </div>
+            {/* Pathway Preview exists in dev builds only (see App.tsx) */}
+            {import.meta.env.DEV && (
+              <Link href="/admin/preview" className="no-underline flex items-center gap-1.5 rounded-lg px-3 py-2 transition-colors" style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontWeight: 500, color: "var(--blue)", border: "1px solid var(--border-soft)", backgroundColor: "var(--bg-card)" }}>
+                <FileText className="w-4 h-4" />
+                Pathway Preview
+              </Link>
+            )}
             <Link href="/" className="no-underline flex items-center gap-1.5 rounded-lg px-3 py-2 transition-colors" style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontWeight: 500, color: "var(--text-muted)", border: "1px solid var(--border-soft)", backgroundColor: "var(--bg-card)" }}>
               <Home className="w-4 h-4" />
               Home

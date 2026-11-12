@@ -22,6 +22,12 @@ import PrivacyPage from "@/pages/privacy";
 import TermsPage from "@/pages/terms";
 import DisclaimerPage from "@/pages/disclaimer";
 import AdminPage from "@/pages/admin/index";
+import { lazy, Suspense } from "react";
+
+// Admin Pathway Preview: dev builds only. Vite replaces import.meta.env.DEV with `false`
+// in production, so this import and the /admin/preview route are dropped from the
+// production bundle entirely. Customers can't reach it.
+const PathwayPreviewPage = import.meta.env.DEV ? lazy(() => import("@/pages/admin/pathway-preview")) : null;
 
 function ComingSoon({ page }: { page: string }) {
   return (
@@ -163,6 +169,13 @@ export default function App() {
             <DisclaimerPage />
           </Layout>
         </Route>
+        {PathwayPreviewPage && (
+          <Route path="/admin/preview">
+            <Suspense fallback={null}>
+              <PathwayPreviewPage />
+            </Suspense>
+          </Route>
+        )}
         <Route path="/admin">
           <AdminPage />
         </Route>

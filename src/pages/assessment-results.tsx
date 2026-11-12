@@ -12,11 +12,10 @@ import { renderBold } from "@/lib/render-bold";
 import type { AssessmentState } from "@/lib/assessment-types";
 import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "@/lib/types";
 import {
-  scoreStopBang, scoreIsi, scorePlato, scorePalm,
-  scoreZones, scoreMedicalHistory, scoreAnatomy,
   getOsaRiskLabel, getInsomniaSeverityLabel, getZoneInterpretation,
 } from "@/lib/scoring";
-import { assignMurphyPathway, getPathwayDefinition } from "@/lib/pathways";
+import { getPathwayDefinition } from "@/lib/pathways";
+import { buildAssessmentResult } from "@/lib/build-assessment-result";
 import { SHOW_PLATO } from "@/lib/feature-flags";
 
 const PATHWAY_LETTERS: Record<string, string> = {
@@ -133,31 +132,27 @@ interface ResultsData {
   bmiValue: number | null;
 }
 
+function buildResultsData(saved: AssessmentState): ResultsData {
+  const { profile, pathway, bmiValue } = buildAssessmentResult(saved);
+  const pathwayDef = getPathwayDefinition(pathway);
+  const assessmentDate = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  return { profile, pathway, pathwayDef, assessmentDate, bmiValue };
+}
+
 function loadResultsData(): ResultsData | null {
   try {
     const saved = loadState<AssessmentState>(KEYS.assessment);
     if (!saved) return null;
-    const { score: stopBangScore, risk: osaRisk } = scoreStopBang(saved.stopBang ?? (saved as any).stopBangAnswers ?? {});
-    const { score: isiScore, severity: insomniaSeverity } = scoreIsi(saved.isi ?? (saved as any).isiAnswers ?? {});
-    const plato = scorePlato(saved.plato ?? (saved as any).platoAnswers ?? {});
-    const palm = scorePalm(saved.palm ?? (saved as any).palmAnswers ?? {});
-    const zones = scoreZones(saved.zoneAnswers ?? {});
-    const medicalHistory = scoreMedicalHistory(saved.medicalHistory ?? (saved as any).medicalHistoryAnswers ?? {});
-    const anatomy = scoreAnatomy(saved.zoneAnswers ?? {});
-    const bmiValue = saved.bmi?.calculatedBmi ?? (saved as any).bmiData?.calculatedBmi ?? null;
-
-    const profile: PatientProfile = {
-      stopBangScore, osaRisk, isiScore, insomniaSeverity,
-      plato, palm, zones, medicalHistory, anatomy, bmiValue,
-      comorbidities: medicalHistory.answeredYes,
-    };
-    const pathway = assignMurphyPathway(profile);
-    const pathwayDef = getPathwayDefinition(pathway);
-    const assessmentDate = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-    return { profile, pathway, pathwayDef, assessmentDate, bmiValue };
+    return buildResultsData(saved);
   } catch {
     return null;
   }
+}
+
+/** Admin Pathway Preview only (dev builds). Customers never pass this. */
+export interface ResultsPreview {
+  state: AssessmentState;
+  onOpenReport: () => void;
 }
 
 const RESOURCE_TYPE_CONFIG: Record<string, { label: string; sectionTitle: string; icon: typeof Video }> = {
@@ -283,12 +278,15 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
   );
 }
 
-export default function AssessmentResultsPage() {
+export default function AssessmentResultsPage({ preview }: { preview?: ResultsPreview }) {
   const [, navigate] = useLocation();
-  const [data, setData] = useState<ResultsData | null>(null);
+  // Preview mode builds from the sample answers passed in: no storage reads/writes, no email.
+  const [data, setData] = useState<ResultsData | null>(() => (preview ? buildResultsData(preview.state) : null));
   const [missing, setMissing] = useState(false);
+  const openReport = () => (preview ? preview.onOpenReport() : navigate("/assessment/report"));
 
   useEffect(() => {
+    if (preview) return;
     const result = loadResultsData();
     if (!result) { setMissing(true); return; }
     setData(result);
@@ -373,10 +371,12 @@ export default function AssessmentResultsPage() {
 
       {/* Sticky top bar */}
       <div className="sticky top-0 z-40 border-b flex items-center justify-between gap-4 px-6 py-3" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-soft)" }}>
-        <button onClick={() => navigate("/assessment?from=results")} className="flex items-center gap-2" style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
-          <ArrowLeft className="w-4 h-4" />
-          Back to Assessment
-        </button>
+        {preview ? <span /> : (
+          <button onClick={() => navigate("/assessment?from=results")} className="flex items-center gap-2" style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
+            <ArrowLeft className="w-4 h-4" />
+            Back to Assessment
+          </button>
+        )}
         <button onClick={() => window.print()} className="btn-secondary flex items-center gap-2" style={{ minHeight: "40px", fontSize: "14px", padding: "0 16px" }}>
           <Printer className="w-4 h-4" />
           Print / Save PDF
@@ -416,7 +416,7 @@ export default function AssessmentResultsPage() {
 
         {/* Action buttons */}
         <div className="flex flex-col sm:flex-row gap-3 mb-5">
-          <button onClick={() => navigate("/assessment/report")} className="btn-primary flex items-center justify-center gap-2 flex-1" style={{ fontSize: "16px", minHeight: "52px" }}>
+          <button onClick={openReport} className="btn-primary flex items-center justify-center gap-2 flex-1" style={{ fontSize: "16px", minHeight: "52px" }}>
             <FileText className="w-4 h-4" />
             View Full Report
           </button>
@@ -837,7 +837,7 @@ export default function AssessmentResultsPage() {
             Save a copy of your results to bring to your doctor.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button onClick={() => navigate("/assessment/report")} className="flex items-center justify-center gap-2 font-semibold rounded-xl flex-1"
+            <button onClick={openReport} className="flex items-center justify-center gap-2 font-semibold rounded-xl flex-1"
               style={{ fontFamily: "var(--font-sans)", fontSize: "15px", backgroundColor: "var(--bg-dark)", color: "#fff", border: "none", minHeight: "48px", padding: "0 20px", cursor: "pointer" }}>
               <Printer className="w-4 h-4" />
               Print / Save as PDF
@@ -846,13 +846,15 @@ export default function AssessmentResultsPage() {
         </div>
 
         {/* Start Over */}
-        <div style={{ textAlign: "center" }}>
-          <button onClick={() => { clearState(KEYS.assessment); navigate("/assessment"); }} className="flex items-center justify-center gap-2 mx-auto"
-            style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
-            <RotateCcw className="w-4 h-4" />
-            Start Over
-          </button>
-        </div>
+        {!preview && (
+          <div style={{ textAlign: "center" }}>
+            <button onClick={() => { clearState(KEYS.assessment); navigate("/assessment"); }} className="flex items-center justify-center gap-2 mx-auto"
+              style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
+              <RotateCcw className="w-4 h-4" />
+              Start Over
+            </button>
+          </div>
+        )}
 
       </div>
     </div>

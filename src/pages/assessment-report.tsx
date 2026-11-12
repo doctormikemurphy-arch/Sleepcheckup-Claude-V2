@@ -6,11 +6,10 @@ import { KEYS } from "@/lib/storage";
 import type { AssessmentState } from "@/lib/assessment-types";
 import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "@/lib/types";
 import {
-  scoreStopBang, scoreIsi, scorePlato, scorePalm,
-  scoreZones, scoreMedicalHistory, scoreAnatomy,
   getOsaRiskLabel, getInsomniaSeverityLabel, getZoneInterpretation,
 } from "@/lib/scoring";
-import { assignMurphyPathway, getPathwayDefinition } from "@/lib/pathways";
+import { getPathwayDefinition } from "@/lib/pathways";
+import { buildAssessmentResult } from "@/lib/build-assessment-result";
 import { PATHWAY_CONTENT } from "@/lib/pathway-content";
 import { renderBold } from "@/lib/render-bold";
 import { PALM_QUESTIONS } from "@/lib/questionnaires";
@@ -128,30 +127,36 @@ interface ReportData {
   assessmentDate: string;
 }
 
+function buildReportData(saved: AssessmentState): ReportData {
+  const { profile, pathway } = buildAssessmentResult(saved);
+  const assessmentDate = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  return { profile, pathway, assessmentDate };
+}
+
 function loadReportData(): ReportData | null {
   try {
     const saved = loadState<AssessmentState>(KEYS.assessment);
     if (!saved) return null;
-    const { score: stopBangScore, risk: osaRisk } = scoreStopBang(saved.stopBang ?? (saved as any).stopBangAnswers ?? {});
-    const { score: isiScore, severity: insomniaSeverity } = scoreIsi(saved.isi ?? (saved as any).isiAnswers ?? {});
-    const plato = scorePlato(saved.plato ?? (saved as any).platoAnswers ?? {});
-    const palm = scorePalm(saved.palm ?? (saved as any).palmAnswers ?? {});
-    const zones = scoreZones(saved.zoneAnswers ?? {});
-    const medicalHistory = scoreMedicalHistory(saved.medicalHistory ?? (saved as any).medicalHistoryAnswers ?? {});
-    const anatomy = scoreAnatomy(saved.zoneAnswers ?? {});
-    const bmiValue = saved.bmi?.calculatedBmi ?? (saved as any).bmiData?.calculatedBmi ?? null;
-
-    const profile: PatientProfile = {
-      stopBangScore, osaRisk, isiScore, insomniaSeverity,
-      plato, palm, zones, medicalHistory, anatomy, bmiValue,
-      comorbidities: medicalHistory.answeredYes,
-    };
-    const pathway = assignMurphyPathway(profile);
-    const assessmentDate = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-    return { profile, pathway, assessmentDate };
+    return buildReportData(saved);
   } catch {
     return null;
   }
+}
+
+/** Admin Pathway Preview only (dev builds). Customers never pass this. */
+export interface ReportPreview {
+  state: AssessmentState;
+  onOpenResults: () => void;
+}
+
+/** Link back to the results page; in preview it switches the preview tab instead of navigating. */
+function ResultsLink({ preview, className, style, children }: {
+  preview?: ReportPreview; className: string; style?: React.CSSProperties; children: React.ReactNode;
+}) {
+  if (preview) {
+    return <button type="button" onClick={preview.onOpenResults} className={className} style={{ ...style, cursor: "pointer" }}>{children}</button>;
+  }
+  return <Link href="/assessment/results" className={className} style={style}>{children}</Link>;
 }
 
 function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }) {
@@ -182,8 +187,9 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
   );
 }
 
-export default function AssessmentReportPage() {
-  const [data, setData] = useState<ReportData | null>(null);
+export default function AssessmentReportPage({ preview }: { preview?: ReportPreview }) {
+  // Preview mode builds from the sample answers passed in: no storage reads/writes, nothing logged.
+  const [data, setData] = useState<ReportData | null>(() => (preview ? buildReportData(preview.state) : null));
   const [missing, setMissing] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [downloadClicked, setDownloadClicked] = useState(false);
@@ -191,13 +197,14 @@ export default function AssessmentReportPage() {
   const acknowledged = checkboxChecked || downloadClicked;
 
   useEffect(() => {
+    if (preview) return;
     const result = loadReportData();
     if (!result) { setMissing(true); return; }
     setData(result);
   }, []);
 
   useEffect(() => {
-    if (!data || acknowledged) return;
+    if (!data || acknowledged || preview) return;
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
       e.returnValue = "";
@@ -229,11 +236,11 @@ export default function AssessmentReportPage() {
   const riskColors = riskBgColors[profile.osaRisk];
   const letter = PATHWAY_LETTERS[pathway] ?? "?";
   const pathwaySlug = letter.toLowerCase();
-  const paidSession = getPaidSession();
+  const paidSession = preview ? null : getPaidSession();
   const customerEmail = paidSession?.email ?? null;
 
   const logAcknowledgment = (method: "checkbox" | "download") => {
-    if (acknowledgmentLogged || !paidSession?.sessionId) return;
+    if (preview || acknowledgmentLogged || !paidSession?.sessionId) return;
     setAcknowledgmentLogged(true);
     fetch("/api/log-acknowledgment", {
       method: "POST",
@@ -267,14 +274,14 @@ export default function AssessmentReportPage() {
       >
         <div className="mx-auto flex flex-col gap-3 px-6 py-3" style={{ maxWidth: "960px" }}>
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <Link
-              href="/assessment/results"
+            <ResultsLink
+              preview={preview}
               className="no-underline flex items-center gap-2"
               style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)" }}
             >
               <ArrowLeft className="w-4 h-4" />
               Your Results
-            </Link>
+            </ResultsLink>
             <button
               onClick={handleDownloadOrPrint}
               className="btn-primary flex items-center gap-2"
@@ -950,10 +957,10 @@ export default function AssessmentReportPage() {
                 <Printer className="w-4 h-4" />
                 Print Results
               </button>
-              <Link href="/assessment/results" className="no-underline btn-secondary flex items-center gap-2">
+              <ResultsLink preview={preview} className="no-underline btn-secondary flex items-center gap-2">
                 <ArrowLeft className="w-4 h-4" />
                 Back to Results
-              </Link>
+              </ResultsLink>
             </div>
           </div>
           <p style={{ fontFamily: "var(--font-sans)", marginTop: "12px", fontSize: "13px", color: "var(--text-muted)" }}>
