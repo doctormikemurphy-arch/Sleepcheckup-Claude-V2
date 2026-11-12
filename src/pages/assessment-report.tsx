@@ -12,6 +12,7 @@ import {
 } from "@/lib/scoring";
 import { assignMurphyPathway, getPathwayDefinition } from "@/lib/pathways";
 import { PATHWAY_CONTENT } from "@/lib/pathway-content";
+import { renderBold } from "@/lib/render-bold";
 import { PALM_QUESTIONS } from "@/lib/questionnaires";
 import { SHOW_PLATO } from "@/lib/feature-flags";
 
@@ -170,12 +171,12 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
           </div>
           <div>
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>Key Concept</p>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{stripPrefix(keyConceptPara, "Key Concept:")}</p>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(stripPrefix(keyConceptPara, "Key Concept:"))}</p>
           </div>
         </div>
       )}
       {mainParagraphs.map((para, i) => (
-        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.75 }}>{para}</p>
+        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.75 }}>{renderBold(para)}</p>
       ))}
     </div>
   );
@@ -732,7 +733,7 @@ export default function AssessmentReportPage() {
                   className="flex-shrink-0"
                   style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
                 />
-                {s}
+                {renderBold(s)}
               </li>
             ))}
           </ul>
@@ -741,7 +742,7 @@ export default function AssessmentReportPage() {
             Why it matters
           </h3>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "12px" }}>
-            {pc.whyItMatters.intro}
+            {renderBold(pc.whyItMatters.intro)}
           </p>
           <ul style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "24px" }}>
             {pc.whyItMatters.points.map((p, i) => (
@@ -750,7 +751,7 @@ export default function AssessmentReportPage() {
                   className="flex-shrink-0"
                   style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#475569", marginTop: "8px" }}
                 />
-                {p}
+                {renderBold(p)}
               </li>
             ))}
           </ul>
@@ -759,7 +760,7 @@ export default function AssessmentReportPage() {
             What usually works best
           </h3>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "12px" }}>
-            {pc.whatWorksBest.intro}
+            {renderBold(pc.whatWorksBest.intro)}
           </p>
           <ul style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {pc.whatWorksBest.options.map((o, i) => (
@@ -768,7 +769,7 @@ export default function AssessmentReportPage() {
                   className="flex-shrink-0"
                   style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#16A34A", marginTop: "8px" }}
                 />
-                {o}
+                {renderBold(o)}
               </li>
             ))}
           </ul>
@@ -786,7 +787,7 @@ export default function AssessmentReportPage() {
           </div>
 
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "24px" }}>
-            {pc.nextSteps.intro}
+            {renderBold(pc.nextSteps.intro)}
           </p>
 
           {/* Pathway-specific next steps list */}
@@ -808,7 +809,7 @@ export default function AssessmentReportPage() {
                     {i + 1}
                   </span>
                 </div>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{step}</p>
+                <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(step)}</p>
               </div>
             ))}
           </div>

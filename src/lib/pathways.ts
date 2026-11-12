@@ -5,18 +5,18 @@ export const MURPHY_PATHWAYS: PathwayDefinition[] = [
     id: "A_insomnia",
     title: "Sleep Apnea with Insomnia",
     shortDescription: "Addressing your insomnia is a key to successful treatment of your sleep apnea.",
-    educationalSummary: `Your assessment shows that difficulty falling asleep, staying asleep, or waking too early is a significant concern for you. This is called **Insomnia**, and it can make other sleep problems like sleep apnea feel worse and harder to treat. You are not alone – **30 to 40% of sleep apnea patients have insomnia symptoms**.
+    educationalSummary: `Your assessment shows that difficulty falling asleep, staying asleep, or waking too early is a significant concern for you. This is called **insomnia**, and it can make other sleep problems like sleep apnea feel worse and harder to treat. You are not alone. About **30 to 40%** of sleep apnea patients have insomnia symptoms.
 
-In this situation, breathing problems during sleep and trouble falling or staying asleep are happening together. Poor sleep can make breathing problems feel worse, and breathing problems can keep the brain too alert to sleep well. This creates a cycle where sleep never feels restful. For this reason, both sleep apnea and Insomnia need to be treated.
+In this situation, breathing problems during sleep and trouble falling or staying asleep are happening together. Poor sleep can make breathing problems feel worse, and breathing problems can keep the brain too alert to sleep well. This creates a cycle where sleep never feels restful. For this reason, both sleep apnea and insomnia need to be treated.
 
-When insomnia and sleep breathing problems occur together, doctors often recommend treating the insomnia first or at the same time. This is because better sleep habits and reduced anxiety about sleep can make it easier to succeed with sleep apnea treatments.
+When insomnia and sleep breathing problems occur together, doctors often recommend treating the insomnia at the same time as the sleep apnea. This is because better sleep habits and reduced anxiety about sleep can make it easier to succeed with sleep apnea treatments.
 
 Cognitive Behavioral Therapy for Insomnia (CBT-I) is a proven, effective approach that helps people with insomnia sleep better without medication. It involves changing sleep habits and thoughts about sleep. A sleep specialist or psychologist trained in CBT-I can guide you through this process. Many people find that improving their insomnia helps them feel more ready and able to address their sleep apnea.
 
-Key Concept: If both sleep apnea and Insomnia are not treated together, you may continue to have symptoms even if one problem improves.
+Key Concept: If both sleep apnea and insomnia are not treated together, you may continue to have symptoms even if one problem improves.
 
 
-Your Next Step: The next step is to see a doctor to discuss the results of this assessment and see if you have snoring or sleep apnea. This will probably include a sleep study to measure your breathing while you sleep. Make sure that your insomnia is also evaluated and treated by either the same doctor or someone else if needed. A sleep medicine specialist can address both these problems. You can learn more about sleep medicine specialists on the American Academy of Sleep Medicine website (www.aasm.org).`,
+Your Next Step: See a doctor to talk about the results of this assessment and find out if you have snoring or sleep apnea. This will probably include a sleep study to measure your breathing while you sleep. Make sure your insomnia is also checked and treated, by the same doctor or by someone else. A sleep medicine specialist can treat both problems. Use the Find a Specialist links below to find one near you.`,
   },
   {
     id: "B_obesity",

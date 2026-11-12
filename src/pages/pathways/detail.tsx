@@ -1,6 +1,7 @@
 import { Link, useParams, useSearch } from "wouter";
 import { Check, ArrowLeft, Lock } from "lucide-react";
 import { PATHWAY_CONTENT } from "@/lib/pathway-content";
+import { renderBold } from "@/lib/render-bold";
 import { loadState, KEYS } from "@/lib/storage";
 
 const LETTER_TO_KEY: Record<string, string> = {
@@ -159,7 +160,7 @@ export default function PathwayDetailPage() {
                     >
                       <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
                     </div>
-                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{item}</p>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{renderBold(item)}</p>
                   </div>
                 ))}
               </div>
@@ -183,7 +184,7 @@ export default function PathwayDetailPage() {
                 Why This Matters for Your Health
               </h2>
               <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "24px" }}>
-                {content.whyItMatters.intro}
+                {renderBold(content.whyItMatters.intro)}
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {content.whyItMatters.points.map((p, i) => (
@@ -191,7 +192,7 @@ export default function PathwayDetailPage() {
                     <div
                       style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px", flexShrink: 0 }}
                     />
-                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{p}</p>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{renderBold(p)}</p>
                   </div>
                 ))}
               </div>
@@ -215,7 +216,7 @@ export default function PathwayDetailPage() {
                 What Usually Works Best
               </h2>
               <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "24px" }}>
-                {content.whatWorksBest.intro}
+                {renderBold(content.whatWorksBest.intro)}
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {content.whatWorksBest.options.map((opt, i) => (
@@ -226,7 +227,7 @@ export default function PathwayDetailPage() {
                     >
                       <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
                     </div>
-                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{opt}</p>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{renderBold(opt)}</p>
                   </div>
                 ))}
               </div>
@@ -250,7 +251,7 @@ export default function PathwayDetailPage() {
                 Recommended Next Steps
               </h2>
               <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7, marginBottom: "32px" }}>
-                {content.nextSteps.intro}
+                {renderBold(content.nextSteps.intro)}
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 {content.nextSteps.steps.map((step, i) => (
@@ -261,7 +262,7 @@ export default function PathwayDetailPage() {
                     >
                       {i + 1}
                     </div>
-                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{step}</p>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{renderBold(step)}</p>
                   </div>
                 ))}
               </div>
@@ -323,10 +324,10 @@ export default function PathwayDetailPage() {
               marginBottom: "16px",
             }}
           >
-            {content.cta.text}
+            {renderBold(content.cta.text)}
           </h2>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "rgba(255,255,255,0.85)", lineHeight: 1.65, marginBottom: "32px" }}>
-            {content.cta.description}
+            {renderBold(content.cta.description)}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/screener" className="no-underline">

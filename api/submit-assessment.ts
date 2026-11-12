@@ -27,12 +27,18 @@ const scoreRow = (label: string, value: string, color: string) =>
     </td>
   </tr>`;
 
+// Escapes the text first, then turns **text** into <b>text</b>, so no other HTML gets through.
+// Mirrors src/lib/render-bold.ts (kept local because api/ functions don't import from src/).
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+const boldToHtml = (text: string) => escapeHtml(String(text)).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+
 const bullet = (text: string) =>
   `<tr>
     <td style="vertical-align:top;width:20px;padding:5px 0;">
       <div style="width:6px;height:6px;border-radius:50%;background:#2563EB;margin-top:5px;"></div>
     </td>
-    <td style="padding:5px 0 5px 10px;color:#4B5563;font-size:14px;line-height:1.6;">${text}</td>
+    <td style="padding:5px 0 5px 10px;color:#4B5563;font-size:14px;line-height:1.6;">${boldToHtml(text)}</td>
   </tr>`;
 
 const specialistRow = (s: Specialist) =>
@@ -49,7 +55,7 @@ const numberedStep = (n: number, text: string) =>
     <td style="vertical-align:top;width:28px;padding:6px 0;">
       <div style="background:#2563EB;color:#fff;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;text-align:center;line-height:22px;">${n}</div>
     </td>
-    <td style="padding:6px 0 6px 10px;color:#4B5563;font-size:14px;line-height:1.6;">${text}</td>
+    <td style="padding:6px 0 6px 10px;color:#4B5563;font-size:14px;line-height:1.6;">${boldToHtml(text)}</td>
   </tr>`;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

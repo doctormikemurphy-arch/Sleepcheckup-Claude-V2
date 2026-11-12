@@ -8,6 +8,7 @@ import {
 import { PATHWAY_CONTENT_SEED } from "@/lib/admin-seed-data";
 import { loadState, clearState, getPaidSession, KEYS } from "@/lib/storage";
 import { PATHWAY_CONTENT } from "@/lib/pathway-content";
+import { renderBold } from "@/lib/render-bold";
 import type { AssessmentState } from "@/lib/assessment-types";
 import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "@/lib/types";
 import {
@@ -254,7 +255,7 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {mainParagraphs.map((para, i) => (
-        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.75 }}>{para}</p>
+        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.75 }}>{renderBold(para)}</p>
       ))}
       {keyConceptPara && (
         <div className="flex items-start gap-3" style={{ borderRadius: "12px", backgroundColor: "#EFF6FF", border: "1px solid #BFDBFE", padding: "16px" }}>
@@ -263,7 +264,7 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
           </div>
           <div>
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>Key Concept</p>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{stripPrefix(keyConceptPara, "Key Concept:")}</p>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(stripPrefix(keyConceptPara, "Key Concept:"))}</p>
           </div>
         </div>
       )}
@@ -274,7 +275,7 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
           </div>
           <div>
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "#15803D", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>Your Next Step</p>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{stripPrefix(nextStepPara, "Your Next Step:")}</p>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(stripPrefix(nextStepPara, "Your Next Step:"))}</p>
           </div>
         </div>
       )}
@@ -718,7 +719,7 @@ export default function AssessmentResultsPage() {
                   <div className="flex-shrink-0 flex items-center justify-center rounded-full" style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "2px" }}>
                     <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
                   </div>
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{item}</p>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{renderBold(item)}</p>
                 </div>
               ))}
             </div>
@@ -732,13 +733,13 @@ export default function AssessmentResultsPage() {
               Why This Matters
             </div>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
-              {pathwayContent.whyItMatters.intro}
+              {renderBold(pathwayContent.whyItMatters.intro)}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {pathwayContent.whyItMatters.points.map((p, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#475569", marginTop: "8px" }} />
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65 }}>{p}</p>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65 }}>{renderBold(p)}</p>
                 </div>
               ))}
             </div>
@@ -752,13 +753,13 @@ export default function AssessmentResultsPage() {
               What Usually Works Best
             </div>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
-              {pathwayContent.whatWorksBest.intro}
+              {renderBold(pathwayContent.whatWorksBest.intro)}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {pathwayContent.whatWorksBest.options.map((o, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#16A34A", marginTop: "8px" }} />
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{o}</p>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(o)}</p>
                 </div>
               ))}
             </div>
@@ -772,7 +773,7 @@ export default function AssessmentResultsPage() {
               Recommended Next Steps
             </div>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
-              {pathwayContent.nextSteps.intro}
+              {renderBold(pathwayContent.nextSteps.intro)}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {pathwayContent.nextSteps.steps.map((step, i) => (
@@ -780,7 +781,7 @@ export default function AssessmentResultsPage() {
                   <div className="flex items-center justify-center flex-shrink-0" style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#DBEAFE" }}>
                     <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "13px", color: "var(--blue)" }}>{i + 1}</span>
                   </div>
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{step}</p>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(step)}</p>
                 </div>
               ))}
             </div>
