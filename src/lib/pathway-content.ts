@@ -71,7 +71,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
     title: "Sleep Apnea with Obesity",
     subtitle: "Obesity and sleep apnea go hand in hand. Treating your body weight/obesity can have a big impact on your sleep apnea. Usually non surgery treatments like CPAP are tried first.",
     whatResultsSuggest: [
-      "Your screening indicates an elevated risk for obstructive sleep apnea.",
+      "Your answers show that you are at risk for obstructive sleep apnea. This means your airway narrows or gets blocked while you sleep, so your breathing stops and starts. Over time, this can lead to health problems if it is not treated.",
       "When our bodies put on too much weight, fat is deposited into the bottom of our tongue and the area around our throat. This reduces the size of our airway when we sleep.",
       "A high percentage of people with obesity have sleep apnea. Estimates vary but overall, 40 to 80% of adults with obesity have sleep apnea.",
       "Addressing both your sleep apnea and obesity at the same time is the best way to succeed.",
@@ -115,7 +115,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
     title: "Sleep Apnea with a Nasal Problem",
     subtitle: "An open nasal airway is essential for successful treatment of your sleep apnea",
     whatResultsSuggest: [
-      "Your screening indicates an elevated risk for obstructive sleep apnea.",
+      "Your answers show that you are at risk for obstructive sleep apnea. This means your airway narrows or gets blocked while you sleep, so your breathing stops and starts. Over time, this can lead to health problems if it is not treated.",
       "Your self-assessment identified significant nasal factors that are contributing to your sleep apnea.",
       "Your nasal problem is a key factor in causing your sleep apnea. Fixing your nose may not cure the sleep apnea (sometimes it does) but will make all other treatments easier to handle and more successful.",
     ],
@@ -159,7 +159,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
     title: "Sleep Apnea with Jaw & Tongue Blockage",
     subtitle: "Your jaw and tongue positioning may be contributing to airway blockage during sleep.",
     whatResultsSuggest: [
-      "Your screening indicates an elevated risk for obstructive sleep apnea.",
+      "Your answers show that you are at risk for obstructive sleep apnea. This means your airway narrows or gets blocked while you sleep, so your breathing stops and starts. Over time, this can lead to health problems if it is not treated.",
       "Your self-assessment suggests that jaw (mandible) and tongue factors are primary contributors.",
       "Your weight is not elevated, which means anatomical factors rather than obesity are likely driving your sleep breathing issues.",
     ],
@@ -203,7 +203,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
     title: "Sleep Apnea with Multi-Level Blockage",
     subtitle: "Multiple areas of your airway may be contributing to breathing difficulties during sleep.",
     whatResultsSuggest: [
-      "Your screening indicates an elevated risk for obstructive sleep apnea.",
+      "Your answers show that you are at risk for obstructive sleep apnea. This means your airway narrows or gets blocked while you sleep, so your breathing stops and starts. Over time, this can lead to health problems if it is not treated.",
       "Your self-assessment identified two or more anatomical areas (such as palate, tongue, jaw, or neck) that may be contributing to airway obstruction.",
       "Multi-level involvement is common and means that comprehensive treatment planning is important.",
     ],
@@ -247,7 +247,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
     title: "Sleep Apnea with a Breathing Control Problem",
     subtitle: "Your sleep breathing may involve subtle body signals beyond just airway blockage.",
     whatResultsSuggest: [
-      "Your screening indicates an elevated risk for obstructive sleep apnea.",
+      "Your answers show that you are at risk for obstructive sleep apnea. This means your airway narrows or gets blocked while you sleep, so your breathing stops and starts. Over time, this can lead to health problems if it is not treated.",
       "Your anatomy scores are relatively low, suggesting that physical airway narrowing may not be the primary issue.",
       "Your responses suggest that physiological factors—like brain signals, arousal patterns, or respiratory control—may be playing a significant role.",
     ],
