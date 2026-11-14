@@ -23,6 +23,7 @@ import TermsPage from "@/pages/terms";
 import DisclaimerPage from "@/pages/disclaimer";
 import AdminPage from "@/pages/admin/index";
 import { lazy, Suspense } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 // Admin Pathway Preview: dev builds only. Vite replaces import.meta.env.DEV with `false`
 // in production, so this import and the /admin/preview route are dropped from the
@@ -190,6 +191,7 @@ export default function App() {
           </Layout>
         </Route>
       </Switch>
+      <Analytics />
     </>
   );
 }
