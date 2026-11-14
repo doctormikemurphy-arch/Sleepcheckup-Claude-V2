@@ -14,6 +14,7 @@ import { PATHWAY_CONTENT } from "@/lib/pathway-content";
 import { renderBold } from "@/lib/render-bold";
 import { PALM_QUESTIONS } from "@/lib/questionnaires";
 import { SHOW_PLATO } from "@/lib/feature-flags";
+import { LightbulbCallout, SHARE_REPORT_TIP, AlwaysRememberTip, SimpleIdeaTip, PALM_INTRO } from "@/components/ui/LightbulbCallout";
 
 const PATHWAY_LETTERS: Record<string, string> = {
   A_insomnia: "A", B_obesity: "B", C_nasal: "C", D_mandible: "D",
@@ -181,7 +182,7 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
         </div>
       )}
       {mainParagraphs.map((para, i) => (
-        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.75 }}>{renderBold(para)}</p>
+        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.75 }}>{renderBold(para)}</p>
       ))}
     </div>
   );
@@ -367,7 +368,7 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
                   marginBottom: "12px",
                 }}
               >
-                Your Assigned Pathway
+                Your Pathway
               </p>
               <p style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "26px", lineHeight: 1.2, color: "var(--text-ink)", marginBottom: "8px" }}>
                 {pathwayDef.title}
@@ -590,7 +591,7 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
           <div className="rounded-xl border p-5 mb-4" style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}>
             <p className="font-bold mb-3" style={{ fontSize: "15px", color: "#991B1B" }}>PALM Classification Screening</p>
             <p className="text-ink-muted mb-3" style={{ fontSize: "14px", lineHeight: 1.65 }}>
-              Sleep apnea is not just a blocked airway. Three other things can play a part. How easily you wake up. How steady your body keeps your breathing. How well your airway muscles keep working during sleep. The PALM Classification checks all four.
+              {PALM_INTRO}
             </p>
             <p className="text-ink-muted mb-3" style={{ fontSize: "14px", lineHeight: 1.65 }}>
               If you answered "Yes" to 2 or more questions in a group, that group is marked <strong>Flagged</strong> below. Flagged means this factor may be part of your sleep apnea. <strong>Clear</strong> means it probably is not.
@@ -653,14 +654,10 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
             </div>
           </div>
 
-          <div className="rounded-xl border p-4 text-center" style={{ borderColor: "#E2E8F0", backgroundColor: "#F8FAFC" }}>
-            <p style={{ fontSize: "15px", color: "#0F172A", lineHeight: 1.6 }}>
-              <strong style={{ color: "#1E40AF" }}>Simple idea:</strong> first understand the breathing problem, then look at where the airway is narrowing, then choose treatment options that fit that pattern.
-            </p>
-          </div>
+          <SimpleIdeaTip />
         </div>
 
-        {/* ── YOUR MURPHY METHOD ASSIGNED PATHWAY ── */}
+        {/* ── YOUR MURPHY METHOD PATHWAY ── */}
         <div className="print:break-after-page" style={{ backgroundColor: "var(--bg-card)", padding: "40px clamp(16px,5vw,48px)", marginBottom: "12px" }}>
           {/* Header box */}
           <div
@@ -683,7 +680,7 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
                 marginBottom: "6px",
               }}
             >
-              Your Murphy Method™ Assigned Pathway
+              Your Murphy Method™ Pathway
             </h2>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)" }}>
               Your personalized treatment pathway based on your assessment
@@ -748,15 +745,15 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
           <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "17px", color: "var(--text-ink)", marginBottom: "8px" }}>
             Why it matters
           </h3>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "12px" }}>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--blue)", fontWeight: 600, lineHeight: 1.65, marginBottom: "12px" }}>
             {renderBold(pc.whyItMatters.intro)}
           </p>
           <ul style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "24px" }}>
             {pc.whyItMatters.points.map((p, i) => (
-              <li key={i} className="flex items-start gap-2.5" style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65 }}>
+              <li key={i} className="flex items-start gap-2.5" style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>
                 <span
                   className="flex-shrink-0"
-                  style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#475569", marginTop: "8px" }}
+                  style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
                 />
                 {renderBold(p)}
               </li>
@@ -766,7 +763,7 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
           <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "17px", color: "var(--text-ink)", marginBottom: "8px" }}>
             What usually works best
           </h3>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "12px" }}>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--blue)", fontWeight: 600, lineHeight: 1.65, marginBottom: "12px" }}>
             {renderBold(pc.whatWorksBest.intro)}
           </p>
           <ul style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -774,7 +771,7 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
               <li key={i} className="flex items-start gap-2.5" style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>
                 <span
                   className="flex-shrink-0"
-                  style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#16A34A", marginTop: "8px" }}
+                  style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
                 />
                 {renderBold(o)}
               </li>
@@ -789,9 +786,11 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
               Your Murphy Method™ Next Steps
             </h2>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)" }}>
-              Actionable steps based on your assigned pathway
+              Steps to take based on your pathway
             </p>
           </div>
+
+          <LightbulbCallout style={{ marginBottom: "24px" }}>{SHARE_REPORT_TIP}</LightbulbCallout>
 
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "24px" }}>
             {renderBold(pc.nextSteps.intro)}
@@ -820,6 +819,8 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
               </div>
             ))}
           </div>
+
+          <AlwaysRememberTip style={{ marginBottom: "32px" }} />
 
           {/* Find a Specialist */}
           <div>

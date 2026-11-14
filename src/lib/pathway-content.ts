@@ -53,7 +53,7 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
     nextSteps: {
       intro: "Based on your pathway, here is your action plan:",
       steps: [
-        "**Get a sleep study.** This test measures your breathing while you sleep. It shows if you have sleep apnea and how serious it is.",
+        "**Get a sleep study.** This test measures your breathing while you sleep. It shows if you have sleep apnea and how serious it is. Insurance usually covers a sleep study when your doctor orders it.",
         "**Start sleep apnea treatment and stay with it.** Work with your doctor to choose the right treatment. If insomnia makes treatment hard, tell your doctor. Small changes, like trying a different CPAP mask, can make it easier.",
         "**Ask for a referral to a CBT-I provider at the same time.** CBT-I (cognitive behavioral therapy for insomnia) usually takes 6 to 8 sessions over several weeks.",
         "**Follow your CBT-I plan.** Your provider will help you wake up at the same time every day, spend less time lying in bed awake, and worry less about sleep.",

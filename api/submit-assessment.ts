@@ -161,7 +161,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   <tr>
     <td style="padding:28px 36px 0;">
       <div style="background:#EFF6FF;border:2px solid #2563EB;border-radius:10px;padding:24px;text-align:center;">
-        <p style="margin:0 0 4px;color:#2563EB;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">YOUR MURPHY METHOD ASSIGNED PATHWAY</p>
+        <p style="margin:0 0 4px;color:#2563EB;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">YOUR MURPHY METHOD PATHWAY</p>
         <h2 style="margin:8px 0 10px;color:#0F172A;font-size:22px;font-weight:800;line-height:1.2;">${pathwayName}</h2>
         <p style="margin:0;color:#1D4ED8;font-size:14px;line-height:1.6;font-style:italic;">${pathwayDescription}</p>
       </div>
@@ -266,7 +266,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     <td style="padding:28px 36px 0;">
       <p style="margin:0 0 12px;color:#0F172A;font-size:16px;font-weight:700;">Using this report at your doctor's appointment:</p>
       <table cellpadding="0" cellspacing="0" width="100%">
-        ${numberedStep(1, "Share your assigned pathway with your doctor — it will orient the conversation immediately.")}
+        ${numberedStep(1, "Share your pathway with your doctor — it will orient the conversation immediately.")}
         ${numberedStep(2, "Review the treatment options section before your appointment so you can ask informed questions.")}
         ${numberedStep(3, "Print or save this email as a PDF (File → Print → Save as PDF) and bring it with you.")}
         ${numberedStep(4, "Request a sleep study if your STOP-BANG score is 3 or higher.")}

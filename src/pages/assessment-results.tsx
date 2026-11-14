@@ -17,6 +17,7 @@ import {
 import { getPathwayDefinition } from "@/lib/pathways";
 import { buildAssessmentResult } from "@/lib/build-assessment-result";
 import { SHOW_PLATO } from "@/lib/feature-flags";
+import { LightbulbCallout, SHARE_REPORT_TIP, AlwaysRememberTip, SimpleIdeaTip, PALM_INTRO } from "@/components/ui/LightbulbCallout";
 
 const PATHWAY_LETTERS: Record<string, string> = {
   A_insomnia: "A", B_obesity: "B", C_nasal: "C", D_mandible: "D",
@@ -180,7 +181,7 @@ function PathwayResources({ pathwayId }: { pathwayId: string }) {
         Your Pathway Resources
       </div>
       <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", marginBottom: "24px", lineHeight: 1.55 }}>
-        Curated by Dr. Murphy — matched to your assigned pathway.
+        Curated by Dr. Murphy — matched to your pathway.
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
         {RESOURCE_TYPE_ORDER.map((type) => {
@@ -250,7 +251,7 @@ function PathwaySummarySection({ pathwayDef }: { pathwayDef: PathwayDefinition }
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {mainParagraphs.map((para, i) => (
-        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.75 }}>{renderBold(para)}</p>
+        <p key={i} style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.75 }}>{renderBold(para)}</p>
       ))}
       {keyConceptPara && (
         <div className="flex items-start gap-3" style={{ borderRadius: "12px", backgroundColor: "#EFF6FF", border: "1px solid #BFDBFE", padding: "16px" }}>
@@ -402,7 +403,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px" }}>
-                Your Assigned Pathway
+                Your Pathway
               </div>
               <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "clamp(18px, 2.5vw, 26px)", color: "var(--text-ink)", lineHeight: 1.2, marginBottom: "8px" }}>
                 {pathwayDef.title}
@@ -597,7 +598,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
           <div className="rounded-xl border p-5 mb-4" style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}>
             <p className="font-bold mb-3" style={{ fontSize: "15px", color: "#991B1B" }}>PALM Classification Screening</p>
             <p className="text-ink-muted mb-3" style={{ fontSize: "14px", lineHeight: 1.65 }}>
-              Sleep apnea is not just a blocked airway. Three other things can play a part. How easily you wake up. How steady your body keeps your breathing. How well your airway muscles keep working during sleep. The PALM Classification checks all four.
+              {PALM_INTRO}
             </p>
             <p className="text-ink-muted mb-3" style={{ fontSize: "14px", lineHeight: 1.65 }}>
               If you answered "Yes" to 2 or more questions in a group, that group is marked <strong>Flagged</strong> below. Flagged means this factor may be part of your sleep apnea. <strong>Clear</strong> means it probably is not.
@@ -660,11 +661,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             </div>
           </div>
 
-          <div className="rounded-xl border p-4 text-center" style={{ borderColor: "#E2E8F0", backgroundColor: "#F8FAFC" }}>
-            <p style={{ fontSize: "15px", color: "#0F172A", lineHeight: 1.6 }}>
-              <strong style={{ color: "#1E40AF" }}>Simple idea:</strong> first understand the breathing problem, then look at where the airway is narrowing, then choose treatment options that fit that pattern.
-            </p>
-          </div>
+          <SimpleIdeaTip />
         </section>
 
         {/* ── STEP 4: YOUR PATHWAY ── */}
@@ -674,7 +671,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
           </div>
           <div className="flex-1">
             <p className="font-bold text-ink" style={{ fontSize: "17px" }}>Step 4: Your Results</p>
-            <p className="text-ink-muted" style={{ fontSize: "14px" }}>Your assigned Murphy Method™ pathway</p>
+            <p className="text-ink-muted" style={{ fontSize: "14px" }}>Your Murphy Method™ pathway</p>
           </div>
           <Target className="w-5 h-5 flex-shrink-0" style={{ color: "#0F172A" }} />
         </div>
@@ -687,7 +684,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px" }}>
-                Your Assigned Pathway
+                Your Pathway
               </div>
               <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "clamp(18px, 2.5vw, 26px)", color: "var(--text-ink)", lineHeight: 1.2, marginBottom: "8px" }}>
                 {pathwayDef.title}
@@ -719,7 +716,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
                   <div className="flex-shrink-0 flex items-center justify-center rounded-full" style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "2px" }}>
                     <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
                   </div>
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{renderBold(item)}</p>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.7 }}>{renderBold(item)}</p>
                 </div>
               ))}
             </div>
@@ -732,14 +729,14 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
               Why This Matters
             </div>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--blue)", fontWeight: 600, lineHeight: 1.65, marginBottom: "16px" }}>
               {renderBold(pathwayContent.whyItMatters.intro)}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {pathwayContent.whyItMatters.points.map((p, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#475569", marginTop: "8px" }} />
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65 }}>{renderBold(p)}</p>
+                  <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }} />
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(p)}</p>
                 </div>
               ))}
             </div>
@@ -752,13 +749,13 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
               What Usually Works Best
             </div>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--blue)", fontWeight: 600, lineHeight: 1.65, marginBottom: "16px" }}>
               {renderBold(pathwayContent.whatWorksBest.intro)}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {pathwayContent.whatWorksBest.options.map((o, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#16A34A", marginTop: "8px" }} />
+                  <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }} />
                   <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(o)}</p>
                 </div>
               ))}
@@ -772,6 +769,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
               Recommended Next Steps
             </div>
+            <LightbulbCallout style={{ marginBottom: "16px" }}>{SHARE_REPORT_TIP}</LightbulbCallout>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, marginBottom: "16px" }}>
               {renderBold(pathwayContent.nextSteps.intro)}
             </p>
@@ -785,6 +783,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
                 </div>
               ))}
             </div>
+            <AlwaysRememberTip style={{ marginTop: "16px" }} />
           </div>
         )}
 

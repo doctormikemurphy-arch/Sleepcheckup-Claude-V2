@@ -7,6 +7,7 @@ import {
   Printer, Mail, ArrowRight, Lightbulb, RotateCcw,
 } from "lucide-react";
 import { getUrgencyInfo } from "@/lib/screener-helpers";
+import { SimpleIdeaTip } from "@/components/ui/LightbulbCallout";
 import { getOsaRiskLabel, getZoneInterpretation, scoreStopBang, scoreZones, scoreAnatomy } from "@/lib/scoring";
 import type { ScreeningProfile } from "@/lib/screener-types";
 
@@ -425,11 +426,7 @@ export default function ScreenerResults() {
             </div>
           </div>
 
-          <div className="rounded-xl border p-4 text-center" style={{ borderColor: "#E2E8F0", backgroundColor: "#F8FAFC" }}>
-            <p style={{ fontSize: "15px", color: "#0F172A", lineHeight: 1.6 }}>
-              <strong style={{ color: "#1E40AF" }}>Simple idea:</strong> first understand the breathing problem, then look at where the airway is narrowing, then choose treatment options that fit that pattern.
-            </p>
-          </div>
+          <SimpleIdeaTip />
         </section>
 
         {/* Key Concept */}

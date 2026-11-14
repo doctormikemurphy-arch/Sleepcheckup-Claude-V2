@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Check, X, CheckCircle2 } from "lucide-react";
 import { HOW_IT_WORKS, HOME } from "@/lib/content";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { SimpleIdeaTip } from "@/components/ui/LightbulbCallout";
 
 const { hero, freePaid, pathwaysSection, reportSection, faqs } = HOW_IT_WORKS;
 const { steps, philosophicalStatement } = HOME;
@@ -273,14 +274,7 @@ export default function HowItWorksPage() {
             </div>
 
             {/* Callout */}
-            <div
-              className="card-tinted"
-              style={{ padding: "24px", borderRadius: "16px" }}
-            >
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65, textAlign: "center" }}>
-                <strong style={{ color: "var(--text-ink)" }}>Simple idea:</strong> first understand the breathing problem, then look at where the airway is narrowing, then choose treatment options that fit that pattern.
-              </p>
-            </div>
+            <SimpleIdeaTip />
           </div>
         </div>
       </section>

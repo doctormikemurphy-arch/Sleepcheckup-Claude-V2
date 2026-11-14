@@ -5,7 +5,7 @@ import { FileText, RefreshCw, BookOpen } from "lucide-react";
 const FEATURES = [
   { icon: FileText, title: "Saved Reports", body: "Access your past assessment reports from any device, any time." },
   { icon: RefreshCw, title: "Retake Tracking", body: "Compare results across multiple assessments to track changes over time." },
-  { icon: BookOpen, title: "Live Pathway Resources", body: "Curated articles and tools that update as guidelines evolve — matched to your assigned pathway." },
+  { icon: BookOpen, title: "Live Pathway Resources", body: "Curated articles and tools that update as guidelines evolve — matched to your pathway." },
 ];
 
 function PortalDashboard() {
