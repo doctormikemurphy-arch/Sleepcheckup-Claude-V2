@@ -13,7 +13,7 @@ export default function HowItWorksPage() {
 
   const pathwayNames = [
     "Sleep Apnea with Insomnia",
-    "Sleep Apnea with Obesity",
+    "Sleep Apnea and Body Weight",
     "Sleep Apnea with a Nasal Problem",
     "Sleep Apnea with Jaw & Tongue Blockage",
     "Sleep Apnea with Multi-Level Blockage",

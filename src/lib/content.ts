@@ -345,7 +345,7 @@ export const HOW_IT_WORKS = {
     ctaButton: "Discover My Pathway — $20",
     pathways: [
       "Sleep Apnea with Insomnia",
-      "Sleep Apnea with Obesity",
+      "Sleep Apnea and Body Weight",
       "Sleep Apnea with a Nasal Problem",
       "Sleep Apnea with Jaw & Tongue Blockage",
       "Sleep Apnea with Multi-Level Blockage",

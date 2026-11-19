@@ -20,18 +20,20 @@ Your Next Step: See a doctor to talk about the results of this assessment and fi
   },
   {
     id: "B_obesity",
-    title: "Sleep Apnea with Obesity",
-    shortDescription: "Because of the clear relationship between obesity and sleep apnea, treating obesity has a big positive effect. Usually non surgery options like CPAP or an oral appliance are tried first.",
-    educationalSummary: `Your assessment indicates that you have a **Body-Mass Index (BMI)** of 30 kg/m² or higher. Body Mass Index is a simple number doctors use to compare a person's weight to their height to see if their body weight is in a healthy range. Obesity means having more body weight than is healthy for your height, which can make it harder for the body to work well. __Obesity is defined as having a body mass index (BMI) of 30 kg/m² or higher__, which indicates an excessive amount of body fat associated with increased risk of medical conditions such as cardiovascular disease, type 2 diabetes and sleep apnea.
+    title: "Sleep Apnea and Body Weight",
+    shortDescription: "Weight and sleep apnea are closely linked, so losing weight can help a lot. That's why most people start with treatments that don't need surgery, like CPAP or an oral appliance, while they work on losing weight.",
+    educationalSummary: `Based on the height and weight you entered, your body weight is higher than the healthy range for your height. Doctors check this with a number called **Body Mass Index (BMI)**, which compares your weight to your height. A BMI of 30 or higher, like yours, is called **obesity**. BMI is a helpful estimate, but it is not perfect. For example, people with a lot of muscle can have a high BMI. Your doctor can look at your full picture.
 
-When our bodies put on too much weight, fat is deposited into the bottom part of our tongue and the area around our throat. This reduces the size of our airway when we sleep. For this reason, a high percentage of people with obesity have sleep apnea. Estimates vary but overall, **40 to 80% of adults with obesity have sleep apnea**.
+When we gain weight, some of the extra fat goes into the bottom part of the tongue and the area around the throat. This makes the airway smaller when we sleep, so it gets blocked more easily. That is why sleep apnea is so common in people with higher body weight. About **40 to 80% of adults with obesity have sleep apnea**.
 
-Losing weight can help open the airway during sleep and may reduce or even fix sleep apnea. Because of this, treatment for sleep apnea often starts with weight loss and non-surgery options. These may include a CPAP machine (which gently blows air to keep the airway open during sleep) or an oral appliance (a mouth device that holds the jaw and tongue forward to help keep breathing clear at night).
+Obesity is a medical diagnosis, not a label. Some people find the word hard to hear, but your doctor uses it to help decide which tests and treatments are right for you. Higher body weight can raise your chance of health problems like sleep apnea, type 2 diabetes, and heart disease. **The good news is that weight is something you can change, and losing even some weight can make a big difference in your health.** Today there are many treatments that work well, including newer weight loss medicines called GLP-1 medicines.
 
-Key Concept: When someone puts on too much weight fat is placed in the lower part of the tongue and around the throat. This can cause sleep apnea or make it worse. If you have obesity, you need to be checked for sleep apnea and work to lose weight.
+Losing weight can help open your airway during sleep and may reduce or even fix sleep apnea. While you work on losing weight, most people also start a sleep apnea treatment that doesn't need surgery. This may be a CPAP machine (which gently blows air through a mask to keep your airway open while you sleep) or an oral appliance (a mouth guard that holds the jaw and tongue forward at night).
+
+Key Concept: Higher body weight can narrow your airway at the tongue and throat and cause sleep apnea. The good news is that weight is something you can change. Get checked for sleep apnea, and if you need treatment, start it while you work on losing weight.
 
 
-Your Next Step: The next step is to see a doctor to discuss the results of this assessment and see if you have snoring or sleep apnea. This will probably include a sleep study to measure your breathing while you sleep. You will also benefit from working with a doctor to develop a plan for losing weight.`,
+Your Next Step: See a doctor to talk about the results of this assessment and find out if you have snoring or sleep apnea. This will probably include a sleep study to measure your breathing while you sleep. Also ask your doctor about making a plan to lose weight.`,
   },
   {
     id: "C_nasal",

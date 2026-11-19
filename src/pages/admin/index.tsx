@@ -50,7 +50,7 @@ interface SiteCopyData {
 const PATHWAY_OPTIONS = [
   { value: "general", label: "General Resources (Free Screening)" },
   { value: "A_insomnia", label: "A — Sleep Apnea with Insomnia" },
-  { value: "B_obesity", label: "B — Sleep Apnea with Obesity" },
+  { value: "B_obesity", label: "B — Sleep Apnea and Body Weight" },
   { value: "C_nasal", label: "C — Sleep Apnea with a Nasal Problem" },
   { value: "D_mandible", label: "D — Sleep Apnea with Jaw & Tongue Blockage" },
   { value: "E_multilevel", label: "E — Sleep Apnea with Multi-Level Blockage" },
