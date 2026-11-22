@@ -1,3 +1,5 @@
+import type { PatientProfile } from "./types";
+
 export interface PathwayContent {
   pathwayLetter: string;
   title: string;
@@ -113,44 +115,46 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
   C_nasal: {
     pathwayLetter: "C",
     title: "Sleep Apnea with a Nasal Problem",
-    subtitle: "An open nasal airway is essential for successful treatment of your sleep apnea",
+    subtitle: "Fixing your nasal problem is key to treating your sleep apnea successfully.",
     whatResultsSuggest: [
       "Your answers show that you are at risk for obstructive sleep apnea. This means your airway narrows or gets blocked while you sleep, so your breathing stops and starts. Over time, this can lead to health problems if it is not treated.",
-      "Your self-assessment identified significant nasal factors that are contributing to your sleep apnea.",
-      "Your nasal problem is a key factor in causing your sleep apnea. Fixing your nose may not cure the sleep apnea (sometimes it does) but will make all other treatments easier to handle and more successful.",
+      "Your answers also show a nasal problem that is likely adding to your sleep apnea.",
+      "You answered yes to some questions about your nose in the \"Where Can the Airway Narrow?\" section. Each yes answer points to a possible cause of your nasal problem. Share these answers with your doctor to help you get the right treatment.",
+      "Fixing your nose may not cure your sleep apnea (sometimes it does), but it makes other treatments easier to use and more likely to work.",
     ],
     whyItMatters: {
-      intro: "The nose plays a critical role in healthy breathing during sleep. When nasal airflow is compromised, it affects everything downstream.",
+      intro: "Healthy breathing during sleep starts with your nose.",
       points: [
-        "Nasal blockage forces mouth breathing, which destabilizes the airway and worsens both snoring and sleep apnea.",
-        "Poor nasal breathing makes both CPAP and Oral Appliance treatments harder to tolerate. Patients often \"fail\" these treatments because their nasal problem is not addressed and fixed.",
-        "Fortunately, both medical and surgical nasal problems can be effectively identified and treated. One big bonus - your nose will also work better during the day when you are awake!",
+        "When you can't breathe well through your nose, you breathe through your mouth. This narrows your airway and makes snoring and sleep apnea worse.",
+        "A nasal problem makes CPAP and oral appliances harder to use. Many people stop using these treatments because their nasal problem was never found or fixed.",
+        "The good news is that most nasal problems can be found and treated, with medicine or with a procedure. A big bonus: your nose will also work better during the day.",
       ],
     },
     whatWorksBest: {
-      intro: "For people with significant nasal factors, addressing the nose first—or alongside other treatments—typically produces better outcomes.",
+      intro: "Don't wait to treat your sleep apnea, and make fixing your nasal problem a priority.",
       options: [
-        "ENT (Ear, Nose & Throat) evaluation to identify structural and inflammatory causes.",
-        "Allergy testing and treatment if allergic rhinitis is contributing.",
-        "Medical therapy including nasal steroid sprays, antihistamines, and saline irrigation.",
-        "Nasal strips or internal dilators for temporary relief and CPAP optimization.",
-        "Surgical options (septoplasty, turbinate reduction) when appropriate.",
+        "**Sleep apnea treatment.** Work with your doctor to start treatment right away. A clear nose makes that treatment easier to use, so work on your nose at the same time.",
+        "**ENT (ear, nose, and throat) exam.** An ENT doctor looks inside your nose to find the cause, like a structural problem (something about the shape inside your nose that blocks airflow) or a swollen lining.",
+        "**Medicine for your nose.** Nasal steroid sprays like Flonase (fluticasone) or Nasacort (triamcinolone) can calm swelling. Antihistamine pills like Claritin (loratadine), Zyrtec (cetirizine), or Allegra (fexofenadine) can help when allergies are part of the problem. Saline rinses (salt water) clean and clear your nose. Even though you can buy these without a prescription, talk with your doctor before starting any new medicine to make sure it is safe for you.",
+        "**Allergies and nose swelling.** When the lining of your nose swells, drains, or makes you sneeze, it is called rhinitis. Most of the time, it is caused by allergies. Your doctor can help you treat it, or you can see an allergy specialist. Use the Find a Specialist links below to find one near you.",
+        "**Nasal strips or nasal dilators.** Nasal strips stick across the outside of your nose, like a bandage. Dilators fit just inside your nose. Both help hold your nose open at night. If they help you breathe or sleep better, that is a sign your nose is part of the problem. They can also make sleep apnea treatments like an oral appliance easier to use. They don't fix the cause and are usually not a long-term answer. If they help, see an ENT doctor to find the exact problem.",
+        "**Surgery or a procedure.** If you have a structural problem in your nose, a procedure in the office or surgery is usually the best fix. ENT doctors find these problems and do these procedures. Use the Find a Specialist links below to find one near you.",
       ],
     },
     nextSteps: {
-      intro: "Based on your pathway, here is a recommended action plan:",
+      intro: "Based on your pathway, here is your action plan:",
       steps: [
-        "Get a sleep study to confirm diagnosis and measure the severity of your sleep apnea.",
-        "Schedule an appointment with an ENT specialist for a nasal evaluation.",
-        "Under the direction of your primary care doctor pursue medical treatments for your nose including nasal saline irrigations and over-the-counter nasal sprays (steroids or antihistamines) to see if your symptoms improve.",
-        "Get allergy testing if you have seasonal or environmental triggers.",
-        "If you are currently using CPAP consider switching to a full mask (that goes over your nose and mouth) so that all the air to keep your airway open is not going only through your nose. Once your nasal problem is fixed it will be easier to use a nasal mask if you continue with CPAP treatment.",
-        "After nasal optimization, reassess your sleep breathing to measure improvement.",
+        "**Get a sleep study.** This test measures your breathing while you sleep. It shows if you have sleep apnea and how serious it is. Insurance usually covers a sleep study when your doctor orders it.",
+        "**Start sleep apnea treatment.** Work with your doctor to choose the right treatment. Don't wait for your nose to be fixed first.",
+        "**Try medicine for your nose.** Ask your doctor about a nasal steroid spray, an antihistamine, or saline rinses to see if your breathing gets better. If allergies seem to be part of the problem, ask about allergy testing.",
+        "**See an ENT doctor for a nose exam.** Even if medicine helps, an ENT can find the exact cause of your nasal problem, like a structural problem or a swollen lining. They can treat your nose with medicine, or with a procedure or surgery if needed.",
+        "**If you use CPAP, ask about a full face mask.** A mask that covers your nose and mouth works better while your nose is being treated. Once your nose is better, a smaller nose mask may be easier to use.",
+        "**Check your progress.** After your nose is treated, your doctor may test your sleep again to see how much it helped.",
       ],
     },
     cta: {
-      text: "Optimize Nasal Breathing",
-      description: "Many people are surprised how much better they sleep once nasal breathing is optimized. It's often the missing piece that makes other treatments more effective.",
+      text: "Treat Your Nose and Sleep Apnea Together",
+      description: "Many people are surprised how much better they sleep once their nose is treated. It is often the missing piece that helps other treatments work.",
     },
   },
 
@@ -374,3 +378,44 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
     },
   },
 };
+
+// ── Nose add-on ──
+// Extra text for people with a nasal problem (nose score 2 or more) whose pathway is not C.
+// The pathway entries above stay unchanged; getPathwayContent() adds these items on top, so
+// the results page, PDF report, email and /pathways page all show the same thing.
+export const NOSE_ADDON = {
+  results: "Your answers also show a nasal problem, which can make sleep apnea worse and make treatment harder to use. Your yes answers about your nose in the \"Where Can the Airway Narrow?\" section point to possible causes. Share them with your doctor.",
+  whyItMatters: "A nasal problem makes you breathe through your mouth at night, which narrows your airway. It also makes CPAP and oral appliances harder to use.",
+  whatWorksBest: "**Treating your nose.** Medicine like a nasal steroid spray, an antihistamine, or saline rinses often helps. Talk with your doctor before starting any new medicine. An ENT (ear, nose, and throat) doctor can find the exact cause and treat it, including with a procedure if needed.",
+  nextStep: "**Get your nose checked.** Ask your doctor about medicine for your nose, and see an ENT doctor to find the exact cause. A clear nose makes sleep apnea treatment easier to use.",
+} as const;
+
+const NOSE_ADDON_TEXTS: ReadonlySet<string> = new Set(Object.values(NOSE_ADDON));
+
+/** True for list items that came from the nose add-on (shown with the airflow icon). */
+export function isAddOnItem(text: string): boolean {
+  return NOSE_ADDON_TEXTS.has(text);
+}
+
+/** Nose add-on applies when the nose score is 2 or more and the pathway is not C. */
+export function hasNoseAddOn(pathway: string, profile?: PatientProfile | null): boolean {
+  return !!profile && pathway !== "C_nasal" && (profile.anatomy?.noseScore ?? 0) >= 2;
+}
+
+/**
+ * The content to show for a pathway. Without a profile (or when no add-on applies) this is
+ * exactly PATHWAY_CONTENT[pathway]. With the nose add-on, one item is added as the last
+ * bullet of each list and as the second-to-last next step.
+ */
+export function getPathwayContent(pathway: string, profile?: PatientProfile | null): PathwayContent | undefined {
+  const base = PATHWAY_CONTENT[pathway];
+  if (!base || !hasNoseAddOn(pathway, profile)) return base;
+  const steps = base.nextSteps.steps;
+  return {
+    ...base,
+    whatResultsSuggest: [...base.whatResultsSuggest, NOSE_ADDON.results],
+    whyItMatters: { ...base.whyItMatters, points: [...base.whyItMatters.points, NOSE_ADDON.whyItMatters] },
+    whatWorksBest: { ...base.whatWorksBest, options: [...base.whatWorksBest.options, NOSE_ADDON.whatWorksBest] },
+    nextSteps: { ...base.nextSteps, steps: [...steps.slice(0, -1), NOSE_ADDON.nextStep, ...steps.slice(-1)] },
+  };
+}

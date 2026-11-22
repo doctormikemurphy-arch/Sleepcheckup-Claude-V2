@@ -1,8 +1,24 @@
 import { Link, useParams, useSearch } from "wouter";
 import { Check, ArrowLeft, Lock } from "lucide-react";
-import { PATHWAY_CONTENT } from "@/lib/pathway-content";
+import { getPathwayContent, isAddOnItem } from "@/lib/pathway-content";
+import { AddOnIcon, InlineAddOnIcon } from "@/components/ui/AddOnIcon";
+import { buildAssessmentResult } from "@/lib/build-assessment-result";
+import type { AssessmentState } from "@/lib/assessment-types";
 import { renderBold } from "@/lib/render-bold";
 import { loadState, KEYS } from "@/lib/storage";
+
+/** The visitor's own scored profile, only when this page is their pathway (so the nose add-on matches their results). */
+function ownProfileFor(pathwayKey: string | undefined) {
+  if (!pathwayKey) return null;
+  try {
+    const saved = loadState<AssessmentState>(KEYS.assessment);
+    if (!saved) return null;
+    const result = buildAssessmentResult(saved);
+    return result.pathway === pathwayKey ? result.profile : null;
+  } catch {
+    return null;
+  }
+}
 
 const LETTER_TO_KEY: Record<string, string> = {
   a: "A_insomnia",
@@ -32,7 +48,7 @@ export default function PathwayDetailPage() {
   const fromResults = new URLSearchParams(search).get("from") === "results";
   const letter = (params.letter ?? "").toLowerCase();
   const key = LETTER_TO_KEY[letter];
-  const content = key ? PATHWAY_CONTENT[key] : null;
+  const content = key ? getPathwayContent(key, ownProfileFor(key)) ?? null : null;
   const italicWord = ITALIC_KEYWORDS[letter] ?? "";
 
   if (!content) {
@@ -158,7 +174,7 @@ export default function PathwayDetailPage() {
                       className="flex-shrink-0 flex items-center justify-center rounded-full"
                       style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "3px" }}
                     >
-                      <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
+                      {isAddOnItem(item) ? <AddOnIcon size={12} /> : <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />}
                     </div>
                     <p style={{ fontFamily: "var(--font-sans)", fontSize: "17px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>{renderBold(item)}</p>
                   </div>
@@ -189,9 +205,13 @@ export default function PathwayDetailPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {content.whyItMatters.points.map((p, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div
-                      style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px", flexShrink: 0 }}
-                    />
+                    {isAddOnItem(p) ? (
+                      <AddOnIcon style={{ marginTop: "5px" }} />
+                    ) : (
+                      <div
+                        style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px", flexShrink: 0 }}
+                      />
+                    )}
                     <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{renderBold(p)}</p>
                   </div>
                 ))}
@@ -225,7 +245,7 @@ export default function PathwayDetailPage() {
                       className="flex-shrink-0 flex items-center justify-center rounded-full"
                       style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "3px" }}
                     >
-                      <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
+                      {isAddOnItem(opt) ? <AddOnIcon size={12} /> : <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />}
                     </div>
                     <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{renderBold(opt)}</p>
                   </div>
@@ -262,7 +282,7 @@ export default function PathwayDetailPage() {
                     >
                       {i + 1}
                     </div>
-                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{renderBold(step)}</p>
+                    <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.65 }}>{isAddOnItem(step) && <InlineAddOnIcon />}{renderBold(step)}</p>
                   </div>
                 ))}
               </div>

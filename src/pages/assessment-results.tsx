@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { PATHWAY_CONTENT_SEED } from "@/lib/admin-seed-data";
 import { loadState, clearState, getPaidSession, KEYS } from "@/lib/storage";
-import { PATHWAY_CONTENT } from "@/lib/pathway-content";
+import { getPathwayContent, isAddOnItem } from "@/lib/pathway-content";
 import { renderBold } from "@/lib/render-bold";
 import type { AssessmentState } from "@/lib/assessment-types";
 import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "@/lib/types";
@@ -17,6 +17,7 @@ import {
 import { getPathwayDefinition } from "@/lib/pathways";
 import { buildAssessmentResult } from "@/lib/build-assessment-result";
 import { SHOW_PLATO } from "@/lib/feature-flags";
+import { AddOnIcon, InlineAddOnIcon } from "@/components/ui/AddOnIcon";
 import { LightbulbCallout, SHARE_REPORT_TIP, AlwaysRememberTip, SimpleIdeaTip, PALM_INTRO } from "@/components/ui/LightbulbCallout";
 
 const PATHWAY_LETTERS: Record<string, string> = {
@@ -298,7 +299,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
     if (paidSession?.email && !sessionStorage.getItem(sentKey)) {
       sessionStorage.setItem(sentKey, "1");
       const { profile: p, pathway: pw, pathwayDef: pd, assessmentDate: ad, bmiValue: bv } = result;
-      const pc = PATHWAY_CONTENT[pw];
+      const pc = getPathwayContent(pw, p);
       fetch("/api/submit-assessment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -358,7 +359,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
   }
 
   const { profile, pathway, pathwayDef, assessmentDate, bmiValue } = data;
-  const pathwayContent = PATHWAY_CONTENT[pathway];
+  const pathwayContent = getPathwayContent(pathway, profile);
   const riskColors = riskBgColors[profile.osaRisk];
   const bmiCat = getBmiCategory(bmiValue);
 
@@ -714,7 +715,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
               {pathwayContent.whatResultsSuggest.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="flex-shrink-0 flex items-center justify-center rounded-full" style={{ width: "20px", height: "20px", backgroundColor: "var(--blue-soft)", marginTop: "2px" }}>
-                    <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />
+                    {isAddOnItem(item) ? <AddOnIcon size={12} /> : <Check className="w-3 h-3" style={{ color: "var(--blue)" }} strokeWidth={3} />}
                   </div>
                   <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.7 }}>{renderBold(item)}</p>
                 </div>
@@ -735,7 +736,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {pathwayContent.whyItMatters.points.map((p, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }} />
+                  {isAddOnItem(p) ? <AddOnIcon style={{ marginTop: "4px" }} /> : <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }} />}
                   <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(p)}</p>
                 </div>
               ))}
@@ -755,7 +756,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {pathwayContent.whatWorksBest.options.map((o, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }} />
+                  {isAddOnItem(o) ? <AddOnIcon style={{ marginTop: "4px" }} /> : <span className="flex-shrink-0" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }} />}
                   <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(o)}</p>
                 </div>
               ))}
@@ -779,7 +780,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
                   <div className="flex items-center justify-center flex-shrink-0" style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#DBEAFE" }}>
                     <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "13px", color: "var(--blue)" }}>{i + 1}</span>
                   </div>
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(step)}</p>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{isAddOnItem(step) && <InlineAddOnIcon />}{renderBold(step)}</p>
                 </div>
               ))}
             </div>

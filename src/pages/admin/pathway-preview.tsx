@@ -7,9 +7,8 @@ import { ArrowLeft, Lock } from "lucide-react";
 import AssessmentResultsPage from "@/pages/assessment-results";
 import AssessmentReportPage from "@/pages/assessment-report";
 import { getPathwayDefinition } from "@/lib/pathways";
-import { PREVIEW_PATHWAYS, SAMPLE_ANSWERS, findSampleMismatches } from "@/lib/admin-sample-answers";
+import { PREVIEW_PATHWAYS, SAMPLE_ANSWERS, findSampleMismatches, type SampleKey } from "@/lib/admin-sample-answers";
 import { useAdminAuth } from "@/lib/use-admin-auth";
-import type { MurphyPathwayId } from "@/lib/types";
 
 type PreviewTab = "results" | "report";
 
@@ -17,7 +16,7 @@ const mismatches = findSampleMismatches();
 
 export default function PathwayPreviewPage() {
   const authState = useAdminAuth();
-  const [pathway, setPathway] = useState<MurphyPathwayId>("A_insomnia");
+  const [sampleKey, setSampleKey] = useState<SampleKey>("A_insomnia");
   const [tab, setTab] = useState<PreviewTab>("results");
 
   if (authState !== "authed") {
@@ -32,8 +31,9 @@ export default function PathwayPreviewPage() {
   }
 
   const switchTo = (next: PreviewTab) => { setTab(next); window.scrollTo(0, 0); };
-  const sample = PREVIEW_PATHWAYS.find((p) => p.id === pathway)!;
-  const state = SAMPLE_ANSWERS[pathway];
+  const sample = PREVIEW_PATHWAYS.find((p) => p.key === sampleKey)!;
+  const pathway = sample.id;
+  const state = SAMPLE_ANSWERS[sampleKey];
 
   const pill = (active: boolean): React.CSSProperties => ({
     fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 600, padding: "6px 12px", borderRadius: "8px", cursor: "pointer",
@@ -60,8 +60,8 @@ export default function PathwayPreviewPage() {
           </div>
 
           <div className="flex flex-wrap gap-2" role="group" aria-label="Pathway">
-            {PREVIEW_PATHWAYS.map(({ id, letter }) => (
-              <button key={id} type="button" onClick={() => setPathway(id)} style={pill(pathway === id)} title={getPathwayDefinition(id).title} aria-pressed={pathway === id}>
+            {PREVIEW_PATHWAYS.map(({ key, id, letter }) => (
+              <button key={key} type="button" onClick={() => setSampleKey(key)} style={pill(sampleKey === key)} title={getPathwayDefinition(id).title} aria-pressed={sampleKey === key}>
                 {letter}
               </button>
             ))}
@@ -76,7 +76,7 @@ export default function PathwayPreviewPage() {
 
           {mismatches.length > 0 && (
             <p style={{ fontSize: "13px", fontWeight: 700, color: "#B91C1C" }}>
-              Sample check failed: {mismatches.map((m) => `${m.expected} lands on ${m.actual}`).join("; ")}. The pathway rules changed; update src/lib/admin-sample-answers.ts.
+              Sample check failed: {mismatches.map((m) => `${m.key} lands on ${m.actual}${m.noseAddOn ? " with" : " without"} the nose add-on`).join("; ")}. The pathway rules changed; update src/lib/admin-sample-answers.ts.
             </p>
           )}
         </div>
@@ -85,9 +85,9 @@ export default function PathwayPreviewPage() {
       <main className="flex-1">
         {/* key forces a fresh page per pathway/tab, the same as a customer opening it */}
         {tab === "results" ? (
-          <AssessmentResultsPage key={`results-${pathway}`} preview={{ state, onOpenReport: () => switchTo("report") }} />
+          <AssessmentResultsPage key={`results-${sampleKey}`} preview={{ state, onOpenReport: () => switchTo("report") }} />
         ) : (
-          <AssessmentReportPage key={`report-${pathway}`} preview={{ state, onOpenResults: () => switchTo("results") }} />
+          <AssessmentReportPage key={`report-${sampleKey}`} preview={{ state, onOpenResults: () => switchTo("results") }} />
         )}
       </main>
     </div>

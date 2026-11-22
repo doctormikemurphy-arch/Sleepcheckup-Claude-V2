@@ -38,15 +38,15 @@ Your Next Step: See a doctor to talk about the results of this assessment and fi
   {
     id: "C_nasal",
     title: "Sleep Apnea with a Nasal Problem",
-    shortDescription: "Fixing your nasal problem is essential for the successful treatment of sleep apnea.",
-    educationalSummary: `Your assessment shows that you have a problem breathing through your nose at night. When the nose is blocked, the body switches to mouth breathing when we sleep. Mouth breathing causes the jaw and tongue to fall back, making the throat space smaller. This can cause snoring or sleep apnea or make these conditions worse. This Your Results summary includes an Anatomy Level Assessment section above listing your positive answers for the nose (and the likely cause of the problem).
+    shortDescription: "Fixing your nasal problem is key to treating your sleep apnea successfully.",
+    educationalSummary: `Your answers show that you have trouble breathing through your nose at night. When you can't breathe well through your nose, you breathe through your mouth while you sleep. Mouth breathing lets your jaw and tongue fall back, which makes the space in your throat smaller. This can cause snoring or sleep apnea, or make them worse. The "Where Can the Airway Narrow?" section of your results lists the nose questions you answered yes to, which point to the likely cause.
 
-Fixing the problem with your nose is very important for several reasons. First, your nose is the top level of your airway at night when you sleep and may be the only cause of sleep apnea. Your nose may also be part of the problem if other levels of the airway are also involved. Second, a clear nose also makes common treatments for sleep apnea, like CPAP (a machine which gently blows air to keep the airway open during sleep) or an oral appliance (a mouth device that holds the jaw and tongue forward to help keep breathing clear at night), work better and feel more comfortable.
+Fixing your nose matters for two reasons. First, your nose is the top of your airway. Sometimes it is the only cause of sleep apnea, and often it is one of several. Second, a clear nose makes common sleep apnea treatments work better and feel more comfortable. These include CPAP (a machine that gently blows air through a mask to keep your airway open while you sleep) and an oral appliance (a mouth guard that holds the jaw and tongue forward at night).
 
-Key Concept: Identifying and treating a problem with your nose can help fix sleep apnea or make treating the problem much easier and more successful.
+Key Concept: Finding and treating a nasal problem can help fix sleep apnea. It also makes other treatments easier to use and more likely to work.
 
 
-Your Next Step: The next step is to see a doctor to discuss the results of this assessment and see if you have snoring or sleep apnea. This will probably include a sleep study to measure your breathing while you sleep. If possible, see an Ear, Nose & Throat (ENT) doctor who is an expert in diagnosing and treating nasal problems. You can learn about ENT doctors on the American Academy of Otolaryngology – Head & Neck Surgery website (www.entnet.org).`,
+Your Next Step: See a doctor to talk about the results of this assessment and find out if you have snoring or sleep apnea. This will probably include a sleep study to measure your breathing while you sleep. If you can, also see an ENT (ear, nose, and throat) doctor, who is an expert in finding and treating nasal problems. Use the Find a Specialist links below to find one near you.`,
   },
   {
     id: "D_mandible",

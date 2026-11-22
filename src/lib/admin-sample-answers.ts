@@ -7,6 +7,7 @@ import type {
   ZoneQuestionSet, MedicalHistoryAnswers, PalmSectionAnswers,
 } from "./types";
 import { buildAssessmentResult } from "./build-assessment-result";
+import { hasNoseAddOn } from "./pathway-content";
 
 const yn = (on: boolean) => (on ? "yes" : "no") as "yes" | "no";
 
@@ -83,18 +84,33 @@ function toState(s: SampleSpec): AssessmentState {
   };
 }
 
-export const PREVIEW_PATHWAYS: { id: MurphyPathwayId; letter: string; summary: string }[] = [
-  { id: "A_insomnia",   letter: "A", summary: "Intermediate risk, moderate insomnia (ISI 21)" },
-  { id: "B_obesity",    letter: "B", summary: "High risk, BMI 34" },
-  { id: "C_nasal",      letter: "C", summary: "Intermediate risk, nose zone 3/5" },
-  { id: "D_mandible",   letter: "D", summary: "Intermediate risk, jaw & tongue zone 2/3" },
-  { id: "E_multilevel", letter: "E", summary: "High risk, palate 2/3 and jaw & tongue 2/3" },
-  { id: "F_physiology", letter: "F", summary: "Intermediate risk, low anatomy, loop gain 2/4" },
-  { id: "G_low_risk",   letter: "G", summary: "Low risk (STOP-BANG 2), anatomy total 3" },
-  { id: "H_complex",    letter: "H", summary: "Intermediate risk, palate 2/3 only, no PALM flags" },
+/** One preview sample: the plain pathway samples use the pathway ID as their key. */
+export type SampleKey = MurphyPathwayId | "A_insomnia_nasal" | "B_obesity_nasal";
+
+export interface PreviewSample {
+  key: SampleKey;
+  /** The pathway these answers must land on. */
+  id: MurphyPathwayId;
+  letter: string;
+  summary: string;
+  /** Whether the nose add-on must show for these answers. */
+  noseAddOn: boolean;
+}
+
+export const PREVIEW_PATHWAYS: PreviewSample[] = [
+  { key: "A_insomnia",       id: "A_insomnia",   letter: "A", summary: "Intermediate risk, moderate insomnia (ISI 21)", noseAddOn: false },
+  { key: "B_obesity",        id: "B_obesity",    letter: "B", summary: "High risk, BMI 34", noseAddOn: false },
+  { key: "C_nasal",          id: "C_nasal",      letter: "C", summary: "Intermediate risk, nose zone 3/5", noseAddOn: false },
+  { key: "D_mandible",       id: "D_mandible",   letter: "D", summary: "Intermediate risk, jaw & tongue zone 2/3", noseAddOn: false },
+  { key: "E_multilevel",     id: "E_multilevel", letter: "E", summary: "High risk, palate 2/3 and jaw & tongue 2/3", noseAddOn: false },
+  { key: "F_physiology",     id: "F_physiology", letter: "F", summary: "Intermediate risk, low anatomy, loop gain 2/4", noseAddOn: false },
+  { key: "G_low_risk",       id: "G_low_risk",   letter: "G", summary: "Low risk (STOP-BANG 2), anatomy total 3", noseAddOn: false },
+  { key: "H_complex",        id: "H_complex",    letter: "H", summary: "Intermediate risk, palate 2/3 only, no PALM flags", noseAddOn: false },
+  { key: "A_insomnia_nasal", id: "A_insomnia",   letter: "A + nasal problem", summary: "A sample with nose zone 3/5 (nose add-on)", noseAddOn: true },
+  { key: "B_obesity_nasal",  id: "B_obesity",    letter: "B + nasal problem", summary: "B sample with nose zone 3/5 (nose add-on)", noseAddOn: true },
 ];
 
-const SPECS: Record<MurphyPathwayId, SampleSpec> = {
+const SPECS: Record<SampleKey, SampleSpec> = {
   A_insomnia: {
     stopBang: 4, isi: [3, 3, 3, 3, 3, 3, 3], bmi: 27.4,
     zones: { nose: 1, palate: 1, mandible: 1, neck: 0 },
@@ -143,15 +159,35 @@ const SPECS: Record<MurphyPathwayId, SampleSpec> = {
     palm: { pcrit: 1, arousal: 1, loopGain: 1, muscle: 1 },
     medical: ["stroke"],
   },
+  A_insomnia_nasal: {
+    stopBang: 4, isi: [3, 3, 3, 3, 3, 3, 3], bmi: 27.4,
+    zones: { nose: 3, palate: 1, mandible: 1, neck: 0 },
+    palm: { pcrit: 1, arousal: 2, loopGain: 1, muscle: 0 },
+    medical: ["highBloodPressure"],
+  },
+  B_obesity_nasal: {
+    stopBang: 6, isi: [1, 1, 1, 1, 1, 1, 1], bmi: 34.2,
+    zones: { nose: 3, palate: 1, mandible: 1, neck: 2 },
+    palm: { pcrit: 2, arousal: 0, loopGain: 1, muscle: 1 },
+    medical: ["highBloodPressure", "diabetes"],
+  },
 };
 
-export const SAMPLE_ANSWERS: Record<MurphyPathwayId, AssessmentState> = Object.fromEntries(
-  Object.entries(SPECS).map(([id, spec]) => [id, toState(spec)]),
-) as Record<MurphyPathwayId, AssessmentState>;
+export const SAMPLE_ANSWERS: Record<SampleKey, AssessmentState> = Object.fromEntries(
+  Object.entries(SPECS).map(([key, spec]) => [key, toState(spec)]),
+) as Record<SampleKey, AssessmentState>;
 
-/** Returns every sample whose answers don't land on the pathway they're meant to show. */
-export function findSampleMismatches(): { expected: MurphyPathwayId; actual: MurphyPathwayId }[] {
+/** Scores a sample and reports its pathway and whether the nose add-on shows. */
+export function checkSample(sample: PreviewSample) {
+  const { pathway, profile } = buildAssessmentResult(SAMPLE_ANSWERS[sample.key]);
+  const noseAddOn = hasNoseAddOn(pathway, profile);
+  return { pathway, profile, noseAddOn, ok: pathway === sample.id && noseAddOn === sample.noseAddOn };
+}
+
+/** Returns every sample that doesn't land on its pathway, or shows/hides the nose add-on wrongly. */
+export function findSampleMismatches(): { key: SampleKey; expected: MurphyPathwayId; actual: MurphyPathwayId; noseAddOn: boolean }[] {
   return PREVIEW_PATHWAYS
-    .map(({ id }) => ({ expected: id, actual: buildAssessmentResult(SAMPLE_ANSWERS[id]).pathway }))
-    .filter((r) => r.expected !== r.actual);
+    .map((sample) => ({ sample, result: checkSample(sample) }))
+    .filter(({ result }) => !result.ok)
+    .map(({ sample, result }) => ({ key: sample.key, expected: sample.id, actual: result.pathway, noseAddOn: result.noseAddOn }));
 }

@@ -10,10 +10,11 @@ import {
 } from "@/lib/scoring";
 import { getPathwayDefinition } from "@/lib/pathways";
 import { buildAssessmentResult } from "@/lib/build-assessment-result";
-import { PATHWAY_CONTENT } from "@/lib/pathway-content";
+import { PATHWAY_CONTENT, getPathwayContent, isAddOnItem } from "@/lib/pathway-content";
 import { renderBold } from "@/lib/render-bold";
 import { PALM_QUESTIONS } from "@/lib/questionnaires";
 import { SHOW_PLATO } from "@/lib/feature-flags";
+import { AddOnIcon, InlineAddOnIcon } from "@/components/ui/AddOnIcon";
 import { LightbulbCallout, SHARE_REPORT_TIP, AlwaysRememberTip, SimpleIdeaTip, PALM_INTRO } from "@/components/ui/LightbulbCallout";
 
 const PATHWAY_LETTERS: Record<string, string> = {
@@ -232,7 +233,7 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
 
   const { profile, pathway, assessmentDate } = data;
   const pathwayDef = getPathwayDefinition(pathway);
-  const pc = PATHWAY_CONTENT[pathway] ?? PATHWAY_CONTENT.H_complex;
+  const pc = getPathwayContent(pathway, profile) ?? PATHWAY_CONTENT.H_complex;
   const bmiCat = getBmiCategory(profile.bmiValue);
   const riskColors = riskBgColors[profile.osaRisk];
   const letter = PATHWAY_LETTERS[pathway] ?? "?";
@@ -733,10 +734,14 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
           <ul style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "24px" }}>
             {pc.whatResultsSuggest.map((s, i) => (
               <li key={i} className="flex items-start gap-2.5" style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>
-                <span
-                  className="flex-shrink-0"
-                  style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
-                />
+                {isAddOnItem(s) ? (
+                  <AddOnIcon style={{ marginTop: "4px" }} />
+                ) : (
+                  <span
+                    className="flex-shrink-0"
+                    style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
+                  />
+                )}
                 {renderBold(s)}
               </li>
             ))}
@@ -751,10 +756,14 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
           <ul style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "24px" }}>
             {pc.whyItMatters.points.map((p, i) => (
               <li key={i} className="flex items-start gap-2.5" style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>
-                <span
-                  className="flex-shrink-0"
-                  style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
-                />
+                {isAddOnItem(p) ? (
+                  <AddOnIcon style={{ marginTop: "4px" }} />
+                ) : (
+                  <span
+                    className="flex-shrink-0"
+                    style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
+                  />
+                )}
                 {renderBold(p)}
               </li>
             ))}
@@ -769,10 +778,14 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
           <ul style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {pc.whatWorksBest.options.map((o, i) => (
               <li key={i} className="flex items-start gap-2.5" style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>
-                <span
-                  className="flex-shrink-0"
-                  style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
-                />
+                {isAddOnItem(o) ? (
+                  <AddOnIcon style={{ marginTop: "4px" }} />
+                ) : (
+                  <span
+                    className="flex-shrink-0"
+                    style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--blue)", marginTop: "8px" }}
+                  />
+                )}
                 {renderBold(o)}
               </li>
             ))}
@@ -815,7 +828,7 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
                     {i + 1}
                   </span>
                 </div>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{renderBold(step)}</p>
+                <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-ink)", lineHeight: 1.65 }}>{isAddOnItem(step) && <InlineAddOnIcon />}{renderBold(step)}</p>
               </div>
             ))}
           </div>
