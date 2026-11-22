@@ -60,12 +60,12 @@ const numberedStep = (n: number, text: string) =>
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: "Resend not configured" });
+    return res.status(500).json({ ok: false, error: "Resend not configured" });
   }
 
   const body = (req.body ?? {}) as Record<string, any>;
@@ -97,7 +97,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   } = body;
 
   if (!email || !pathwayName) {
-    return res.status(400).json({ error: "email and pathwayName are required" });
+    return res.status(400).json({ ok: false, error: "email and pathwayName are required" });
   }
 
   const riskLabel = getRiskLabel(osaRisk);
@@ -164,6 +164,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         <p style="margin:0 0 4px;color:#2563EB;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">YOUR MURPHY METHOD PATHWAY</p>
         <h2 style="margin:8px 0 10px;color:#0F172A;font-size:22px;font-weight:800;line-height:1.2;">${pathwayName}</h2>
         <p style="margin:0;color:#1D4ED8;font-size:14px;line-height:1.6;font-style:italic;">${pathwayDescription}</p>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:16px 36px 0;">
+      <div style="background:#FFFBEB;border:1px solid #FCD34D;border-left:4px solid #D97706;border-radius:8px;padding:14px 16px;">
+        <p style="margin:0;color:#78350F;font-size:14px;line-height:1.6;"><b>Your pathway is a guide for your doctor, not a diagnosis.</b> Your doctor needs to fully check you and decide your treatment.</p>
       </div>
     </td>
   </tr>
@@ -303,12 +310,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (error) {
       console.error("Resend error (assessment):", error);
-      return res.status(500).json({ error: error.message });
+      return res.status(502).json({ ok: false, error: error.message });
     }
 
-    return res.json({ success: true });
+    return res.status(200).json({ ok: true, success: true });
   } catch (err: any) {
     console.error("Assessment submit error:", err);
-    return res.status(500).json({ error: err.message ?? "Failed to send report email" });
+    return res.status(500).json({ ok: false, error: err.message ?? "Failed to send report email" });
   }
 }

@@ -17,6 +17,9 @@ import {
 import { getPathwayDefinition } from "@/lib/pathways";
 import { buildAssessmentResult } from "@/lib/build-assessment-result";
 import { SHOW_PLATO } from "@/lib/feature-flags";
+import { SaveReportBanner } from "@/components/ui/SaveReportBanner";
+import { PathwayGuideBox } from "@/components/ui/PathwayGuideBox";
+import { sendReportEmailOnce, resetSaved } from "@/lib/report-status";
 import { AddOnIcon, InlineAddOnIcon } from "@/components/ui/AddOnIcon";
 import { LightbulbCallout, SHARE_REPORT_TIP, AlwaysRememberTip, SimpleIdeaTip, PALM_INTRO } from "@/components/ui/LightbulbCallout";
 
@@ -154,7 +157,7 @@ function loadResultsData(): ResultsData | null {
 /** Admin Pathway Preview only (dev builds). Customers never pass this. */
 export interface ResultsPreview {
   state: AssessmentState;
-  onOpenReport: () => void;
+  onOpenReport: (opts?: { print?: boolean }) => void;
 }
 
 const RESOURCE_TYPE_CONFIG: Record<string, { label: string; sectionTitle: string; icon: typeof Video }> = {
@@ -285,7 +288,10 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
   // Preview mode builds from the sample answers passed in: no storage reads/writes, no email.
   const [data, setData] = useState<ResultsData | null>(() => (preview ? buildResultsData(preview.state) : null));
   const [missing, setMissing] = useState(false);
+  const [confirmStartOver, setConfirmStartOver] = useState(false);
   const openReport = () => (preview ? preview.onOpenReport() : navigate("/assessment/report"));
+  // The banner's Download button opens the full PDF report and its print dialog.
+  const downloadReport = () => (preview ? preview.onOpenReport({ print: true }) : navigate("/assessment/report?print=1"));
 
   useEffect(() => {
     if (preview) return;
@@ -293,58 +299,54 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
     if (!result) { setMissing(true); return; }
     setData(result);
 
-    // Send report email once per session (guard against double-send on re-render/refresh)
-    const sentKey = "report_email_sent_v2";
+    // Send the report email once per payment. It is marked sent only after the server confirms
+    // success (src/lib/report-status.ts), so other tabs don't send it again and a failed send
+    // can be tried once more on a later visit.
     const paidSession = getPaidSession();
-    if (paidSession?.email && !sessionStorage.getItem(sentKey)) {
-      sessionStorage.setItem(sentKey, "1");
+    if (paidSession?.email && paidSession.sessionId) {
       const { profile: p, pathway: pw, pathwayDef: pd, assessmentDate: ad, bmiValue: bv } = result;
       const pc = getPathwayContent(pw, p);
-      fetch("/api/submit-assessment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: paidSession.email,
-          pathwayName: pd.title,
-          pathwayLetter: PATHWAY_LETTERS[pw] ?? "",
-          pathwayDescription: pd.shortDescription,
-          stopBangScore: p.stopBangScore,
-          osaRisk: p.osaRisk,
-          isiScore: p.isiScore,
-          insomniaSeverity: p.insomniaSeverity,
-          bmiValue: bv,
-          bmiLabel: bv ? (bv < 18.5 ? "Underweight" : bv < 25 ? "Normal weight" : bv < 30 ? "Overweight" : "Obesity") : "N/A",
-          assessmentDate: ad,
-          anatomyTotal: p.anatomy?.totalScore ?? 0,
-          anatomyZones: anatomyZones.map((z) => ({
-            label: z.label,
-            score: p.anatomy[z.scoreKey] ?? 0,
-            max: z.maxScore,
-            isPositive: p.anatomy[z.positiveKey] ?? false,
-            answers: p.anatomy[z.responsesKey]?.answeredYes ?? [],
-          })),
-          palmResults: palmLetters.map((r) => ({
-            letter: r.letter,
-            name: r.name,
-            score: p.palm[r.key]?.score ?? 0,
-            isPositive: p.palm[r.key]?.isPositive ?? false,
-            questions: p.palm[r.key]?.positiveQuestions ?? [],
-          })),
-          medicalHistoryScore: p.medicalHistory?.totalScore ?? 0,
-          medicalHistoryConditions: p.medicalHistory?.answeredYes ?? [],
-          platoTotal: p.plato?.totalScore ?? 0,
-          showPlato: SHOW_PLATO,
-          whatResultsSuggest: pc?.whatResultsSuggest ?? [],
-          whyItMattersPts: pc?.whyItMatters?.points ?? [],
-          whatWorksBestOpts: pc?.whatWorksBest?.options ?? [],
-          nextStepsSteps: pc?.nextSteps?.steps ?? [],
-          specialists: (PATHWAY_SPECIALISTS[pw] ?? ["sleep"]).map((key) => ({
-            title: SPECIALIST_RESOURCES[key].title,
-            description: SPECIALIST_RESOURCES[key].description,
-            url: SPECIALIST_RESOURCES[key].url,
-          })),
-        }),
-      }).catch(() => {/* non-fatal */});
+      void sendReportEmailOnce(paidSession.sessionId, {
+        email: paidSession.email,
+        pathwayName: pd.title,
+        pathwayLetter: PATHWAY_LETTERS[pw] ?? "",
+        pathwayDescription: pd.shortDescription,
+        stopBangScore: p.stopBangScore,
+        osaRisk: p.osaRisk,
+        isiScore: p.isiScore,
+        insomniaSeverity: p.insomniaSeverity,
+        bmiValue: bv,
+        bmiLabel: bv ? (bv < 18.5 ? "Underweight" : bv < 25 ? "Normal weight" : bv < 30 ? "Overweight" : "Obesity") : "N/A",
+        assessmentDate: ad,
+        anatomyTotal: p.anatomy?.totalScore ?? 0,
+        anatomyZones: anatomyZones.map((z) => ({
+          label: z.label,
+          score: p.anatomy[z.scoreKey] ?? 0,
+          max: z.maxScore,
+          isPositive: p.anatomy[z.positiveKey] ?? false,
+          answers: p.anatomy[z.responsesKey]?.answeredYes ?? [],
+        })),
+        palmResults: palmLetters.map((r) => ({
+          letter: r.letter,
+          name: r.name,
+          score: p.palm[r.key]?.score ?? 0,
+          isPositive: p.palm[r.key]?.isPositive ?? false,
+          questions: p.palm[r.key]?.positiveQuestions ?? [],
+        })),
+        medicalHistoryScore: p.medicalHistory?.totalScore ?? 0,
+        medicalHistoryConditions: p.medicalHistory?.answeredYes ?? [],
+        platoTotal: p.plato?.totalScore ?? 0,
+        showPlato: SHOW_PLATO,
+        whatResultsSuggest: pc?.whatResultsSuggest ?? [],
+        whyItMattersPts: pc?.whyItMatters?.points ?? [],
+        whatWorksBestOpts: pc?.whatWorksBest?.options ?? [],
+        nextStepsSteps: pc?.nextSteps?.steps ?? [],
+        specialists: (PATHWAY_SPECIALISTS[pw] ?? ["sleep"]).map((key) => ({
+          title: SPECIALIST_RESOURCES[key].title,
+          description: SPECIALIST_RESOURCES[key].description,
+          url: SPECIALIST_RESOURCES[key].url,
+        })),
+      });
     }
   }, []);
 
@@ -371,19 +373,17 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
   return (
     <div style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }}>
 
-      {/* Sticky top bar */}
-      <div className="sticky top-0 z-40 border-b flex items-center justify-between gap-4 px-6 py-3" style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-soft)" }}>
-        {preview ? <span /> : (
+      {/* Sticky save banner (shared with the PDF report page) */}
+      <SaveReportBanner
+        preview={!!preview}
+        onDownload={downloadReport}
+        leftSlot={preview ? undefined : (
           <button onClick={() => navigate("/assessment?from=results")} className="flex items-center gap-2" style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
             <ArrowLeft className="w-4 h-4" />
             Back to Assessment
           </button>
         )}
-        <button onClick={() => window.print()} className="btn-secondary flex items-center gap-2" style={{ minHeight: "40px", fontSize: "14px", padding: "0 16px" }}>
-          <Printer className="w-4 h-4" />
-          Print / Save PDF
-        </button>
-      </div>
+      />
 
       <div className="mx-auto" style={{ maxWidth: "760px", padding: "0 24px 80px" }}>
 
@@ -431,7 +431,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
         {/* Disclaimer */}
         <div style={{ borderRadius: "10px", border: "1px solid #FDE68A", backgroundColor: "#FFFBEB", padding: "12px 16px", marginBottom: "40px" }}>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#92400E", lineHeight: 1.6, textAlign: "center" }}>
-            For educational purposes only — not a medical diagnosis. Share these results with your healthcare provider.
+            For educational purposes only. Not a medical diagnosis. Share these results with your doctor.
           </p>
         </div>
 
@@ -697,6 +697,8 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
           </div>
         </div>
 
+        <PathwayGuideBox style={{ marginBottom: "16px" }} />
+
         {/* Pathway educational summary */}
         <div className="card mb-4" style={{ padding: "32px" }}>
           <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "11px", color: "var(--blue)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
@@ -848,11 +850,35 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
         {/* Start Over */}
         {!preview && (
           <div style={{ textAlign: "center" }}>
-            <button onClick={() => { clearState(KEYS.assessment); navigate("/assessment"); }} className="flex items-center justify-center gap-2 mx-auto"
-              style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
-              <RotateCcw className="w-4 h-4" />
-              Start Over
-            </button>
+            {confirmStartOver ? (
+              <div role="alertdialog" aria-labelledby="start-over-warning" className="mx-auto" style={{ maxWidth: "460px", borderRadius: "12px", border: "1px solid #FCA5A5", backgroundColor: "#FEF2F2", padding: "16px 20px" }}>
+                <p id="start-over-warning" style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "#991B1B", lineHeight: 1.55, marginBottom: "14px" }}>
+                  This deletes your answers and report from this browser. Save your PDF first.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <button type="button" onClick={() => setConfirmStartOver(false)} className="btn-secondary" style={{ minHeight: "44px", fontSize: "15px", padding: "0 20px" }}>
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      clearState(KEYS.assessment);
+                      resetSaved(getPaidSession()?.sessionId ?? null);
+                      navigate("/assessment");
+                    }}
+                    style={{ minHeight: "44px", fontSize: "15px", fontWeight: 600, padding: "0 20px", borderRadius: "10px", border: "none", backgroundColor: "#B91C1C", color: "#fff", cursor: "pointer", fontFamily: "var(--font-sans)" }}
+                  >
+                    Delete and start over
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button onClick={() => setConfirmStartOver(true)} className="flex items-center justify-center gap-2 mx-auto"
+                style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
+                <RotateCcw className="w-4 h-4" />
+                Start Over
+              </button>
+            )}
           </div>
         )}
 

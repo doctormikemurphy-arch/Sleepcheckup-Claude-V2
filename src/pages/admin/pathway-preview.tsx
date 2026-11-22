@@ -18,6 +18,8 @@ export default function PathwayPreviewPage() {
   const authState = useAdminAuth();
   const [sampleKey, setSampleKey] = useState<SampleKey>("A_insomnia");
   const [tab, setTab] = useState<PreviewTab>("results");
+  // Set when the results page's Download button opens the report, so the report opens the print dialog.
+  const [autoPrint, setAutoPrint] = useState(false);
 
   if (authState !== "authed") {
     return (
@@ -30,7 +32,7 @@ export default function PathwayPreviewPage() {
     );
   }
 
-  const switchTo = (next: PreviewTab) => { setTab(next); window.scrollTo(0, 0); };
+  const switchTo = (next: PreviewTab, print = false) => { setAutoPrint(print); setTab(next); window.scrollTo(0, 0); };
   const sample = PREVIEW_PATHWAYS.find((p) => p.key === sampleKey)!;
   const pathway = sample.id;
   const state = SAMPLE_ANSWERS[sampleKey];
@@ -85,9 +87,9 @@ export default function PathwayPreviewPage() {
       <main className="flex-1">
         {/* key forces a fresh page per pathway/tab, the same as a customer opening it */}
         {tab === "results" ? (
-          <AssessmentResultsPage key={`results-${sampleKey}`} preview={{ state, onOpenReport: () => switchTo("report") }} />
+          <AssessmentResultsPage key={`results-${sampleKey}`} preview={{ state, onOpenReport: (opts) => switchTo("report", !!opts?.print) }} />
         ) : (
-          <AssessmentReportPage key={`report-${sampleKey}`} preview={{ state, onOpenResults: () => switchTo("results") }} />
+          <AssessmentReportPage key={`report-${sampleKey}`} preview={{ state, autoPrint, onOpenResults: () => switchTo("results") }} />
         )}
       </main>
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { Printer, ArrowLeft, RotateCcw, Activity, AlertCircle, Stethoscope, ChevronRight, Lightbulb, Download, Mail } from "lucide-react";
+import { Printer, ArrowLeft, RotateCcw, Activity, AlertCircle, Stethoscope, ChevronRight, Lightbulb } from "lucide-react";
 import { loadState, getPaidSession } from "@/lib/storage";
 import { KEYS } from "@/lib/storage";
 import type { AssessmentState } from "@/lib/assessment-types";
@@ -15,6 +15,9 @@ import { renderBold } from "@/lib/render-bold";
 import { PALM_QUESTIONS } from "@/lib/questionnaires";
 import { SHOW_PLATO } from "@/lib/feature-flags";
 import { AddOnIcon, InlineAddOnIcon } from "@/components/ui/AddOnIcon";
+import { SaveReportBanner } from "@/components/ui/SaveReportBanner";
+import { PathwayGuideBox } from "@/components/ui/PathwayGuideBox";
+import { useReportStatus, markDownloaded } from "@/lib/report-status";
 import { LightbulbCallout, SHARE_REPORT_TIP, AlwaysRememberTip, SimpleIdeaTip, PALM_INTRO } from "@/components/ui/LightbulbCallout";
 
 const PATHWAY_LETTERS: Record<string, string> = {
@@ -149,6 +152,8 @@ function loadReportData(): ReportData | null {
 export interface ReportPreview {
   state: AssessmentState;
   onOpenResults: () => void;
+  /** Open the print dialog once the report renders (the results page's Download button). */
+  autoPrint?: boolean;
 }
 
 /** Link back to the results page; in preview it switches the preview tab instead of navigating. */
@@ -193,10 +198,12 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
   // Preview mode builds from the sample answers passed in: no storage reads/writes, nothing logged.
   const [data, setData] = useState<ReportData | null>(() => (preview ? buildReportData(preview.state) : null));
   const [missing, setMissing] = useState(false);
-  const [checkboxChecked, setCheckboxChecked] = useState(false);
-  const [downloadClicked, setDownloadClicked] = useState(false);
-  const [acknowledgmentLogged, setAcknowledgmentLogged] = useState(false);
-  const acknowledged = checkboxChecked || downloadClicked;
+  const paidSession = preview ? null : getPaidSession();
+  const sessionId = paidSession?.sessionId ?? null;
+  const reportStatus = useReportStatus(sessionId);
+  // The results page's Download button opens this page with ?print=1 (or autoPrint in preview).
+  const [autoPrint] = useState(() =>
+    preview ? !!preview.autoPrint : new URLSearchParams(window.location.search).get("print") === "1");
 
   useEffect(() => {
     if (preview) return;
@@ -206,14 +213,11 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
   }, []);
 
   useEffect(() => {
-    if (!data || acknowledged || preview) return;
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = "";
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [data, acknowledged]);
+    if (!data || !autoPrint) return;
+    if (!preview) window.history.replaceState({}, "", "/assessment/report");
+    const timer = setTimeout(() => window.print(), 600);
+    return () => clearTimeout(timer);
+  }, [data, autoPrint]);
 
   if (missing || !data) {
     return (
@@ -238,28 +242,10 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
   const riskColors = riskBgColors[profile.osaRisk];
   const letter = PATHWAY_LETTERS[pathway] ?? "?";
   const pathwaySlug = letter.toLowerCase();
-  const paidSession = preview ? null : getPaidSession();
   const customerEmail = paidSession?.email ?? null;
 
-  const logAcknowledgment = (method: "checkbox" | "download") => {
-    if (preview || acknowledgmentLogged || !paidSession?.sessionId) return;
-    setAcknowledgmentLogged(true);
-    fetch("/api/log-acknowledgment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        stripeSessionId: paidSession.sessionId,
-        acknowledgedAt: new Date().toISOString(),
-        method,
-      }),
-    }).catch(() => {
-      // Best-effort logging only; failures shouldn't affect the customer's experience.
-    });
-  };
-
   const handleDownloadOrPrint = () => {
-    setDownloadClicked(true);
-    logAcknowledgment("download");
+    markDownloaded(sessionId);
     window.print();
   };
 
@@ -269,61 +255,21 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
   return (
     <div style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }} className="print:bg-white">
 
-      {/* Sticky save/print safeguard banner */}
-      <div
-        className="print:hidden sticky top-0 z-40 border-b"
-        style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border-soft)" }}
-      >
-        <div className="mx-auto flex flex-col gap-3 px-6 py-3" style={{ maxWidth: "960px" }}>
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <ResultsLink
-              preview={preview}
-              className="no-underline flex items-center gap-2"
-              style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)" }}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Your Results
-            </ResultsLink>
-            <button
-              onClick={handleDownloadOrPrint}
-              className="btn-primary flex items-center gap-2"
-              style={{ minHeight: "52px", fontSize: "17px", fontWeight: 700, padding: "0 28px" }}
-            >
-              <Download className="w-5 h-5" />
-              Download / Print Your PDF Report
-            </button>
-          </div>
-          <div
-            className="flex flex-col gap-2.5"
-            style={{ borderRadius: "10px", border: "1px solid #FCD34D", backgroundColor: "#FFFBEB", padding: "12px 16px" }}
+      {/* Sticky save/print safeguard banner (shared with the results page) */}
+      <SaveReportBanner
+        preview={!!preview}
+        onDownload={() => window.print()}
+        leftSlot={
+          <ResultsLink
+            preview={preview}
+            className="no-underline flex items-center gap-2"
+            style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--text-muted)" }}
           >
-            <div className="flex items-start gap-2.5">
-              <Mail className="w-4 h-4 flex-shrink-0" style={{ color: "#B45309", marginTop: "2px" }} />
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "#92400E", lineHeight: 1.55 }}>
-                <strong>Save your report now</strong> — this page won't be available again once you leave.
-                Download or print your PDF above.
-                {customerEmail
-                  ? <> We've also emailed a copy to <strong>{customerEmail}</strong>.</>
-                  : <> We've also emailed a copy to the address you provided at checkout.</>}
-              </p>
-            </div>
-            <label className="flex items-center gap-2 cursor-pointer" style={{ paddingLeft: "26px" }}>
-              <input
-                type="checkbox"
-                checked={checkboxChecked}
-                onChange={(e) => {
-                  setCheckboxChecked(e.target.checked);
-                  if (e.target.checked) logAcknowledgment("checkbox");
-                }}
-                style={{ width: "16px", height: "16px", flexShrink: 0 }}
-              />
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#92400E" }}>
-                I've downloaded or printed my report.
-              </span>
-            </label>
-          </div>
-        </div>
-      </div>
+            <ArrowLeft className="w-4 h-4" />
+            Your Results
+          </ResultsLink>
+        }
+      />
 
       <div className="mx-auto" style={{ maxWidth: "960px" }}>
 
@@ -713,6 +659,8 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
             {pathwayDef.shortDescription}
           </p>
 
+          <PathwayGuideBox style={{ marginBottom: "24px" }} />
+
           {/* Educational summary with Key Concept / Your Next Step callouts */}
           <PathwaySummarySection pathwayDef={pathwayDef} />
         </div>
@@ -978,9 +926,9 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
             </div>
           </div>
           <p style={{ fontFamily: "var(--font-sans)", marginTop: "12px", fontSize: "13px", color: "var(--text-muted)" }}>
-            {customerEmail
+            {customerEmail && reportStatus.emailStatus === "sent"
               ? <>A copy of this report has already been emailed to <strong>{customerEmail}</strong>.</>
-              : "A copy of this report has already been emailed to the address you provided at checkout."}
+              : "Download or print your PDF so you have a copy."}
           </p>
         </div>
 

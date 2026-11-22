@@ -2,6 +2,7 @@ import { Link, useParams, useSearch } from "wouter";
 import { Check, ArrowLeft, Lock } from "lucide-react";
 import { getPathwayContent, isAddOnItem } from "@/lib/pathway-content";
 import { AddOnIcon, InlineAddOnIcon } from "@/components/ui/AddOnIcon";
+import { PathwayGuideBox } from "@/components/ui/PathwayGuideBox";
 import { buildAssessmentResult } from "@/lib/build-assessment-result";
 import type { AssessmentState } from "@/lib/assessment-types";
 import { renderBold } from "@/lib/render-bold";
@@ -125,27 +126,10 @@ export default function PathwayDetailPage() {
         </div>
       </section>
 
-      {/* ── 2. INTRO CALLOUT ── */}
+      {/* ── 2. GUIDE, NOT A DIAGNOSIS ── */}
       <section className="section">
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
-          <div
-            className="card-tinted"
-            style={{ borderRadius: "20px", padding: "32px", paddingLeft: "64px", position: "relative", marginBottom: "0" }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                left: "20px",
-                top: "20px",
-                fontSize: "24px",
-              }}
-            >
-              💡
-            </div>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "16px", color: "var(--text-ink-soft)", lineHeight: 1.7 }}>
-              The Murphy Method™ pathways represent common clinical situations and are designed to give you the most efficient path forward with your doctor. Your pathway assignment is based on your specific assessment answers — it is the starting point for a productive conversation with your sleep specialist.
-            </p>
-          </div>
+          <PathwayGuideBox />
         </div>
       </section>
 
