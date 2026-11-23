@@ -60,10 +60,11 @@ const numberedStep = (n: number, prefix: string, text: string) =>
 
 /**
  * Builds the report email HTML. No side effects, so scripts can preview it without sending.
- * `assetBase` is where the email's images are hosted (the live site by default).
+ * `assetBase` is where the email's images are hosted (the live site by default). It uses the www
+ * address because sleepcheckup.com redirects there, and some email clients don't follow image redirects.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- same loose request body the handler receives
-export function buildReportEmailHtml(body: Record<string, any>, assetBase = "https://sleepcheckup.com"): string {
+export function buildReportEmailHtml(body: Record<string, any>, assetBase = "https://www.sleepcheckup.com"): string {
   const {
     firstName,
     pathwayName,
