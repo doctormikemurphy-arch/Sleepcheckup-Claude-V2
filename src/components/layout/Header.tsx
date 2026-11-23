@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Menu } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SignedIn, UserButton } from "@clerk/clerk-react";
 import logoImg from "@/assets/images/logo.png";
 import { MobileDrawer } from "./MobileDrawer";
@@ -13,9 +13,59 @@ const NAV_ITEMS = [
 
 const clerkEnabled = !!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
+/** The floating nav sits 16px from the top and is 60px tall. */
+const NAV_TOP = 16;
+const NAV_HEIGHT = 60;
+
+const isTransparent = (color: string) => !color || color === "transparent" || /^rgba\(.*,\s*0\)$/.test(color);
+
+/**
+ * Color of the full-width section currently just below the nav strip, so the strip blends into
+ * it: dark over a dark hero, light over light sections. Looks at each layer at that spot from the
+ * top down; cards narrower than the window are skipped. Over a full-width video (the home page
+ * hero) the strip is see-through, so the video shows behind the nav. A gradient overlay with no
+ * video under it counts as its first color at full strength.
+ */
+function colorUnderNav(strip: HTMLElement | null): string {
+  const y = NAV_TOP + NAV_HEIGHT + 1;
+  const minWidth = window.innerWidth * 0.9;
+  let gradientColor: string | null = null;
+  for (const el of document.elementsFromPoint(4, y)) {
+    if (el === strip || el.closest("header")) continue;
+    if (el.getBoundingClientRect().width < minWidth) continue;
+    if (el.tagName === "VIDEO") return "transparent";
+    const style = getComputedStyle(el);
+    if (!isTransparent(style.backgroundColor)) return gradientColor ?? style.backgroundColor;
+    const first = style.backgroundImage.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (first && !gradientColor) gradientColor = `rgb(${first[1]}, ${first[2]}, ${first[3]})`;
+  }
+  return gradientColor ?? "var(--bg-page)";
+}
+
 export function Header() {
   const [location] = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [stripColor, setStripColor] = useState("var(--bg-page)");
+  const stripRef = useRef<HTMLDivElement>(null);
+
+  // Keep the solid strip behind the nav the same color as the section scrolling under it.
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => setStripColor(colorUnderNav(stripRef.current)));
+    };
+    update();
+    const late = setTimeout(update, 300); // pages that render their first section a moment later
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(late);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [location]);
 
   const isActive = (href: string) => {
     if (href === "/") return location === "/";
@@ -24,16 +74,24 @@ export function Header() {
 
   return (
     <>
+      {/* Solid strip above and behind the floating nav, so page content scrolling up
+          does not show in the gap around it. */}
+      <div
+        ref={stripRef}
+        aria-hidden="true"
+        className="fixed top-0 left-0 right-0 z-40 print:hidden"
+        style={{ height: `${NAV_TOP + NAV_HEIGHT}px`, backgroundColor: stripColor }}
+      />
       <header
         className="fixed z-50"
-        style={{ top: "16px", left: "16px", right: "16px" }}
+        style={{ top: `${NAV_TOP}px`, left: "16px", right: "16px" }}
         data-print-hide
       >
         <div
           className="mx-auto flex items-center justify-between"
           style={{
             maxWidth: "1100px",
-            height: "60px",
+            height: `${NAV_HEIGHT}px`,
             padding: "0 20px",
             background: "rgba(246, 248, 251, 0.88)",
             backdropFilter: "blur(12px)",

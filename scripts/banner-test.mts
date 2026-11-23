@@ -30,6 +30,8 @@ async function newTab(fakeEmail?: { status: number; body: object }) {
   ws.addEventListener("message", (e) => {
     const m = JSON.parse(String(e.data));
     if (m.id && pending.has(m.id)) { pending.get(m.id)!(m); pending.delete(m.id); return; }
+    // A "Leave site?" dialog would otherwise wait forever in headless Chrome.
+    if (m.method === "Page.javascriptDialogOpening") { send("Page.handleJavaScriptDialog", { accept: true }); return; }
     if (m.method === "Fetch.requestPaused") {
       tab.emailRequests++;
       const f = fakeEmail ?? { status: 502, body: { ok: false } };
@@ -153,6 +155,32 @@ const check = (name: string, ok: boolean) => { results.push([name, ok]); console
   const x = await text(t);
   check("/pathways/a: guide box shown", x.includes(GUIDE));
   check("/pathways/a: old lightbulb note gone", !x.includes("represent common clinical situations") && !x.includes("💡"));
+  await t.close();
+}
+
+// 5. Slim save bar after scrolling (desktop and phone width), and the Export button.
+for (const width of [1280, 375]) {
+  const t = await newTab();
+  await t.send("Emulation.setDeviceMetricsOverride", { width, height: width < 500 ? 812 : 900, deviceScaleFactor: 1, mobile: width < 500 });
+  await seed(t, null);
+  await t.goto(`${base}/assessment/results`, "Save your report now");
+  check(`${width}px: no slim bar while the full banner is visible`, !(await t.evaluate(`!!document.querySelector('[data-save-bar="slim"]')`)));
+  await t.evaluate(`window.scrollTo(0, 1500); true`);
+  await sleep(500);
+  const bar = await t.evaluate(`(() => { const b = document.querySelector('[data-save-bar="slim"]'); if (!b) return null; const r = b.getBoundingClientRect();
+    const cb = b.querySelector('input[type=checkbox]'); return { top: r.top, height: r.height, overflow: b.scrollWidth > b.clientWidth, checkbox: !!cb && cb.getBoundingClientRect().width > 0 }; })()`);
+  check(`${width}px: slim bar pinned at top after scrolling`, !!bar && bar.top === 0);
+  check(`${width}px: slim bar is one line (${bar ? Math.round(bar.height) : "?"}px, no overflow)`, !!bar && bar.height <= 56 && !bar.overflow);
+  check(`${width}px: slim bar checkbox ${width < 768 ? "hidden on phone" : "shown on desktop"}`, !!bar && bar.checkbox === (width >= 768));
+  if (width === 1280) {
+    // Export section button: same as the top Download button (counts as a download, opens the report).
+    const clicked = await t.evaluate(`(() => { const sec = [...document.querySelectorAll("div")].find(d => d.firstElementChild && d.firstElementChild.textContent.trim() === "Export Your Results");
+      const b = sec && [...sec.querySelectorAll("button")].find(x => x.textContent.trim() === "Download / Print Your PDF Report"); if (!b) return false; b.click(); return true; })()`);
+    check("Export button has the same label as the top button", clicked);
+    await sleep(1500);
+    check("Export button opens the full report", (await t.evaluate("location.pathname")) === "/assessment/report");
+    check("Export button counts as a download", (await record(t))?.downloaded === true);
+  }
   await t.close();
 }
 

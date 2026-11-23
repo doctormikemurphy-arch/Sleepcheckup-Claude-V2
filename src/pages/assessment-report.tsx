@@ -253,7 +253,7 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
   const isiColor = profile.insomniaSeverity === "severe" ? "#DC2626" : profile.insomniaSeverity === "moderate" ? "#D97706" : profile.insomniaSeverity === "subthreshold" ? "#1D4ED8" : "#16A34A";
 
   return (
-    <div style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }} className="print:bg-white">
+    <div style={{ minHeight: "100vh" }} className="bg-[var(--bg-page)] print:bg-white">
 
       {/* Sticky save/print safeguard banner (shared with the results page) */}
       <SaveReportBanner
@@ -325,9 +325,6 @@ export default function AssessmentReportPage({ preview }: { preview?: ReportPrev
               </p>
             </div>
 
-            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "17px", color: "var(--text-ink)", marginBottom: "4px" }}>
-              Assessment Participant
-            </p>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "15px", color: "var(--text-muted)" }}>
               Assessment Date: <span style={{ fontWeight: 600, color: "var(--text-ink)" }}>{assessmentDate}</span>
             </p>

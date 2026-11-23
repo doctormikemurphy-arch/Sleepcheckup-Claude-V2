@@ -360,7 +360,7 @@ export const HOW_IT_WORKS = {
     subheadline:
       "Your $20 report is a personalized, professionally designed PDF that translates your full assessment into something you can read, understand, and hand to any doctor. Most patients arrive at sleep appointments with no information — yours arrives with a complete picture.",
     rows: [
-      { title: "Cover Page", body: "Your Pathway · Patient Name · Assessment Date" },
+      { title: "Cover Page", body: "Your Pathway · Assessment Date" },
       { title: "Your Results", body: (SHOW_PLATO
         ? "Step 1: How Is the Breathing at Night? — A full picture of your sleep quality, breathing risk, and daytime impact, built from validated clinical screening measures."
         : "Step 1: How Is the Breathing at Night? — A full picture of your breathing risk, built from validated clinical screening measures.")

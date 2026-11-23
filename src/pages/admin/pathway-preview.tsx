@@ -63,7 +63,7 @@ export default function PathwayPreviewPage() {
 
           <div className="flex flex-wrap gap-2" role="group" aria-label="Pathway">
             {PREVIEW_PATHWAYS.map(({ key, id, letter }) => (
-              <button key={key} type="button" onClick={() => setSampleKey(key)} style={pill(sampleKey === key)} title={getPathwayDefinition(id).title} aria-pressed={sampleKey === key}>
+              <button key={key} type="button" onClick={() => { setAutoPrint(false); setSampleKey(key); }} style={pill(sampleKey === key)} title={getPathwayDefinition(id).title} aria-pressed={sampleKey === key}>
                 {letter}
               </button>
             ))}

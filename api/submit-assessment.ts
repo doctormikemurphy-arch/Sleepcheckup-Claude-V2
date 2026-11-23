@@ -33,10 +33,10 @@ const escapeHtml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 const boldToHtml = (text: string) => escapeHtml(String(text)).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
 
-const bullet = (text: string) =>
+const bullet = (text: string, icon: string | null = null) =>
   `<tr>
     <td style="vertical-align:top;width:20px;padding:5px 0;">
-      <div style="width:6px;height:6px;border-radius:50%;background:#2563EB;margin-top:5px;"></div>
+      ${icon ?? `<div style="width:6px;height:6px;border-radius:50%;background:#2563EB;margin-top:5px;"></div>`}
     </td>
     <td style="padding:5px 0 5px 10px;color:#4B5563;font-size:14px;line-height:1.6;">${boldToHtml(text)}</td>
   </tr>`;
@@ -50,28 +50,21 @@ const specialistRow = (s: Specialist) =>
     </td>
   </tr>`;
 
-const numberedStep = (n: number, text: string) =>
+const numberedStep = (n: number, prefix: string, text: string) =>
   `<tr>
     <td style="vertical-align:top;width:28px;padding:6px 0;">
       <div style="background:#2563EB;color:#fff;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;text-align:center;line-height:22px;">${n}</div>
     </td>
-    <td style="padding:6px 0 6px 10px;color:#4B5563;font-size:14px;line-height:1.6;">${boldToHtml(text)}</td>
+    <td style="padding:6px 0 6px 10px;color:#4B5563;font-size:14px;line-height:1.6;">${prefix}${boldToHtml(text)}</td>
   </tr>`;
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Method not allowed" });
-  }
-
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ ok: false, error: "Resend not configured" });
-  }
-
-  const body = (req.body ?? {}) as Record<string, any>;
-
+/**
+ * Builds the report email HTML. No side effects, so scripts can preview it without sending.
+ * `assetBase` is where the email's images are hosted (the live site by default).
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- same loose request body the handler receives
+export function buildReportEmailHtml(body: Record<string, any>, assetBase = "https://sleepcheckup.com"): string {
   const {
-    email,
     firstName,
     pathwayName,
     pathwayDescription,
@@ -94,11 +87,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     whatWorksBestOpts = [] as string[],
     nextStepsSteps = [] as string[],
     specialists = [] as Specialist[],
+    addOnItems = [] as string[],
   } = body;
 
-  if (!email || !pathwayName) {
-    return res.status(400).json({ ok: false, error: "email and pathwayName are required" });
-  }
+  // Nose add-on items get the small wind icon instead of a plain bullet, like the site.
+  const addOn = new Set<string>(addOnItems);
+  const noseIcon = `<img src="${assetBase}/email/nose-wind.png" width="14" height="14" alt="Nose" style="display:inline-block;width:14px;height:14px;border:0;vertical-align:-2px;">`;
+  const listItem = (t: string) => bullet(t, addOn.has(t) ? noseIcon : null);
+  const stepItem = (t: string, i: number) => numberedStep(i + 1, addOn.has(t) ? `${noseIcon}&nbsp;` : "", t);
 
   const riskLabel = getRiskLabel(osaRisk);
   const riskColor = getRiskColor(osaRisk);
@@ -142,7 +138,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     </tr>`;
   };
 
-  const html = `
+  return `
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -161,7 +157,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   <tr>
     <td style="padding:28px 36px 0;">
       <div style="background:#EFF6FF;border:2px solid #2563EB;border-radius:10px;padding:24px;text-align:center;">
-        <p style="margin:0 0 4px;color:#2563EB;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">YOUR MURPHY METHOD PATHWAY</p>
+        <p style="margin:0 0 4px;color:#2563EB;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">Your Murphy Method™ Pathway</p>
         <h2 style="margin:8px 0 10px;color:#0F172A;font-size:22px;font-weight:800;line-height:1.2;">${pathwayName}</h2>
         <p style="margin:0;color:#1D4ED8;font-size:14px;line-height:1.6;font-style:italic;">${pathwayDescription}</p>
       </div>
@@ -182,7 +178,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   </tr>
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">YOUR KEY SCORES</p>
+      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Step 1: How Is the Breathing at Night?</p>
       <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;">
         ${scoreRow("STOP-BANG Score", `${stopBangScore}/8 — ${riskLabel} OSA Risk`, riskColor)}
         ${scoreRow("Insomnia Severity Index (ISI)", `${isiScore}/28 — ${isiLabel}`, isiColor)}
@@ -196,16 +192,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   ${whatResultsSuggest.length > 0 ? `
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">WHAT YOUR RESULTS SUGGEST</p>
+      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">What your results suggest</p>
       <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:20px;">
-        <table cellpadding="0" cellspacing="0" width="100%">${whatResultsSuggest.map(bullet).join("")}</table>
+        <table cellpadding="0" cellspacing="0" width="100%">${whatResultsSuggest.map(listItem).join("")}</table>
       </div>
     </td>
   </tr>` : ""}
   ${anatomyZones.length > 0 ? `
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">YOUR AIRWAY ANATOMY — 4 ZONES</p>
+      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Step 2: Where Can the Airway Narrow?</p>
       <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;">
         <tr style="background:#F9FAFB;">
           <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;">Zone</td>
@@ -220,7 +216,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   ${palmResults.length > 0 ? `
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 4px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">PALM CLASSIFICATION</p>
+      <p style="margin:0 0 4px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">PALM Classification Screening</p>
       <p style="margin:0 0 12px;color:#9CA3AF;font-size:12px;font-style:italic;">Sleep apnea is not just a blocked airway. These four factors can each play a part. Share this with your doctor &mdash; treatments for them are still being developed.</p>
       <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;">
         <tr style="background:#F9FAFB;">
@@ -236,34 +232,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   ${whyItMattersPts.length > 0 ? `
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">WHY THIS MATTERS FOR YOUR PATHWAY</p>
+      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Why it matters</p>
       <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:20px;">
-        <table cellpadding="0" cellspacing="0" width="100%">${whyItMattersPts.map(bullet).join("")}</table>
+        <table cellpadding="0" cellspacing="0" width="100%">${whyItMattersPts.map(listItem).join("")}</table>
       </div>
     </td>
   </tr>` : ""}
   ${whatWorksBestOpts.length > 0 ? `
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">TREATMENT OPTIONS FOR YOUR PATHWAY</p>
+      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">What usually works best</p>
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:20px;">
-        <table cellpadding="0" cellspacing="0" width="100%">${whatWorksBestOpts.map(bullet).join("")}</table>
+        <table cellpadding="0" cellspacing="0" width="100%">${whatWorksBestOpts.map(listItem).join("")}</table>
       </div>
     </td>
   </tr>` : ""}
   ${nextStepsSteps.length > 0 ? `
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">YOUR RECOMMENDED ACTION PLAN</p>
+      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Recommended Next Steps</p>
       <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:20px;">
-        <table cellpadding="0" cellspacing="0" width="100%">${nextStepsSteps.map((t, i) => numberedStep(i + 1, t)).join("")}</table>
+        <table cellpadding="0" cellspacing="0" width="100%">${nextStepsSteps.map(stepItem).join("")}</table>
       </div>
     </td>
   </tr>` : ""}
   ${specialists.length > 0 ? `
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">FIND A SPECIALIST</p>
+      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Find a Specialist</p>
       <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;">
         ${specialists.map(specialistRow).join("")}
       </table>
@@ -273,10 +269,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     <td style="padding:28px 36px 0;">
       <p style="margin:0 0 12px;color:#0F172A;font-size:16px;font-weight:700;">Using this report at your doctor's appointment:</p>
       <table cellpadding="0" cellspacing="0" width="100%">
-        ${numberedStep(1, "Share your pathway with your doctor — it will orient the conversation immediately.")}
-        ${numberedStep(2, "Review the treatment options section before your appointment so you can ask informed questions.")}
-        ${numberedStep(3, "Print or save this email as a PDF (File → Print → Save as PDF) and bring it with you.")}
-        ${numberedStep(4, "Request a sleep study if your STOP-BANG score is 3 or higher.")}
+        ${numberedStep(1, "", "Share your pathway with your doctor. It will orient the conversation immediately.")}
+        ${numberedStep(2, "", "Review the \"What usually works best\" section before your appointment so you can ask informed questions.")}
+        ${numberedStep(3, "", "Print or save this email as a PDF (File → Print → Save as PDF) and bring it with you.")}
+        ${numberedStep(4, "", "Request a sleep study if your STOP-BANG score is 3 or higher.")}
       </table>
     </td>
   </tr>
@@ -297,6 +293,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 </table>
 </body>
 </html>`;
+}
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
+  }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ ok: false, error: "Resend not configured" });
+  }
+
+  const body = (req.body ?? {}) as Record<string, any>;
+
+  const { email, pathwayName } = body;
+  if (!email || !pathwayName) {
+    return res.status(400).json({ ok: false, error: "email and pathwayName are required" });
+  }
+
+  const html = buildReportEmailHtml(body);
 
   try {
     const resend = new Resend(apiKey);

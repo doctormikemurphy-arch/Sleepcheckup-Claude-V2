@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
-  Printer, FileText, RotateCcw, ArrowLeft, Target,
+  FileText, RotateCcw, ArrowLeft, Target,
   Lightbulb, Footprints, Activity, AlertCircle, Stethoscope, ChevronRight, Check,
-  Video, BookOpen, ShoppingBag, BookMarked, ExternalLink,
+  Video, BookOpen, ShoppingBag, BookMarked, ExternalLink, Download,
 } from "lucide-react";
 import { PATHWAY_CONTENT_SEED } from "@/lib/admin-seed-data";
 import { loadState, clearState, getPaidSession, KEYS } from "@/lib/storage";
@@ -19,7 +19,7 @@ import { buildAssessmentResult } from "@/lib/build-assessment-result";
 import { SHOW_PLATO } from "@/lib/feature-flags";
 import { SaveReportBanner } from "@/components/ui/SaveReportBanner";
 import { PathwayGuideBox } from "@/components/ui/PathwayGuideBox";
-import { sendReportEmailOnce, resetSaved } from "@/lib/report-status";
+import { sendReportEmailOnce, resetSaved, markDownloaded } from "@/lib/report-status";
 import { AddOnIcon, InlineAddOnIcon } from "@/components/ui/AddOnIcon";
 import { LightbulbCallout, SHARE_REPORT_TIP, AlwaysRememberTip, SimpleIdeaTip, PALM_INTRO } from "@/components/ui/LightbulbCallout";
 
@@ -292,6 +292,11 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
   const openReport = () => (preview ? preview.onOpenReport() : navigate("/assessment/report"));
   // The banner's Download button opens the full PDF report and its print dialog.
   const downloadReport = () => (preview ? preview.onOpenReport({ print: true }) : navigate("/assessment/report?print=1"));
+  // Same as the banner's Download button: counts as a download, then opens the report and its print dialog.
+  const downloadAndCount = () => {
+    markDownloaded(preview ? null : getPaidSession()?.sessionId ?? null);
+    downloadReport();
+  };
 
   useEffect(() => {
     if (preview) return;
@@ -341,6 +346,10 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
         whyItMattersPts: pc?.whyItMatters?.points ?? [],
         whatWorksBestOpts: pc?.whatWorksBest?.options ?? [],
         nextStepsSteps: pc?.nextSteps?.steps ?? [],
+        // Which list items are nose add-ons, so the email marks them with the wind icon like the site.
+        addOnItems: pc
+          ? [...pc.whatResultsSuggest, ...pc.whyItMatters.points, ...pc.whatWorksBest.options, ...pc.nextSteps.steps].filter(isAddOnItem)
+          : [],
         specialists: (PATHWAY_SPECIALISTS[pw] ?? ["sleep"]).map((key) => ({
           title: SPECIALIST_RESOURCES[key].title,
           description: SPECIALIST_RESOURCES[key].description,
@@ -422,9 +431,9 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             <FileText className="w-4 h-4" />
             View Full Report
           </button>
-          <button onClick={() => window.print()} className="btn-secondary flex items-center justify-center gap-2 flex-1" style={{ fontSize: "16px", minHeight: "52px" }}>
-            <Printer className="w-4 h-4" />
-            Print / Save as PDF
+          <button onClick={downloadAndCount} className="btn-secondary flex items-center justify-center gap-2 flex-1" style={{ fontSize: "16px", minHeight: "52px" }}>
+            <Download className="w-4 h-4" />
+            Download / Print Your PDF Report
           </button>
         </div>
 
@@ -839,10 +848,10 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             Save a copy of your results to bring to your doctor.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button onClick={openReport} className="flex items-center justify-center gap-2 font-semibold rounded-xl flex-1"
+            <button onClick={downloadAndCount} className="flex items-center justify-center gap-2 font-semibold rounded-xl flex-1"
               style={{ fontFamily: "var(--font-sans)", fontSize: "15px", backgroundColor: "var(--bg-dark)", color: "#fff", border: "none", minHeight: "48px", padding: "0 20px", cursor: "pointer" }}>
-              <Printer className="w-4 h-4" />
-              Print / Save as PDF
+              <Download className="w-4 h-4" />
+              Download / Print Your PDF Report
             </button>
           </div>
         </div>
