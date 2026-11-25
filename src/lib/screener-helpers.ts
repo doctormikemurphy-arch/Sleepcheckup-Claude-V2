@@ -1,4 +1,12 @@
 import type { ScreeningProfile } from "./screener-types";
+import { getZoneStatus } from "./zone-status";
+
+const ZONES = [
+  { label: "Nose & Nasal Airway", scoreKey: "noseScore" },
+  { label: "Palate & Tonsils", scoreKey: "palateScore" },
+  { label: "Jaw & Tongue", scoreKey: "mandibleScore" },
+  { label: "Neck", scoreKey: "neckScore" },
+] as const;
 
 export type UrgencyLevel = "urgent" | "soon" | "routine";
 
@@ -12,12 +20,8 @@ export interface UrgencyInfo {
 
 export function getUrgencyInfo(profile: ScreeningProfile): UrgencyInfo {
   const { osaRisk, stopBangScore } = profile;
-  const flaggedZones = [
-    profile.anatomy.noseIsPositive,
-    profile.anatomy.palateIsPositive,
-    profile.anatomy.mandibleIsPositive,
-    profile.anatomy.neckIsPositive,
-  ].filter(Boolean).length;
+  // Flagged zones only (2 or more yes answers), so the message matches the labels on the page.
+  const flaggedZones = ZONES.filter((z) => getZoneStatus(profile.anatomy[z.scoreKey]) === "flagged").length;
 
   // High risk: STOP-BANG score 5–8
   if (osaRisk === "high") {
@@ -89,16 +93,8 @@ export function generateResultsEmailBody(profile: ScreeningProfile, url: string)
   const { stopBangScore, osaRisk, anatomy } = profile;
   const riskLabel = osaRisk === "high" ? "High Risk" : osaRisk === "intermediate" ? "Intermediate Risk" : "Low Risk";
 
-  const flaggedZones = [
-    anatomy.noseIsPositive ? "Nose" : null,
-    anatomy.palateIsPositive ? "Palate & Tonsils" : null,
-    anatomy.mandibleIsPositive ? "Mandible & Tongue" : null,
-    anatomy.neckIsPositive ? "Neck" : null,
-  ].filter(Boolean);
-
-  const zonesText = flaggedZones.length > 0
-    ? flaggedZones.join(", ")
-    : "No areas flagged";
+  const zonesWith = (status: "flagged" | "noted") =>
+    ZONES.filter((z) => getZoneStatus(anatomy[z.scoreKey]) === status).map((z) => z.label).join(", ") || "None";
 
   return `MY MURPHY METHOD™ SLEEP BREATHING SCREENING RESULTS
 =====================================================
@@ -108,7 +104,8 @@ Sleep Apnea Risk: ${riskLabel}
 STOP-BANG Score: ${stopBangScore}/8
 
 STEP 2 — WHERE CAN THE AIRWAY NARROW?
-Airway areas flagged: ${zonesText}
+Flagged (2 or more yes answers): ${zonesWith("flagged")}
+Noted (1 yes answer): ${zonesWith("noted")}
 
 STEP 3 — WHAT CAN HELP?
 Based on these results, please discuss treatment options with your doctor.

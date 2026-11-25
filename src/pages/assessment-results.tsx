@@ -12,7 +12,7 @@ import { renderBold } from "@/lib/render-bold";
 import type { AssessmentState } from "@/lib/assessment-types";
 import type { PatientProfile, MurphyPathwayId, PathwayDefinition } from "@/lib/types";
 import {
-  getOsaRiskLabel, getInsomniaSeverityLabel, getZoneInterpretation,
+  getOsaRiskLabel, getInsomniaSeverityLabel,
 } from "@/lib/scoring";
 import { getPathwayDefinition } from "@/lib/pathways";
 import { buildAssessmentResult } from "@/lib/build-assessment-result";
@@ -21,6 +21,7 @@ import { SaveReportBanner } from "@/components/ui/SaveReportBanner";
 import { PathwayGuideBox } from "@/components/ui/PathwayGuideBox";
 import { sendReportEmailOnce, resetSaved, markDownloaded } from "@/lib/report-status";
 import { AddOnIcon, InlineAddOnIcon } from "@/components/ui/AddOnIcon";
+import { getZoneStatus, ZONE_STATUS_LABEL, ZONE_STATUS_STYLE, ZONE_STATUS_DESCRIPTION, ZONE_STATUS_EXPLANATION, PALM_STATUS_EXPLANATION } from "@/lib/zone-status";
 import { LightbulbCallout, SHARE_REPORT_TIP, AlwaysRememberTip, SimpleIdeaTip, PALM_INTRO } from "@/components/ui/LightbulbCallout";
 
 const PATHWAY_LETTERS: Record<string, string> = {
@@ -88,7 +89,7 @@ const PATHWAY_SPECIALISTS: Record<string, SpecialistKey[]> = {
   A_insomnia:   ["sleep", "behavioral", "ent", "dental", "allergy"],
   B_obesity:    ["sleep", "endocrinology", "bariatric", "ent", "allergy", "dental"],
   C_nasal:      ["ent", "allergy", "sleep"],
-  D_mandible:   ["ent", "dental", "allergy", "sleep"],
+  D_mandible:   ["ent", "dental", "sleep"],
   E_multilevel: ["ent", "dental", "allergy", "sleep"],
   F_physiology: ["sleep", "allergy"],
   G_low_risk:   ["ent", "dental", "allergy"],
@@ -545,40 +546,41 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
             </div>
             <div className="flex-1">
               <p className="font-bold text-ink" style={{ fontSize: "17px" }}>Step 2: Where Can the Airway Narrow?</p>
-              <p className="text-ink-muted" style={{ fontSize: "14px" }}>Top-Down Anatomy Self-Check — 4 zones evaluated</p>
+              <p className="text-ink-muted" style={{ fontSize: "14px" }}>Top-Down Anatomy Self-Check: 4 zones evaluated</p>
             </div>
             <AlertCircle className="w-5 h-5 flex-shrink-0" style={{ color: "#15803D" }} />
           </div>
 
           <div className="rounded-xl border p-5" style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}>
             <p className="text-ink-muted mb-4" style={{ fontSize: "15px", lineHeight: 1.65 }}>
-              The Murphy Method™ evaluates four anatomical zones from top to bottom. Each zone that responds positively is <strong className="text-ink">flagged</strong> — meaning your responses suggest that area may be contributing to sleep-disordered breathing.
+              {ZONE_STATUS_EXPLANATION}
             </p>
             <div className="space-y-3">
               {anatomyZones.map((zone) => {
                 const score = profile.anatomy[zone.scoreKey];
-                const isPositive = profile.anatomy[zone.positiveKey];
+                const status = getZoneStatus(score);
+                const st = ZONE_STATUS_STYLE[status];
                 const answeredYes = profile.anatomy[zone.responsesKey]?.answeredYes ?? [];
                 return (
-                  <div key={zone.key} className="rounded-lg border" style={{ borderColor: isPositive ? "#FDE68A" : "transparent", backgroundColor: isPositive ? "#FFFBEB" : "#F8FAFC" }}>
+                  <div key={zone.key} className="rounded-lg border" style={{ borderColor: st.rowBorder, backgroundColor: st.rowBg }}>
                     <div className="flex items-center gap-3 p-3">
-                      <div className="rounded-full flex-shrink-0" style={{ width: "8px", height: "8px", backgroundColor: isPositive ? "#EAB308" : "#22C55E" }} />
+                      <div className="rounded-full flex-shrink-0" style={{ width: "8px", height: "8px", backgroundColor: st.dot }} />
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-ink" style={{ fontSize: "15px" }}>{zone.label}</p>
-                        <p className="text-ink-muted" style={{ fontSize: "13px" }}>{getZoneInterpretation(score)}</p>
+                        <p className="text-ink-muted" style={{ fontSize: "13px" }}>{ZONE_STATUS_DESCRIPTION[status]}</p>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <span className="text-ink-muted" style={{ fontSize: "13px" }}>{score}/{zone.maxScore}</span>
-                        <span className="rounded-full font-semibold px-2 py-0.5" style={{ fontSize: "12px", backgroundColor: isPositive ? "#FEF9C3" : "#DCFCE7", color: isPositive ? "#713F12" : "#14532D" }}>
-                          {isPositive ? "Flagged" : "Clear"}
+                        <span className="rounded-full font-semibold px-2 py-0.5" style={{ fontSize: "12px", backgroundColor: st.badgeBg, color: st.badgeText, border: `1px solid ${st.badgeBorder}` }}>
+                          {ZONE_STATUS_LABEL[status]}
                         </span>
                       </div>
                     </div>
-                    {isPositive && answeredYes.length > 0 && (
+                    {status !== "clear" && answeredYes.length > 0 && (
                       <ul className="px-4 pb-3 space-y-1">
                         {answeredYes.map((q, i) => (
                           <li key={i} className="flex items-start gap-2 text-ink-muted" style={{ fontSize: "13px" }}>
-                            <span className="rounded-full flex-shrink-0 mt-1.5" style={{ width: "6px", height: "6px", backgroundColor: "#EAB308" }} />
+                            <span className="rounded-full flex-shrink-0 mt-1.5" style={{ width: "6px", height: "6px", backgroundColor: st.dot }} />
                             <span>{q}</span>
                           </li>
                         ))}
@@ -611,7 +613,7 @@ export default function AssessmentResultsPage({ preview }: { preview?: ResultsPr
               {PALM_INTRO}
             </p>
             <p className="text-ink-muted mb-3" style={{ fontSize: "14px", lineHeight: 1.65 }}>
-              If you answered "Yes" to 2 or more questions in a group, that group is marked <strong>Flagged</strong> below. Flagged means this factor may be part of your sleep apnea. <strong>Clear</strong> means it probably is not.
+              {PALM_STATUS_EXPLANATION}
             </p>
             <p className="text-ink-muted mb-4" style={{ fontSize: "14px", lineHeight: 1.65 }}>
               Treatments for these three factors are still being developed. Share this page with your doctor. As new treatments arrive, your doctor will already know your pattern.

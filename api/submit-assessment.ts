@@ -111,16 +111,22 @@ export function buildReportEmailHtml(body: Record<string, any>, assetBase = "htt
     insomniaSeverity === "subthreshold" ? "#2563EB" : "#16A34A";
   const bmiColor = !bmiValue ? "#6B7280" : bmiValue < 25 ? "#16A34A" : bmiValue < 30 ? "#D97706" : "#DC2626";
 
+  // Same rule and colors as src/lib/zone-status.ts: 0 yes = Clear, 1 = Noted, 2 or more = Flagged.
   const zoneRow = (z: Zone) => {
-    const statusColor = z.isPositive ? "#D97706" : "#16A34A";
-    const statusBg = z.isPositive ? "#FEF3C7" : "#DCFCE7";
+    const status = z.score >= 2 ? "Flagged" : z.score === 1 ? "Noted" : "Clear";
+    const style = {
+      Flagged: { rowBg: "#FFF7ED", bg: "#FFEDD5", text: "#9A3412", border: "#FDBA74", description: "This area is likely part of your sleep apnea." },
+      Noted:   { rowBg: "#FFFDF7", bg: "#FFFBEB", text: "#92400E", border: "#FCD34D", description: "One possible sign. Share it with your doctor." },
+      Clear:   { rowBg: "#FFFFFF", bg: "#DCFCE7", text: "#14532D", border: "#DCFCE7", description: "This area is probably not part of the problem." },
+    }[status];
+    const cell = `padding:10px 12px;border-bottom:1px solid #F3F4F6;background:${style.rowBg};`;
     return `<tr>
-      <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6;color:#374151;font-size:14px;font-weight:500;">${z.label}</td>
-      <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6;color:#6B7280;font-size:13px;text-align:center;">${z.score}/${z.max}</td>
-      <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6;text-align:center;">
-        <span style="background:${statusBg};color:${statusColor};font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;">${z.isPositive ? "Flagged" : "Normal"}</span>
+      <td style="${cell}color:#374151;font-size:14px;font-weight:500;">${z.label}<div style="margin-top:2px;color:#6B7280;font-size:12px;font-weight:400;">${style.description}</div></td>
+      <td style="${cell}color:#6B7280;font-size:13px;text-align:center;">${z.score}/${z.max}</td>
+      <td style="${cell}text-align:center;">
+        <span style="background:${style.bg};color:${style.text};border:1px solid ${style.border};font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;">${status}</span>
       </td>
-      <td style="padding:10px 12px;border-bottom:1px solid #F3F4F6;color:#6B7280;font-size:12px;">${z.answers.length > 0 ? z.answers.join(", ") : "No findings"}</td>
+      <td style="${cell}color:#6B7280;font-size:12px;">${z.answers.length > 0 ? z.answers.join(", ") : "No findings"}</td>
     </tr>`;
   };
 
@@ -202,7 +208,8 @@ export function buildReportEmailHtml(body: Record<string, any>, assetBase = "htt
   ${anatomyZones.length > 0 ? `
   <tr>
     <td style="padding:28px 36px 0;">
-      <p style="margin:0 0 12px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Step 2: Where Can the Airway Narrow?</p>
+      <p style="margin:0 0 4px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Step 2: Where Can the Airway Narrow?</p>
+      <p style="margin:0 0 12px;color:#9CA3AF;font-size:12px;font-style:italic;">Flagged means 2 or more yes answers, so this area is likely part of your sleep apnea. Noted means 1 yes answer: share it with your doctor. Clear means no yes answers.</p>
       <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;">
         <tr style="background:#F9FAFB;">
           <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;">Zone</td>
@@ -219,6 +226,7 @@ export function buildReportEmailHtml(body: Record<string, any>, assetBase = "htt
     <td style="padding:28px 36px 0;">
       <p style="margin:0 0 4px;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">PALM Classification Screening</p>
       <p style="margin:0 0 12px;color:#9CA3AF;font-size:12px;font-style:italic;">Sleep apnea is not just a blocked airway. These four factors can each play a part. Share this with your doctor &mdash; treatments for them are still being developed.</p>
+      <p style="margin:0 0 12px;color:#9CA3AF;font-size:12px;font-style:italic;">Flagged means 2 or more yes answers in a group, so this factor may be part of your sleep apnea. Clear means fewer than 2 yes answers.</p>
       <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;">
         <tr style="background:#F9FAFB;">
           <td style="padding:8px 12px;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;text-align:center;width:32px;"></td>

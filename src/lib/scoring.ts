@@ -143,16 +143,6 @@ export function getInsomniaSeverityLabel(severity: InsomniaSeverity): string {
   }
 }
 
-export function getZoneInterpretation(score: number): string {
-  if (score === 0) {
-    return "This area does not clearly stand out in your answers.";
-  } else if (score === 1) {
-    return "This area might play a role.";
-  } else {
-    return "This area is more likely to matter for your breathing during sleep.";
-  }
-}
-
 const MEDICAL_HISTORY_LABELS: Record<keyof MedicalHistoryAnswers, string> = {
   heartDisease: "Heart Disease",
   highBloodPressure: "High Blood Pressure",

@@ -8,7 +8,8 @@ import {
 } from "lucide-react";
 import { getUrgencyInfo } from "@/lib/screener-helpers";
 import { SimpleIdeaTip } from "@/components/ui/LightbulbCallout";
-import { getOsaRiskLabel, getZoneInterpretation, scoreStopBang, scoreZones, scoreAnatomy } from "@/lib/scoring";
+import { getOsaRiskLabel, scoreStopBang, scoreZones, scoreAnatomy } from "@/lib/scoring";
+import { getZoneStatus, ZONE_STATUS_LABEL, ZONE_STATUS_STYLE, ZONE_STATUS_DESCRIPTION, ZONE_STATUS_EXPLANATION } from "@/lib/zone-status";
 import type { ScreeningProfile } from "@/lib/screener-types";
 
 const anatomyZones = [
@@ -135,12 +136,10 @@ export default function ScreenerResults() {
         email: trimmed,
         stopBangScore: profile.stopBangScore,
         osaRisk: profile.osaRisk,
-        flaggedZones: [
-          profile.anatomy?.noseIsPositive ? "nose" : null,
-          profile.anatomy?.palateIsPositive ? "palate" : null,
-          profile.anatomy?.mandibleIsPositive ? "mandible" : null,
-          profile.anatomy?.neckIsPositive ? "neck" : null,
-        ].filter(Boolean) as string[],
+        // Zones with 2 or more yes answers (Flagged). Only used by the email if anatomy is missing.
+        flaggedZones: anatomyZones
+          .filter((z) => getZoneStatus(profile.anatomy?.[z.scoreKey] ?? 0) === "flagged")
+          .map((z) => z.label),
         urgencyHeadline: urgency.headline,
         urgencyMessage: urgency.message,
         anatomy: profile.anatomy,
@@ -323,20 +322,21 @@ export default function ScreenerResults() {
             </div>
             <div className="flex-1">
               <p className="font-bold text-ink" style={{ fontSize: "17px" }}>Step 2: Where Can the Airway Narrow?</p>
-              <p className="text-ink-muted" style={{ fontSize: "14px" }}>Airway Zone Assessment — Nose to Neck</p>
+              <p className="text-ink-muted" style={{ fontSize: "14px" }}>Airway Zone Assessment: Nose to Neck</p>
             </div>
             <AlertCircle className="w-5 h-5 flex-shrink-0" style={{ color: "#16A34A" }} />
           </div>
 
           <div className="rounded-xl border p-5" style={{ borderColor: "#E2E8F0", backgroundColor: "#fff" }}>
             <p className="text-ink-muted mb-4" style={{ fontSize: "15px", lineHeight: 1.65 }}>
-              The Murphy Method™ evaluates four anatomical zones from top to bottom. Each zone that responds positively is <strong className="text-ink">flagged</strong> — meaning your responses suggest that area may be contributing to sleep-disordered breathing.
+              {ZONE_STATUS_EXPLANATION}
             </p>
 
             <div className="space-y-3">
               {anatomyZones.map((zone) => {
                 const score = profile.anatomy[zone.scoreKey];
-                const isPositive = profile.anatomy[zone.positiveKey];
+                const status = getZoneStatus(score);
+                const st = ZONE_STATUS_STYLE[status];
                 const answeredYes = profile.anatomy[zone.responsesKey]?.answeredYes ?? [];
 
                 return (
@@ -344,18 +344,18 @@ export default function ScreenerResults() {
                     key={zone.key}
                     className="rounded-lg border"
                     style={{
-                      borderColor: isPositive ? "#FDE68A" : "transparent",
-                      backgroundColor: isPositive ? "#FFFBEB" : "#F8FAFC",
+                      borderColor: st.rowBorder,
+                      backgroundColor: st.rowBg,
                     }}
                   >
                     <div className="flex items-center gap-3 p-3">
                       <div
                         className="rounded-full flex-shrink-0"
-                        style={{ width: "8px", height: "8px", backgroundColor: isPositive ? "#EAB308" : "#22C55E" }}
+                        style={{ width: "8px", height: "8px", backgroundColor: st.dot }}
                       />
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-ink" style={{ fontSize: "15px" }}>{zone.label}</p>
-                        <p className="text-ink-muted" style={{ fontSize: "13px" }}>{getZoneInterpretation(score)}</p>
+                        <p className="text-ink-muted" style={{ fontSize: "13px" }}>{ZONE_STATUS_DESCRIPTION[status]}</p>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <span className="text-ink-muted" style={{ fontSize: "13px" }}>{score}/{zone.maxScore}</span>
@@ -363,19 +363,20 @@ export default function ScreenerResults() {
                           className="rounded-full font-semibold px-2 py-0.5"
                           style={{
                             fontSize: "12px",
-                            backgroundColor: isPositive ? "#FEF9C3" : "#DCFCE7",
-                            color: isPositive ? "#713F12" : "#14532D",
+                            backgroundColor: st.badgeBg,
+                            color: st.badgeText,
+                            border: `1px solid ${st.badgeBorder}`,
                           }}
                         >
-                          {isPositive ? "Flagged" : "Clear"}
+                          {ZONE_STATUS_LABEL[status]}
                         </span>
                       </div>
                     </div>
-                    {isPositive && answeredYes.length > 0 && (
+                    {status !== "clear" && answeredYes.length > 0 && (
                       <ul className="px-4 pb-3 space-y-1">
                         {answeredYes.map((q, i) => (
                           <li key={i} className="flex items-start gap-2 text-ink-muted" style={{ fontSize: "13px" }}>
-                            <span className="rounded-full flex-shrink-0 mt-1.5" style={{ width: "6px", height: "6px", backgroundColor: "#EAB308" }} />
+                            <span className="rounded-full flex-shrink-0 mt-1.5" style={{ width: "6px", height: "6px", backgroundColor: st.dot }} />
                             <span>{q}</span>
                           </li>
                         ))}
@@ -646,7 +647,7 @@ export default function ScreenerResults() {
           <div className="grid sm:grid-cols-2 gap-2 mb-5">
             {[
               "Your 1-of-8 treatment path — matched to your exact anatomy",
-              "Treatment options specific to your flagged zones — not generic advice",
+              "Treatment options specific to your Flagged zones, not generic advice",
               "What to avoid based on your anatomy, and why",
               "Exact questions to ask your doctor at your next visit",
               "Which tests to request at your appointment",

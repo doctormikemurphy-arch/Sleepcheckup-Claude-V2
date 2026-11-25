@@ -23,6 +23,10 @@ export interface PathwayContent {
   };
 }
 
+/** Pathway D bullet that relies on BMI. getPathwayContent() drops it when the profile has no BMI. */
+export const D_WEIGHT_BULLET =
+  "Based on the height and weight you entered, your weight is probably not the main cause of your sleep apnea.";
+
 export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
   A_insomnia: {
     pathwayLetter: "A",
@@ -160,45 +164,46 @@ export const PATHWAY_CONTENT: Record<string, PathwayContent> = {
 
   D_mandible: {
     pathwayLetter: "D",
-    title: "Sleep Apnea with Jaw & Tongue Blockage",
-    subtitle: "Your jaw and tongue positioning may be contributing to airway blockage during sleep.",
+    title: "Sleep Apnea with a Tongue and Jaw Problem",
+    subtitle: "Your tongue and jaw position may be the main cause of your sleep apnea. An oral appliance or surgery is a good treatment option to consider.",
     whatResultsSuggest: [
       "Your answers show that you are at risk for obstructive sleep apnea. This means your airway narrows or gets blocked while you sleep, so your breathing stops and starts. Over time, this can lead to health problems if it is not treated.",
-      "Your self-assessment suggests that jaw (mandible) and tongue factors are primary contributors.",
-      "Your weight is not elevated, which means anatomical factors rather than obesity are likely driving your sleep breathing issues.",
+      "Your answers point to your tongue and jaw as the main place your airway narrows while you sleep.",
+      "You answered yes to questions in the Jaw & Tongue zone of the \"Where Can the Airway Narrow?\" section. Each yes answer points to a possible cause. Share these answers with your doctor or dentist.",
+      "None of your other zones (nose, palate and tonsils, neck) were Flagged. With one main area to focus on, treatment can be easier to plan.",
+      D_WEIGHT_BULLET,
     ],
     whyItMatters: {
-      intro: "Lean patients can absolutely have significant obstructive sleep apnea. When jaw and tongue anatomy are the primary factors, treatment approaches differ from weight-related cases.",
+      intro: "You don't have to be overweight to have sleep apnea. The fit between your tongue and your jaw matters too.",
       points: [
-        "A smaller or recessed jaw creates less space for the tongue, making airway collapse more likely during sleep.",
-        "Tongue position and muscle tone play a major role in keeping the airway open.",
-        "CPAP is not always the best first option for anatomy-dominant cases—oral appliances can be highly effective.",
-        "Myofunctional therapy (exercises for tongue and throat muscles) can complement other treatments.",
+        "When the bony box of your lower jaw sits back or is narrow, your tongue has less room. It gets pushed back and narrows the space in your throat you use to breathe.",
+        "Because one area is the main cause, treatment that brings your jaw and tongue forward can work very well.",
+        "CPAP is the most proven treatment for sleep apnea. But for people with a tongue and jaw problem, an oral appliance often works very well. Not every doctor offers it, so it is worth asking about.",
+        "The best treatment is the one you will use every night. Some people find CPAP hard to use. An oral appliance is small, quiet, and easy to travel with, so many people find it easier to use night after night.",
+        "If other treatments don't work well for you, surgery can change the bony box of your lower jaw to give your tongue more room. For the right person, it can be a lasting fix.",
       ],
     },
     whatWorksBest: {
-      intro: "People with primary mandible and tongue factors often respond well to treatments that address jaw positioning and muscle tone.",
+      intro: "Treatments that bring your jaw and tongue forward often work best.",
       options: [
-        "Oral appliance therapy—custom-fitted devices that hold the jaw forward during sleep.",
-        "Sleep dentist evaluation to assess jaw anatomy and appliance candidacy.",
-        "Myofunctional therapy—targeted exercises to strengthen tongue and throat muscles.",
-        "Positional therapy if apnea is significantly worse when sleeping on your back.",
-        "Follow-up sleep testing to confirm treatment effectiveness.",
+        "**Oral appliance from a sleep dentist.** A custom mouth guard that moves the bony box of your lower jaw forward while you sleep. This gives your tongue more room and keeps your airway open. A sleep dentist checks your jaw and teeth to see if an oral appliance is right for you, then makes it and adjusts it over time for the best fit. They need your sleep study and a referral from your doctor first. Use the Find a Specialist links below to find a sleep dentist near you.",
+        "**CPAP.** A machine that gently blows air through a mask to keep your airway open while you sleep. It is the most proven treatment and works for most people. It is a good choice if an oral appliance is not right for you.",
+        "**Surgery.** Surgery can change the shape or position of the bony box of your lower jaw to give your tongue more room. Surgeons use computer models to plan exactly what changes to make. Your ENT doctor or sleep dentist can refer you to a surgeon if it makes sense for you.",
       ],
     },
     nextSteps: {
-      intro: "Based on your pathway, here is a recommended action plan:",
+      intro: "Based on your pathway, here is your action plan:",
       steps: [
-        "Get a sleep study to confirm diagnosis and measure severity.",
-        "Request a referral to a sleep dentist or oral medicine specialist.",
-        "Discuss oral appliance therapy as a primary or alternative treatment option.",
-        "After starting oral appliance treatment, get a follow-up sleep study to verify effectiveness.",
-        "If surgery is a possible option get a referral to an ENT specialist and/or Oral Surgeon for evaluation and possible treatment.",
+        "**Get a sleep study.** This test measures your breathing while you sleep. It shows if you have sleep apnea and how serious it is. Insurance usually covers a sleep study when your doctor orders it.",
+        "**Ask about an oral appliance.** Ask your doctor, \"Could an oral appliance work for me?\" A sleep dentist needs your sleep study and a referral from your doctor before making one. If your doctor is not sure how to refer you, use the Find a Specialist links to find a sleep dentist near you and set up a visit.",
+        "**Check that your oral appliance is working.** Once your sleep dentist has adjusted your oral appliance to the right position, get a sleep study with it in place. This shows how well it is working.",
+        "**Consider CPAP.** CPAP is a good choice if an oral appliance is not right for you. Your CPAP machine tracks how well it is working, so you usually do not need another sleep study.",
+        "**Ask about surgery if needed.** If other treatments don't work well for you, or you want a lasting fix, ask your ENT doctor or sleep dentist about a referral to a surgeon who does this type of surgery.",
       ],
     },
     cta: {
-      text: "Address Jaw & Tongue Factors",
-      description: "Oral appliances and targeted therapies can be very effective for this type of sleep apnea. Working with a sleep dentist opens options beyond CPAP.",
+      text: "You Have More Than One Option",
+      description: "For a tongue and jaw problem, an oral appliance from a sleep dentist often works very well. Ask your doctor if it could be right for you.",
     },
   },
 
@@ -403,12 +408,16 @@ export function hasNoseAddOn(pathway: string, profile?: PatientProfile | null): 
 }
 
 /**
- * The content to show for a pathway. Without a profile (or when no add-on applies) this is
- * exactly PATHWAY_CONTENT[pathway]. With the nose add-on, one item is added as the last
- * bullet of each list and as the second-to-last next step.
+ * The content to show for a pathway. Without a profile (or when nothing applies) this is
+ * exactly PATHWAY_CONTENT[pathway]. For D with a profile that has no BMI, the weight bullet is
+ * left out. With the nose add-on, one item is added as the last bullet of each list and as the
+ * second-to-last next step.
  */
 export function getPathwayContent(pathway: string, profile?: PatientProfile | null): PathwayContent | undefined {
-  const base = PATHWAY_CONTENT[pathway];
+  let base = PATHWAY_CONTENT[pathway];
+  if (base && profile && pathway === "D_mandible" && !profile.bmiValue) {
+    base = { ...base, whatResultsSuggest: base.whatResultsSuggest.filter((t) => t !== D_WEIGHT_BULLET) };
+  }
   if (!base || !hasNoseAddOn(pathway, profile)) return base;
   const steps = base.nextSteps.steps;
   return {

@@ -15,7 +15,7 @@ export default function HowItWorksPage() {
     "Sleep Apnea with Insomnia",
     "Sleep Apnea and Body Weight",
     "Sleep Apnea with a Nasal Problem",
-    "Sleep Apnea with Jaw & Tongue Blockage",
+    "Sleep Apnea with a Tongue and Jaw Problem",
     "Sleep Apnea with Multi-Level Blockage",
     "Sleep Apnea with a Breathing Control Problem",
     "Low Risk Sleep Apnea or Snoring",

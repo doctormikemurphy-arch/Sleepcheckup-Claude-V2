@@ -285,7 +285,7 @@ export const HOW_IT_WORKS = {
     free: {
       badge: "Free · 3 minutes",
       title: "Free Screener",
-      body: "The free screener covers two validated screening tools: STOP-BANG (obstructive sleep apnea risk) and an airway zone self-check. No account required. You'll see your risk score immediately, along with which anatomical zones are flagged.",
+      body: "The free screener covers two validated screening tools: STOP-BANG (obstructive sleep apnea risk) and an airway zone self-check. No account required. You'll see your risk score immediately, along with which anatomical zones are Flagged, Noted, or Clear.",
       features: [
         "STOP-BANG sleep apnea risk score",
         "Airway zone self-assessment",
@@ -347,7 +347,7 @@ export const HOW_IT_WORKS = {
       "Sleep Apnea with Insomnia",
       "Sleep Apnea and Body Weight",
       "Sleep Apnea with a Nasal Problem",
-      "Sleep Apnea with Jaw & Tongue Blockage",
+      "Sleep Apnea with a Tongue and Jaw Problem",
       "Sleep Apnea with Multi-Level Blockage",
       "Sleep Apnea with a Breathing Control Problem",
       "Low Risk Sleep Apnea or Snoring",

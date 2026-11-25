@@ -46,14 +46,15 @@ function medical(yes: (keyof MedicalHistoryAnswers)[]): MedicalHistoryAnswers {
   return Object.fromEntries(keys.map((k) => [k, yn(yes.includes(k))])) as unknown as MedicalHistoryAnswers;
 }
 
-function bmi(value: number): BmiData {
+/** BMI as the assessment stores it; null means no height and weight (to test missing BMI). */
+function bmi(value: number | null): BmiData {
   return { heightFt: null, heightIn: null, heightCm: null, heightUnit: "imperial", weightLbs: null, weightKg: null, weightUnit: "lbs", calculatedBmi: value };
 }
 
 interface SampleSpec {
   stopBang: number;
   isi: [number, number, number, number, number, number, number];
-  bmi: number;
+  bmi: number | null;
   zones: { nose: number; palate: number; mandible: number; neck: number };
   palm: { pcrit: number; arousal: number; loopGain: number; muscle: number };
   medical: (keyof MedicalHistoryAnswers)[];
@@ -85,7 +86,7 @@ function toState(s: SampleSpec): AssessmentState {
 }
 
 /** One preview sample: the plain pathway samples use the pathway ID as their key. */
-export type SampleKey = MurphyPathwayId | "A_insomnia_nasal" | "B_obesity_nasal";
+export type SampleKey = MurphyPathwayId | "A_insomnia_nasal" | "B_obesity_nasal" | "D_mandible_no_bmi";
 
 export interface PreviewSample {
   key: SampleKey;
@@ -101,13 +102,14 @@ export const PREVIEW_PATHWAYS: PreviewSample[] = [
   { key: "A_insomnia",       id: "A_insomnia",   letter: "A", summary: "Intermediate risk, moderate insomnia (ISI 21)", noseAddOn: false },
   { key: "B_obesity",        id: "B_obesity",    letter: "B", summary: "High risk, BMI 34", noseAddOn: false },
   { key: "C_nasal",          id: "C_nasal",      letter: "C", summary: "Intermediate risk, nose zone 3/5", noseAddOn: false },
-  { key: "D_mandible",       id: "D_mandible",   letter: "D", summary: "Intermediate risk, jaw & tongue zone 2/3", noseAddOn: false },
+  { key: "D_mandible",       id: "D_mandible",   letter: "D", summary: "Intermediate risk, Jaw & Tongue 2/3 (Flagged), Nose 1/5 and Neck 1/3 (Noted), Palate 0/3 (Clear)", noseAddOn: false },
   { key: "E_multilevel",     id: "E_multilevel", letter: "E", summary: "High risk, palate 2/3 and jaw & tongue 2/3", noseAddOn: false },
   { key: "F_physiology",     id: "F_physiology", letter: "F", summary: "Intermediate risk, low anatomy, loop gain 2/4", noseAddOn: false },
   { key: "G_low_risk",       id: "G_low_risk",   letter: "G", summary: "Low risk (STOP-BANG 2), anatomy total 3", noseAddOn: false },
   { key: "H_complex",        id: "H_complex",    letter: "H", summary: "Intermediate risk, palate 2/3 only, no PALM flags", noseAddOn: false },
   { key: "A_insomnia_nasal", id: "A_insomnia",   letter: "A + nasal problem", summary: "A sample with nose zone 3/5 (nose add-on)", noseAddOn: true },
   { key: "B_obesity_nasal",  id: "B_obesity",    letter: "B + nasal problem", summary: "B sample with nose zone 3/5 (nose add-on)", noseAddOn: true },
+  { key: "D_mandible_no_bmi", id: "D_mandible",  letter: "D + no BMI",        summary: "D sample with no BMI (the weight bullet is hidden)", noseAddOn: false },
 ];
 
 const SPECS: Record<SampleKey, SampleSpec> = {
@@ -170,6 +172,12 @@ const SPECS: Record<SampleKey, SampleSpec> = {
     zones: { nose: 3, palate: 1, mandible: 1, neck: 2 },
     palm: { pcrit: 2, arousal: 0, loopGain: 1, muscle: 1 },
     medical: ["highBloodPressure", "diabetes"],
+  },
+  D_mandible_no_bmi: {
+    stopBang: 4, isi: [1, 1, 1, 2, 1, 1, 1], bmi: null,
+    zones: { nose: 1, palate: 0, mandible: 2, neck: 1 },
+    palm: { pcrit: 2, arousal: 0, loopGain: 0, muscle: 1 },
+    medical: ["acidReflux"],
   },
 };
 

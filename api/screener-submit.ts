@@ -37,7 +37,7 @@ interface AnatomyData {
   neckScore?: number;       neckIsPositive?: boolean;    neckResponses?: ZoneResponses;
 }
 
-const ZONE_CONFIG = [
+export const ZONE_CONFIG = [
   { label: "Nose & Nasal Airway",  scoreKey: "noseScore"     as const, positiveKey: "noseIsPositive"     as const, responsesKey: "noseResponses"     as const, maxScore: 5 },
   { label: "Palate & Tonsils",     scoreKey: "palateScore"   as const, positiveKey: "palateIsPositive"   as const, responsesKey: "palateResponses"   as const, maxScore: 3 },
   { label: "Jaw & Tongue",         scoreKey: "mandibleScore" as const, positiveKey: "mandibleIsPositive" as const, responsesKey: "mandibleResponses" as const, maxScore: 3 },
@@ -58,29 +58,35 @@ function sectionHeading(label: string, color: string) {
   </div>`;
 }
 
-function zoneRow(zone: typeof ZONE_CONFIG[0], anatomy: AnatomyData) {
-  const score = anatomy[zone.scoreKey] ?? 0;
-  const isPositive = anatomy[zone.positiveKey] ?? false;
-  const answeredYes = anatomy[zone.responsesKey]?.answeredYes ?? [];
-  const badgeBg = isPositive ? "#FEF9C3" : "#DCFCE7";
-  const badgeText = isPositive ? "#713F12" : "#14532D";
-  const rowBg = isPositive ? "#FFFBEB" : "#F8FAFC";
-  const dotColor = isPositive ? "#EAB308" : "#22C55E";
+// Same rule, colors and wording as src/lib/zone-status.ts: 0 yes = Clear, 1 = Noted, 2 or more = Flagged.
+const ZONE_STATUS = {
+  Flagged: { rowBg: "#FFF7ED", rowBorder: "#FDBA74", dot: "#EA580C", badgeBg: "#FFEDD5", badgeText: "#9A3412", badgeBorder: "#FDBA74", description: "This area is likely part of your sleep apnea." },
+  Noted:   { rowBg: "#FFFDF7", rowBorder: "#FEF3C7", dot: "#FCD34D", badgeBg: "#FFFBEB", badgeText: "#92400E", badgeBorder: "#FCD34D", description: "One possible sign. Share it with your doctor." },
+  Clear:   { rowBg: "#F8FAFC", rowBorder: "#E5E7EB", dot: "#22C55E", badgeBg: "#DCFCE7", badgeText: "#14532D", badgeBorder: "#DCFCE7", description: "This area is probably not part of the problem." },
+} as const;
+const zoneStatus = (score: number): keyof typeof ZONE_STATUS => (score >= 2 ? "Flagged" : score === 1 ? "Noted" : "Clear");
 
-  const answeredHtml = isPositive && answeredYes.length > 0
+export function zoneRow(zone: typeof ZONE_CONFIG[0], anatomy: AnatomyData) {
+  const score = anatomy[zone.scoreKey] ?? 0;
+  const status = zoneStatus(score);
+  const st = ZONE_STATUS[status];
+  const answeredYes = anatomy[zone.responsesKey]?.answeredYes ?? [];
+
+  const answeredHtml = status !== "Clear" && answeredYes.length > 0
     ? `<ul style="margin:6px 0 0;padding-left:20px;">
         ${answeredYes.map((q) => `<li style="font-size:13px;color:#6B7280;margin:3px 0;">${q}</li>`).join("")}
        </ul>`
     : "";
 
   return `<tr>
-    <td style="padding:10px 12px;background:${rowBg};border-bottom:1px solid #E5E7EB;vertical-align:top;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:${answeredHtml ? "4px" : "0"};">
-        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dotColor};flex-shrink:0;margin-top:1px;"></span>
+    <td style="padding:10px 12px;background:${st.rowBg};border-bottom:1px solid ${st.rowBorder};vertical-align:top;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${st.dot};flex-shrink:0;margin-top:1px;"></span>
         <span style="font-size:14px;font-weight:600;color:#0F172A;font-family:sans-serif;">${zone.label}</span>
         <span style="margin-left:auto;font-size:12px;color:#6B7280;font-family:sans-serif;white-space:nowrap;">${score}/${zone.maxScore}</span>
-        <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;background:${badgeBg};color:${badgeText};font-family:sans-serif;white-space:nowrap;">${isPositive ? "Flagged" : "Clear"}</span>
+        <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;background:${st.badgeBg};color:${st.badgeText};border:1px solid ${st.badgeBorder};font-family:sans-serif;white-space:nowrap;">${status}</span>
       </div>
+      <p style="margin:2px 0 ${answeredHtml ? "4px" : "0"} 16px;font-size:13px;color:#6B7280;font-family:sans-serif;">${st.description}</p>
       ${answeredHtml}
     </td>
   </tr>`;
@@ -152,7 +158,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ? ZONE_CONFIG.map((z) => zoneRow(z, anatomy)).join("")
     : (flaggedZones.length > 0
         ? flaggedZones.map((z) => `<li style="margin:4px 0;color:#374151;font-family:sans-serif;">${z}</li>`).join("")
-        : `<li style="color:#374151;font-family:sans-serif;">No specific zones flagged</li>`);
+        : `<li style="color:#374151;font-family:sans-serif;">No zones Flagged</li>`);
 
   const html = `
 <!DOCTYPE html>
@@ -195,8 +201,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             </div>
 
             <!-- STEP 2: AIRWAY ZONES -->
-            ${sectionHeading("Step 2: Where Can the Airway Narrow? — Airway Zone Assessment", "#16A34A")}
-            <p style="margin:0 0 12px;color:#475569;font-size:14px;line-height:1.65;font-family:sans-serif;">The Murphy Method™ evaluates four anatomical zones from top to bottom. Each zone that responds positively is <strong>flagged</strong> — meaning your responses suggest that area may be contributing to sleep-disordered breathing.</p>
+            ${sectionHeading("Step 2: Where Can the Airway Narrow? Airway Zone Assessment", "#16A34A")}
+            <p style="margin:0 0 12px;color:#475569;font-size:14px;line-height:1.65;font-family:sans-serif;">Flagged means 2 or more yes answers, so this area is likely part of your sleep apnea. Noted means 1 yes answer: share it with your doctor. Clear means no yes answers.</p>
             ${anatomy ? `
             <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E5E7EB;border-radius:8px;overflow:hidden;margin-bottom:8px;">
               ${zonesHtml}

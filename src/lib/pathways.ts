@@ -50,16 +50,16 @@ Your Next Step: See a doctor to talk about the results of this assessment and fi
   },
   {
     id: "D_mandible",
-    title: "Sleep Apnea with Jaw & Tongue Blockage",
-    shortDescription: "Your jaw and tongue position is likely the main cause of your sleep apnea. An oral appliance or surgery are good treatment options to consider.",
-    educationalSummary: `The results of your assessment show that the main problem with your sleep apnea may be the position of your mandible & tongue when you sleep. I tell my patients that your mandible (lower jaw) is a bony box that your tongue must fit inside. If the lower jaw is positioned back or narrow the tongue is pushed back making the space in your throat to breathe smaller causing sleep apnea.
+    title: "Sleep Apnea with a Tongue and Jaw Problem",
+    shortDescription: "Your tongue and jaw position may be the main cause of your sleep apnea. An oral appliance or surgery is a good treatment option to consider.",
+    educationalSummary: `Your answers suggest that the main problem may be the position of your tongue and lower jaw while you sleep. Think of your lower jaw as a bony box that your tongue must fit inside. If your lower jaw sits back or is narrow, there is less room for your tongue. Your tongue gets pushed back and narrows the space in your throat you use to breathe. Less often, the tongue itself is large and does not fit well in the space it has.
 
-The assessment also shows that you probably breathe okay through your nose when you sleep. In your situation, the most effective treatment for your sleep apnea may be an oral appliance (a device made by a specially trained dentist to keep your lower jaw and tongue forward and your airway open at night while you sleep). Another possible option is surgery. As a surgeon I do not automatically recommend surgery. On the other hand, if surgery can fix a problem, I do not hesitate to consider the option. There are surgical options to treat your blockage at the level of your mandible & tongue.
+Your answers also show that you probably breathe well through your nose. For many people in your situation, an oral appliance may work best. This is a mouth guard made by a sleep dentist (a dentist trained to treat sleep apnea). It holds your lower jaw and tongue forward to keep your airway open while you sleep. Surgery is another option. Surgery can change the shape or position of the bony box of your lower jaw. This brings your tongue forward and opens your airway. Surgeons use computer models to plan exactly what changes to make. Surgery is not right for everyone, so meeting with a surgeon who does this type of surgery can help you decide if it is a good choice for you.
 
-Key Concept: Your mandible & tongue position is likely the main cause of your sleep apnea. Fixing the position of your mandible & tongue can fix the problem.
+Key Concept: Your tongue must fit inside the bony box of your lower jaw. Treatments that bring your jaw and tongue forward can open your airway while you sleep.
 
 
-Your Next Step: The next step is to see a doctor to discuss the results of this assessment and see if you have snoring or sleep apnea. This will probably include a sleep study to measure your breathing while you sleep. If possible, see an Ear, Nose & Throat (ENT) doctor to confirm that the main problem is the position of your mandible & tongue when you sleep. You can learn about ENT doctors on the American Academy of Otolaryngology – Head & Neck Surgery website (www.entnet.org). You could also see a dentist who specializes in treating sleep apnea with oral appliances. You can learn more about this option from the American Academy of Dental Sleep Medicine website (www.aadsm.org).`,
+Your Next Step: See a doctor to talk about the results of this assessment and find out if you have snoring or sleep apnea. This will probably include a sleep study to measure your breathing while you sleep. If you can, also see an ENT (ear, nose, and throat) doctor, who can check how your tongue and jaw affect your airway, or a sleep dentist. Use the Find a Specialist links below to find one near you.`,
   },
   {
     id: "E_multilevel",

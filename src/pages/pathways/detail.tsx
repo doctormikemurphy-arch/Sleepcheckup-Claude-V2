@@ -34,9 +34,9 @@ const LETTER_TO_KEY: Record<string, string> = {
 
 const ITALIC_KEYWORDS: Record<string, string> = {
   a: "Insomnia",
-  b: "Obesity",
+  b: "Body Weight",
   c: "Nasal Problem",
-  d: "Blockage",
+  d: "Tongue and Jaw Problem",
   e: "Blockage",
   f: "Breathing Control",
   g: "Snoring",

@@ -63,7 +63,7 @@ export function Step11Palm({ answers, onChange, onFinish, onBack, isComplete }: 
         Doctors know these four causes are real. They have been studied for years. But treatments for the last three are still being worked out. New ones are coming. Knowing your pattern now means your doctor can use it as soon as those treatments arrive.
       </p>
       <p className="text-ink-soft mb-8" style={{ fontSize: "16px", lineHeight: 1.7 }}>
-        Answer the questions below. If you answer "Yes" to 2 or more questions in a group, that group is flagged.
+        Answer the questions below. If you answer "Yes" to 2 or more questions in a group, that group is Flagged.
       </p>
 
       <div className="space-y-8 mb-10">

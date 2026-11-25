@@ -1,5 +1,6 @@
 // Route test: loads the REAL customer pages (/assessment/results and /assessment/report) in
 // headless Chrome for a few admin sample answers, and checks the pathway text and nose add-on.
+// It also checks the free screener results page (/screener/results) zone labels.
 // Storage is seeded like a real paid customer with email null, so no email is sent; nothing is clicked,
 // so no acknowledgment is logged. Edit CASES below to test other pathways or samples.
 //
@@ -11,8 +12,9 @@
 // Then stop both background processes (e.g. `kill %1 %2`) and delete /tmp/route-test-chrome.
 // Exits with code 1 if any check fails.
 import { SAMPLE_ANSWERS } from "../src/lib/admin-sample-answers";
-import { NOSE_ADDON, PATHWAY_CONTENT } from "../src/lib/pathway-content";
+import { NOSE_ADDON, PATHWAY_CONTENT, D_WEIGHT_BULLET } from "../src/lib/pathway-content";
 import { getPathwayDefinition } from "../src/lib/pathways";
+import { ZONE_STATUS_EXPLANATION, PALM_STATUS_EXPLANATION, ZONE_STATUS_DESCRIPTION } from "../src/lib/zone-status";
 
 const [base, port] = process.argv.slice(2);
 const strip = (s: string) => s.replace(/\*\*/g, "").replace(/\s+/g, " ").trim();
@@ -50,7 +52,24 @@ const CASES: Case[] = [
   { key: "A_insomnia_nasal", pathway: "A_insomnia", addOn: true },
   { key: "A_insomnia", pathway: "A_insomnia", addOn: false },
   { key: "C_nasal", pathway: "C_nasal", addOn: false },
+  { key: "D_mandible", pathway: "D_mandible", addOn: false },
+  { key: "D_mandible_no_bmi", pathway: "D_mandible", addOn: false },
 ];
+
+// D sample zones: Jaw & Tongue 2/3, Nose 1/5, Neck 1/3, Palate 0/3 (the screener check uses the same answers).
+const D_ZONES = [["Nose & Nasal Airway", "Noted"], ["Palate & Tonsils", "Clear"], ["Jaw & Tongue", "Flagged"], ["Neck", "Noted"]] as const;
+const DESC = { Flagged: ZONE_STATUS_DESCRIPTION.flagged, Noted: ZONE_STATUS_DESCRIPTION.noted, Clear: ZONE_STATUS_DESCRIPTION.clear };
+/** Checks each zone row reads "<zone> <description> <score> <label>". */
+function zoneChecks(text: string, checks: [string, boolean][]) {
+  for (const [zone, want] of D_ZONES) {
+    const i = text.indexOf(`${zone} ${DESC[want]}`);
+    const got = i < 0 ? null : (text.slice(i, i + 160).match(/\b(Flagged|Noted|Clear)\b/) ?? [])[1] ?? null;
+    checks.push([`zone "${zone}" shows "${DESC[want]}" and ${want} (found ${got})`, got === want]);
+  }
+  checks.push(["new zone explanation text", text.includes(ZONE_STATUS_EXPLANATION)]);
+  checks.push(["old zone explanation gone", !text.includes("Each zone that responds positively")]);
+  checks.push(["old zone description lines gone", !text.includes("This area might play a role") && !text.includes("does not clearly stand out")]);
+}
 
 let failures = 0;
 for (const c of CASES) {
@@ -91,6 +110,21 @@ for (const c of CASES) {
         }
         checks.push(["old C text gone", !text.includes("Optimize Nasal Breathing") && !text.includes("Your self-assessment identified significant nasal factors")]);
       }
+      if (c.pathway === "D_mandible") {
+        for (const s of [pc.subtitle, pc.whyItMatters.intro, pc.whatWorksBest.intro, pc.whatResultsSuggest[3]]) {
+          checks.push([`new D text: "${strip(s).slice(0, 50)}…"`, text.includes(strip(s))]);
+        }
+        checks.push(["old D text gone", !text.includes("Jaw & Tongue Blockage") && !text.includes("Address Jaw & Tongue Factors")]);
+        zoneChecks(text, checks);
+        checks.push(["new PALM explanation text", text.includes(PALM_STATUS_EXPLANATION)]);
+        checks.push(["Step 2 subtitle uses a colon", text.includes("Top-Down Anatomy Self-Check: 4 zones evaluated") && !text.includes("Self-Check —")]);
+        const hasBmi = c.key !== "D_mandible_no_bmi";
+        checks.push([hasBmi ? "weight bullet shown (BMI entered)" : "weight bullet hidden (no BMI)", text.includes(D_WEIGHT_BULLET) === hasBmi]);
+        checks.push(["no allergy specialist link", !text.includes("allergist.aaaai.org") && !text.includes("Find an Allergy Specialist")]);
+        for (const url of ["https://www.enthealth.org/find-ent/", "https://www.aadsm.org/find_an_aadsm_qualified_dentis.php", "https://sleepeducation.org/sleep-center/"]) {
+          checks.push([`specialist link ${url}`, text.includes(url)]);
+        }
+      }
     } finally {
       await tab.close();
     }
@@ -100,5 +134,57 @@ for (const c of CASES) {
     for (const [name, ok] of checks) console.log(`   ${ok ? "ok  " : "FAIL"} ${name}`);
   }
 }
+// Free screener results page, seeded with the D sample's STOP-BANG and zone answers. No email is
+// saved, so the page never sends one.
+{
+  const tab = await newTab();
+  const checks: [string, boolean][] = [];
+  try {
+    await tab.send("Page.enable");
+    await tab.send("Runtime.enable");
+    await tab.goto(`${base}/`, "");
+    const d = SAMPLE_ANSWERS.D_mandible;
+    const screener = { step: 7, stopBangAnswers: d.stopBang, zoneAnswers: d.zoneAnswers, profile: null, resumedFromSaved: false };
+    await tab.evaluate(`localStorage.clear(); sessionStorage.clear();
+      localStorage.setItem("screener_state_v2", ${JSON.stringify(JSON.stringify(screener))}); true`);
+    checks.push(["page loaded", await tab.goto(`${base}/screener/results`, "Where Can the Airway Narrow?")]);
+    const text = strip(await tab.evaluate("document.body.innerText"));
+    zoneChecks(text, checks);
+    // Only Jaw & Tongue is Flagged, so the 2+ flagged zones note must not appear.
+    checks.push(["no 'flagged N airway zones' note (only 1 zone Flagged)", !/flagged \d+ airway zones/.test(text)]);
+  } finally {
+    await tab.close();
+  }
+  const failed = checks.filter(([, ok]) => !ok);
+  failures += failed.length;
+  console.log(`\n${failed.length ? "FAIL" : "PASS"}  screener (D sample answers)  /screener/results`);
+  for (const [name, ok] of checks) console.log(`   ${ok ? "ok  " : "FAIL"} ${name}`);
+}
+
+// /pathways/<letter> headings: the last words are in italics, e.g. "Sleep Apnea with *Insomnia*".
+{
+  const want: Record<string, string> = { a: "Insomnia", b: "Body Weight", c: "Nasal Problem", d: "Tongue and Jaw Problem", e: "Blockage", f: "Breathing Control", g: "Snoring", h: "Multiple Factors" };
+  const tab = await newTab();
+  const checks: [string, boolean][] = [];
+  try {
+    await tab.send("Page.enable");
+    await tab.send("Runtime.enable");
+    for (const [letter, italic] of Object.entries(want)) {
+      const id = ({ a: "A_insomnia", b: "B_obesity", c: "C_nasal", d: "D_mandible", e: "E_multilevel", f: "F_physiology", g: "G_low_risk", h: "H_complex" } as const)[letter as "a"];
+      const title = getPathwayDefinition(id).title;
+      await tab.goto(`${base}/pathways/${letter}`, title);
+      const h1 = await tab.evaluate(`JSON.stringify({ text: document.querySelector("h1")?.innerText, em: document.querySelector("h1 em")?.innerText })`);
+      const { text, em } = JSON.parse(h1 ?? "{}");
+      checks.push([`/pathways/${letter}: "${title}" with "${italic}" in italics (found "${em}")`, strip(text ?? "") === title && em === italic]);
+    }
+  } finally {
+    await tab.close();
+  }
+  const failed = checks.filter(([, ok]) => !ok);
+  failures += failed.length;
+  console.log(`\n${failed.length ? "FAIL" : "PASS"}  pathway detail headings`);
+  for (const [name, ok] of checks) console.log(`   ${ok ? "ok  " : "FAIL"} ${name}`);
+}
+
 console.log(`\n${failures === 0 ? "ALL PASSED" : `${failures} check(s) failed`}`);
 process.exit(failures ? 1 : 0);
